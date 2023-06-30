@@ -19,7 +19,27 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 23883218944
-    m_Localized: Setting
+    m_Localized: Game Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188007508938752
+    m_Localized: Sound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188326267654144
+    m_Localized: BGM Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 188459956899840
+    m_Localized: SFX Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 190867046993920
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191028951322624
+    m_Localized: Resume
     m_Metadata:
       m_Items: []
   references:
