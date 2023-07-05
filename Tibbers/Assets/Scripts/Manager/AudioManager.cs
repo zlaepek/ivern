@@ -10,21 +10,21 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource;
 
     public AudioMixer masterMixer;
+
     public AudioMixerGroup sfxMixer;
     public AudioMixerGroup bgmMixer;
-    // public DefaultMixerTarget defaultMixer = DefaultMixerTarget.None;
 
-    // public static readonly string mainVolumeParam = "Volume";
     public static readonly string sfxVolumeParam = "SFXVol";
     public static readonly string bgmVolumeParam = "BGMVol";
 
     [SerializeField] private AudioBank soundBank;
     [SerializeField] private AudioBank musicBank;
-    #endregion
 
     /// Singleton
     public static AudioManager Instance { get; private set; }
+    #endregion
 
+    #region LIFE CYCLE
     private void Awake()
     {
         if (Instance == null)
@@ -50,9 +50,10 @@ public class AudioManager : MonoBehaviour
     {
         SetPitchByTimeScale();
     }
-
+    #endregion
     /// Initialization
 
+    #region Initialization
     private void InitBanks()
     {
         soundBank.Build();
@@ -61,10 +62,10 @@ public class AudioManager : MonoBehaviour
 
     private void InitMixer()
     {
-        //SetMixerFromPref(mainVolumeParam);
         SetMixerFromPref(bgmVolumeParam);
         SetMixerFromPref(sfxVolumeParam);
     }
+    #endregion
 
     #region METHODS
     public static void Play(string clip, AudioMixerGroup mixerTarget, Vector3? position = null)
@@ -103,7 +104,7 @@ public class AudioManager : MonoBehaviour
 
     public static void Play(string clip, Vector3? position = null)
     {
-        Play(clip, MixerTarget.Default, position);
+        Play(clip, MixerTarget.BGM, position);
     }
     /*
     public static void PlayAndFollow(string clip, Transform target, MixerTarget mixerTarget)
@@ -135,7 +136,7 @@ public class AudioManager : MonoBehaviour
     */
     #endregion
 
-    #region Play Music
+    #region Play&Stop Music
     public static void PlayMusic(string music)
     {
         if (string.IsNullOrEmpty(music) == false)
@@ -154,13 +155,13 @@ public class AudioManager : MonoBehaviour
 
     public static void PauseMusic()
     {
-        //Instance.masterMixer.FindSnapshot("Paused").TransitionTo(0.5f);
+        Instance.masterMixer.FindSnapshot("Paused").TransitionTo(0.5f);
         Instance.audioSource.Pause();
     }
 
     public static void UnpauseMusic()
     {
-        //Instance.masterMixer.FindSnapshot("Default").TransitionTo(0.5f);
+        Instance.masterMixer.FindSnapshot("Default").TransitionTo(0.5f);
         Instance.audioSource.UnPause();
     }
 
@@ -172,25 +173,13 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region Volume
-    //public static void SetVolumeMaster(float value)
-    //{
-    //    Instance.masterMixer.SetFloat(mainVolumeParam, ToDecibels(value));
-    //    SetPref(mainVolumeParam, value);
-    //}
-
     public static void SetVolumeSFX(float value)
     {
         Instance.masterMixer.SetFloat(sfxVolumeParam, ToDecibels(value));
         SetPref(sfxVolumeParam, value);
     }
 
-    //public static void SetVolumeUI(float value)
-    //{
-    //    Instance.masterMixer.SetFloat(uiVolumeParam, ToDecibels(value));
-    //    SetPref(uiVolumeParam, value);
-    //}
-
-    public static void SetVolumeMusic(float value)
+    public static void SetVolumeBGM(float value)
     {
         Instance.masterMixer.SetFloat(bgmVolumeParam, ToDecibels(value));
         SetPref(bgmVolumeParam, value);
@@ -214,6 +203,7 @@ public class AudioManager : MonoBehaviour
         return -1;
     }
     #endregion
+
     // Prefs
 
     // returns a linear [0-1] volume value
@@ -241,17 +231,12 @@ public class AudioManager : MonoBehaviour
         Instance.masterMixer.SetFloat("SFXPitch", Time.timeScale);
     }
 
-    //private AudioMixerGroup DefaultMixerGroup()
-    //{
-    //    return GetMixerGroup((MixerTarget)Instance.defaultMixer);
-    //}
 
     private AudioMixerGroup GetMixerGroup(MixerTarget target)
     {
         if (target == MixerTarget.None) return null;
-        // if (target == MixerTarget.Default) return GetMixerGroup((MixerTarget)defaultMixer);
+        if (target == MixerTarget.BGM) return bgmMixer;
         if (target == MixerTarget.SFX) return sfxMixer;
-        // if (target == MixerTarget.UI) return uiMixer;
         throw new System.Exception("Invalid MixerTarget");
     }
 
@@ -262,8 +247,8 @@ public class AudioManager : MonoBehaviour
         throw new System.Exception($"No mixer group by the name {target} could be found");
     }
 
-    public enum MixerTarget { None, Default, SFX, UI }
-    public enum DefaultMixerTarget { None = MixerTarget.None, SFX = MixerTarget.SFX, UI = MixerTarget.UI }
+    public enum MixerTarget { None, BGM, SFX}
+    public enum DefaultMixerTarget { None = MixerTarget.None, BGM = MixerTarget.BGM, SFX = MixerTarget.SFX }
 
     [System.Serializable]
     public class BankKVP
