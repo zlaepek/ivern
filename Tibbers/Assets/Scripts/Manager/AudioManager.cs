@@ -70,6 +70,7 @@ public class AudioManager : MonoBehaviour
     #region METHODS
     public static void Play(string clip, AudioMixerGroup mixerTarget, Vector3? position = null)
     {
+        Debug.Log("play");
         if (Instance.soundBank.TryGetAudio(clip, out AudioClip audioClip))
         {
             GameObject clipObj = new GameObject(clip, typeof(AudioDestroyer));
@@ -177,12 +178,14 @@ public class AudioManager : MonoBehaviour
     {
         Instance.masterMixer.SetFloat(sfxVolumeParam, ToDecibels(value));
         SetPref(sfxVolumeParam, value);
+        Debug.Log(value);
     }
 
     public static void SetVolumeBGM(float value)
     {
         Instance.masterMixer.SetFloat(bgmVolumeParam, ToDecibels(value));
         SetPref(bgmVolumeParam, value);
+        Debug.Log(value);
     }
 
     public static float ToDecibels(float value)

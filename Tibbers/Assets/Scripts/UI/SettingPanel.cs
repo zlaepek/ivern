@@ -27,13 +27,17 @@ public class SettingPanel : MonoBehaviour
     }
 
     #region Audio
-    public void SetVolumeSFX(float value)
+    public void SetVolumeSFX()
     {
-        AudioManager.SetVolumeSFX(value);
+        AudioManager.SetVolumeSFX(sfxSlider.value);
     }
-    public void SetVolumeBGM(float value)
+    public void SetVolumeBGM()
     {
-        AudioManager.SetVolumeBGM(value);
+        AudioManager.SetVolumeBGM(bgmSlider.value);
+    }
+    public void UIClickTest()
+    {
+        AudioManager.Play("Pop", AudioManager.MixerTarget.SFX);
     }
     #endregion
 
