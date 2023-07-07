@@ -159,7 +159,7 @@ Transform:
   m_Children:
   - {fileID: 131101270667539672}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2043971527405801490
 MonoBehaviour:
@@ -176,12 +176,12 @@ MonoBehaviour:
   audioSource: {fileID: 8647976363643567954}
   masterMixer: {fileID: 24100000, guid: bad6a7553e2b33b429151b4248b2afc6, type: 2}
   sfxMixer: {fileID: 8689608123268685404, guid: bad6a7553e2b33b429151b4248b2afc6, type: 2}
-  bgmMixer: {fileID: 0}
+  bgmMixer: {fileID: 24300002, guid: bad6a7553e2b33b429151b4248b2afc6, type: 2}
   soundBank:
     kvps:
-    - Key: 
-      Value: {fileID: 0}
+    - Key: Pop
+      Value: {fileID: 8300000, guid: a4fe7e194a1f2814d9eaf611acd457d0, type: 3}
   musicBank:
     kvps:
-    - Key: 
-      Value: {fileID: 0}
+    - Key: Demo
+      Value: {fileID: 8300000, guid: d5af8d3a3cbc5d64f92d18ce035d79b8, type: 3}
