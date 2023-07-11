@@ -17,7 +17,7 @@ public class SettingPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[GetLocalePref()];
     }
 
     // Update is called once per frame
@@ -42,9 +42,22 @@ public class SettingPanel : MonoBehaviour
     #endregion
 
     #region Language
-    public void LocaleSelected(/*int index*/)
+    public void LocaleSelected()
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[langunageDropdown.value];
+        SetLocalePref(langunageDropdown.value);
+        Debug.Log(GetLocalePref());
+    }
+
+    private void SetLocalePref(int val)
+    {
+        PlayerPrefs.SetInt("Language", val);
+    }
+
+    private int GetLocalePref()
+    {
+        int val = PlayerPrefs.GetInt("Language");
+        return val;
     }
     #endregion
 }

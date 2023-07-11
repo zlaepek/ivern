@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioBank soundBank;
     [SerializeField] private AudioBank musicBank;
 
+    public static AudioSource camAudio;
     /// Singleton
     public static AudioManager Instance { get; private set; }
     #endregion
@@ -45,15 +46,9 @@ public class AudioManager : MonoBehaviour
         InitMixer();
         masterMixer.updateMode = AudioMixerUpdateMode.UnscaledTime;
     }
-
-    private void Update()
-    {
-        SetPitchByTimeScale();
-    }
     #endregion
-    /// Initialization
 
-    #region Initialization
+    #region INITIALIZATION
     private void InitBanks()
     {
         soundBank.Build();
@@ -70,7 +65,6 @@ public class AudioManager : MonoBehaviour
     #region METHODS
     public static void Play(string clip, AudioMixerGroup mixerTarget, Vector3? position = null)
     {
-        Debug.Log("play");
         if (Instance.soundBank.TryGetAudio(clip, out AudioClip audioClip))
         {
             GameObject clipObj = new GameObject(clip, typeof(AudioDestroyer));
@@ -107,45 +101,21 @@ public class AudioManager : MonoBehaviour
     {
         Play(clip, MixerTarget.BGM, position);
     }
-    /*
-    public static void PlayAndFollow(string clip, Transform target, MixerTarget mixerTarget)
-    {
-        if (Instance.soundBank.TryGetAudio(clip, out AudioClip audioClip))
-        {
-            GameObject clipObj = new GameObject(clip, typeof(AudioDestroyer));
-            AudioSource src = clipObj.AddComponent<AudioSource>();
-            FollowTarget follow = clipObj.AddComponent<FollowTarget>();
-            src.spatialBlend = 1;
-            src.rolloffMode = AudioRolloffMode.Linear;
-            src.maxDistance = 50;
-            src.dopplerLevel = 0;
-            src.clip = audioClip;
-            src.outputAudioMixerGroup = Instance.GetMixerGroup(mixerTarget);
-            follow.target = target;
-            src.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"AudioClip '{clip}' not present in audio bank");
-        }
-    }
-
-    public static void PlayAndFollow(string clip, Transform target)
-    {
-        PlayAndFollow(clip, target, MixerTarget.Default);
-    }
-    */
     #endregion
 
-    #region Play&Stop Music
+    #region PLAY & STOP BGM
     public static void PlayMusic(string music)
     {
         if (string.IsNullOrEmpty(music) == false)
         {
+            if (camAudio == null)
+            {
+                camAudio = Camera.main.GetComponentInChildren<AudioSource>();
+            }
             if (Instance.musicBank.TryGetAudio(music, out AudioClip audio))
             {
-                Instance.audioSource.clip = audio;
-                Instance.audioSource.Play();
+                camAudio.clip = audio;
+                camAudio.Play();
             }
             else
             {
@@ -173,19 +143,17 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    #region Volume
+    #region VOLUME
     public static void SetVolumeSFX(float value)
     {
         Instance.masterMixer.SetFloat(sfxVolumeParam, ToDecibels(value));
         SetPref(sfxVolumeParam, value);
-        Debug.Log(value);
     }
 
     public static void SetVolumeBGM(float value)
     {
         Instance.masterMixer.SetFloat(bgmVolumeParam, ToDecibels(value));
         SetPref(bgmVolumeParam, value);
-        Debug.Log(value);
     }
 
     public static float ToDecibels(float value)
@@ -207,8 +175,7 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    // Prefs
-
+    #region PREFS
     // returns a linear [0-1] volume value
     private static float GetPref(string pref)
     {
@@ -226,15 +193,9 @@ public class AudioManager : MonoBehaviour
     {
         masterMixer.SetFloat(pref, ToDecibels(GetPref(pref)));
     }
+    #endregion
 
-    // Mixer & Other
-
-    static void SetPitchByTimeScale()
-    {
-        Instance.masterMixer.SetFloat("SFXPitch", Time.timeScale);
-    }
-
-
+    #region MIXER
     private AudioMixerGroup GetMixerGroup(MixerTarget target)
     {
         if (target == MixerTarget.None) return null;
@@ -250,9 +211,11 @@ public class AudioManager : MonoBehaviour
         throw new System.Exception($"No mixer group by the name {target} could be found");
     }
 
-    public enum MixerTarget { None, BGM, SFX}
+    public enum MixerTarget { None, BGM, SFX }
     public enum DefaultMixerTarget { None = MixerTarget.None, BGM = MixerTarget.BGM, SFX = MixerTarget.SFX }
+    #endregion
 
+    #region AUDIO BANK
     [System.Serializable]
     public class BankKVP
     {
@@ -331,4 +294,5 @@ public class AudioManager : MonoBehaviour
         }
     }
 #endif
+    #endregion
 }
