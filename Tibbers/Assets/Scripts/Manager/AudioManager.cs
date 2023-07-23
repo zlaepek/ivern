@@ -177,7 +177,7 @@ public class AudioManager : MonoBehaviour
 
     #region PREFS
     // returns a linear [0-1] volume value
-    private static float GetPref(string pref)
+    public static float GetPref(string pref)
     {
         float v = PlayerPrefs.GetFloat(pref, 0.75f);
         return v;
