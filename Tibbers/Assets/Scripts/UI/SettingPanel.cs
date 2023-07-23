@@ -34,15 +34,26 @@ public class SettingPanel : MonoBehaviour
     public TMP_Dropdown langunageDropdown;
     #endregion
 
-    #region LifeCycle
+    #region LIFE CYCLE
     void Start()
     {
-        // 언어 설정 불러오기
-        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[GetLocalePref()];
+        /// 언어 설정 불러오기
+        StartCoroutine(LocaleChange(GetLocalePref()));
+
+        /// 오디오 설정 불러오기
+        sfxSlider.value = AudioManager.GetPref(AudioManager.sfxVolumeParam);
+        bgmSlider.value = AudioManager.GetPref(AudioManager.bgmVolumeParam);
+    }
+
+    IEnumerator LocaleChange(int index)
+    {
+        yield return LocalizationSettings.InitializationOperation;
+        langunageDropdown.value = GetLocalePref();
+        // LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
     #endregion
 
-    #region Initialize
+    #region INITIALIZE
     public void SettingPanelOn()
     {
         settingPanel.SetActive(true);
@@ -55,7 +66,7 @@ public class SettingPanel : MonoBehaviour
     }
     #endregion
 
-    #region Panel Control
+    #region PANEL CONTROL
     private void AllSettingPanelOff()
     {
         audioSettingPanel.SetActive(false);
@@ -100,7 +111,7 @@ public class SettingPanel : MonoBehaviour
     }
     #endregion
 
-    #region Audio
+    #region AUDIO
     public void SetVolumeSFX()
     {
         AudioManager.SetVolumeSFX(sfxSlider.value);
@@ -115,12 +126,11 @@ public class SettingPanel : MonoBehaviour
     }
     #endregion
 
-    #region Language
+    #region LANGUAGE
     public void LocaleSelected()
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[langunageDropdown.value];
         SetLocalePref(langunageDropdown.value);
-        Debug.Log(GetLocalePref());
     }
 
     private void SetLocalePref(int val)
