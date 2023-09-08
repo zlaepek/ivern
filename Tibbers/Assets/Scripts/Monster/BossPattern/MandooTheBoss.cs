@@ -15,18 +15,24 @@ public class MandooTheBoss : MonoBehaviour
     }
 
     [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
+
+    // 코루틴
+    private Coroutine currentCoroutine = null;
+    private List<IEnumerator> coroutineList = null;
     #endregion 변수 선언부
 
     #region MonsterMove 관련 변수 선언부
     // Monster Move 선언
     private MonsterMove monsterMove;
+
     // 기본 이속
     public float speed = 1.0f;
+    public float randomMoveDuration = 1.0f;
 
     // 돌진 관련
-    public float dashSpeed = 10.0f;   // 돌진 속도
-    public float dashInterval = 5.0f; // 돌진 간격
-    public float dashDuration = 1f; // 돌진 지속 시간
+    public float dashSpeed = 10.0f;     // 돌진 속도
+    public float dashInterval = 5.0f;   // 돌진 간격
+    public float dashDuration = 0.2f;     // 돌진 지속 시간
 
     // 이동 타겟
     public Transform targetTransfrom;
@@ -36,7 +42,6 @@ public class MandooTheBoss : MonoBehaviour
     private Transform thisTransform;
 
     // 타이머
-    private float dashTimer;
     private float currentTime = 0;
 
     private Vector3 targetDirection;
@@ -50,8 +55,11 @@ public class MandooTheBoss : MonoBehaviour
         thisRigidbody2D = GetComponentInChildren<Rigidbody2D>();
         thisTransform = GetComponentInChildren<Transform>();
 
+        coroutineList = new List<IEnumerator>();
+
         FrozenInit();
     }
+
     private void Update() {
         currentTime += Time.deltaTime;
         switch (currentMandooState) {
@@ -72,42 +80,58 @@ public class MandooTheBoss : MonoBehaviour
     #endregion 라이프 사이클
 
     #region 각 스테이트 실행 함수 (Init, Update에서 호출 함수)
+    /* Frozen */
     private void FrozenInit() {
         //TODO: 후라이팬 장판 소환
     }
     private void FrozenPattern() {
         //TODO: 슬라이드 & 냉기 장판
+        //TODO: 대쉬
+        if (currentTime > dashInterval)
+        {
+            AddCoroutine(monsterMove.DashToTarget(thisTransform, targetTransfrom, dashSpeed, dashDuration));
+            currentTime = 0;
+        }
+        //TODO: 다 녹았을 때
     }
+    private void FrozenEnd()
+    {
+        //TODO: 장판을 지운다
+    }
+    /* END Frozen */
 
+    /* Mad */
     private void MadInit() {
         //TODO: 후라이팬 장판
     }
     private void MadPattern() {
-        //TODO: 랜덤 방향 돌진 (점프를 하지 않을 때)
+
 
         //TODO: 점프 (점프 타이머가 다 돌았을 때)
         if (currentTime > dashInterval) {
             Debug.Log(currentTime);
-            monsterMove.SetDashPosition(targetDirection, thisTransform, targetTransfrom);
-
-            while (dashDuration > dashTimer) {
-                monsterMove.DashToTarget(targetDirection, thisRigidbody2D, dashSpeed);
-                dashTimer += Time.deltaTime;
-            }
+            AddCoroutine(monsterMove.JumpToTarget(targetTransfrom, thisTransform));
 
             currentTime = 0;
-            dashTimer = 0;
         }
-
-
-
+        //TODO: 랜덤 방향 돌진 (점프를 하지 않을 때)
+        else
+        {
+            monsterMove.RandomMove(thisTransform, speed, randomMoveDuration);
+        }
 
         //TODO: 종료 상태 결정
     }
+    /* END Mad */
 
+    /* Normal */
+    private void NormalInit()
+    {
+        
+    }
     private void NormalPattern() {
         // 이동
-        monsterMove.FollowTarget(speed, thisTransform, targetTransfrom, thisRigidbody2D);
+        monsterMove.FollowTarget(speed, thisTransform, targetTransfrom);
 
         //TODO: 탄환 던지기
 
@@ -115,10 +139,36 @@ public class MandooTheBoss : MonoBehaviour
         //currentMandooState = MANDOO_STATE.MAD;
         //MadInit();
     }
+    /* End Normal */
 
     private void Dead() {
         //TODO: 보스 관련 오브젝트 죄다 삭제
+        //TODO: 보스 죽는 모션
         //TODO: 보상으로 이동
     }
     #endregion 각 스테이트 실행 함수 (Init, Update에서 호출 함수)
+
+    #region 코루틴 관리 함수
+    private void AddCoroutine(IEnumerator coroutine)
+    {
+        if (currentCoroutine == null)
+        {
+            StartCoroutine(coroutine);
+        }
+        else
+        {
+            coroutineList.Add(coroutine);
+        }
+    }
+
+    private void StopCurrentCoroutine()
+    {
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        // 동작 대기열 비우기
+        coroutineList = new List<IEnumerator>();
+    }
+    #endregion
 }

@@ -287,8 +287,8 @@ GameObject:
   - component: {fileID: 550768102}
   - component: {fileID: 550768101}
   - component: {fileID: 550768103}
-  - component: {fileID: 550768104}
   - component: {fileID: 550768105}
+  - component: {fileID: 550768106}
   m_Layer: 0
   m_Name: Mando The Boss
   m_TagString: Untagged
@@ -398,33 +398,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!50 &550768104
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550768100}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &550768105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -437,12 +410,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814266b5a5691844bbfec9e3f926dc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMandooState: 1
+  currentMandooState: 2
   speed: 1
+  randomMoveDuration: 1
   dashSpeed: 10
-  dashInterval: 2
+  dashInterval: 5
   dashDuration: 1
   targetTransfrom: {fileID: 508276907}
+--- !u!50 &550768106
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550768100}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!1 &601168494 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
+  m_PrefabInstance: {fileID: 635416350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &601168498
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601168494}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &635416350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -505,7 +538,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1556939319577628168, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 885513791}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 601168498}
   m_SourcePrefab: {fileID: 100100000, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
 --- !u!1 &885513788
 GameObject:
