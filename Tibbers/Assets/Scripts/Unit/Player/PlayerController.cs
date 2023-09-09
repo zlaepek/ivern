@@ -124,13 +124,14 @@ public class PlayerController : MonoBehaviour
         Vector3 temp = default;
         
         float fCompare = 1000000.0f;
-
+        float fTemp = 0.0f;
         foreach (GameObject iter in Enemys)
         {
             temp = iter.transform.position;
-            
-            if (fCompare > Vector3.Distance(iter.transform.position , transform.position))
+            fTemp = Vector3.Distance(iter.transform.position, transform.position);
+            if (fCompare > fTemp)
             {
+                fCompare = fTemp;
                 Enemy = iter;
             }
         }
