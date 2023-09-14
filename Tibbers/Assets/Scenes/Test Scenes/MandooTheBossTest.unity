@@ -123,6 +123,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &260960627
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260960629}
+  - component: {fileID: 260960628}
+  m_Layer: 0
+  m_Name: BulletManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &260960628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260960627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02437cb2236f36d4cbcd944bc52a4eba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnergyBall: {fileID: 2735632238914027577, guid: 2d5784c59d42f744ca64d65ec06586cf, type: 3}
+  Melee: {fileID: 0}
+--- !u!4 &260960629
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260960627}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &504997926
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,9 +335,10 @@ GameObject:
   - component: {fileID: 550768103}
   - component: {fileID: 550768105}
   - component: {fileID: 550768106}
+  - component: {fileID: 550768107}
   m_Layer: 0
   m_Name: Mando The Boss
-  m_TagString: Untagged
+  m_TagString: tag_Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -410,13 +457,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814266b5a5691844bbfec9e3f926dc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMandooState: 2
+  currentMandooState: 0
   speed: 1
   randomMoveDuration: 1
-  dashSpeed: 10
+  dashSpeed: 2
   dashInterval: 5
   dashDuration: 1
-  targetTransfrom: {fileID: 508276907}
+  targetTransform: {fileID: 508276907}
 --- !u!50 &550768106
 Rigidbody2D:
   serializedVersion: 4
@@ -444,6 +491,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &550768107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550768100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83852683409a4f24e9ea729c1fa11d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iceArea: {fileID: 4736741985502591037, guid: 7d032dd0e88bf964d907dab8c8cbe5f6, type: 3}
+  fireArea: {fileID: 2147598024587805396, guid: 22a4926ca1a935342a817a162c076e4c, type: 3}
 --- !u!1 &601168494 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
@@ -476,6 +537,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &601168502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601168494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb5798bc65527043b54546234292ac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &635416350
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -532,6 +605,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
+      propertyPath: m_TagString
+      value: tag_Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -542,6 +619,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 601168498}
+    - targetCorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 601168502}
   m_SourcePrefab: {fileID: 100100000, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}
 --- !u!1 &885513788
 GameObject:
@@ -604,7 +684,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

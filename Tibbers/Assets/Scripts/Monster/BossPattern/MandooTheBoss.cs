@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
-public class MandooTheBoss : MonoBehaviour
+public class MandooTheBoss : Unit
 {
 
     #region 변수 선언부
@@ -35,7 +36,7 @@ public class MandooTheBoss : MonoBehaviour
     public float dashDuration = 0.2f;     // 돌진 지속 시간
 
     // 이동 타겟
-    public Transform targetTransfrom;
+    public Transform targetTransform;
 
     // this 오브젝트
     private Rigidbody2D thisRigidbody2D;
@@ -47,13 +48,19 @@ public class MandooTheBoss : MonoBehaviour
     private Vector3 targetDirection;
     #endregion MonsterMove 관련 변수 선언부
 
+    #region 장판 변수 선언부
+    private EffectArea effectArea;
+    #endregion
     #region 라이프 사이클
 
     private void Start() {
         monsterMove = new MonsterMove();
 
+
         thisRigidbody2D = GetComponentInChildren<Rigidbody2D>();
         thisTransform = GetComponentInChildren<Transform>();
+
+        effectArea = GetComponent<EffectArea>();
 
         coroutineList = new List<IEnumerator>();
 
@@ -83,17 +90,20 @@ public class MandooTheBoss : MonoBehaviour
     /* Frozen */
     private void FrozenInit() {
         //TODO: 후라이팬 장판 소환
+        effectArea.SpawnFireArea(targetTransform);
     }
     private void FrozenPattern() {
         //TODO: 슬라이드 & 냉기 장판
         //TODO: 대쉬
         if (currentTime > dashInterval)
         {
-            AddCoroutine(monsterMove.DashToTarget(thisTransform, targetTransfrom, dashSpeed, dashDuration));
+            AddCoroutine(monsterMove.DashToTarget(thisTransform, targetTransform, dashSpeed, dashDuration));
+            effectArea.SpawnIceArea(thisTransform, dashSpeed, dashDuration);
             currentTime = 0;
         }
         //TODO: 다 녹았을 때
     }
+
     private void FrozenEnd()
     {
         //TODO: 장판을 지운다
@@ -110,7 +120,7 @@ public class MandooTheBoss : MonoBehaviour
         //TODO: 점프 (점프 타이머가 다 돌았을 때)
         if (currentTime > dashInterval) {
             Debug.Log(currentTime);
-            AddCoroutine(monsterMove.JumpToTarget(targetTransfrom, thisTransform));
+            AddCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
 
             currentTime = 0;
         }
@@ -131,7 +141,7 @@ public class MandooTheBoss : MonoBehaviour
     }
     private void NormalPattern() {
         // 이동
-        monsterMove.FollowTarget(speed, thisTransform, targetTransfrom);
+        monsterMove.FollowTarget(speed, thisTransform, targetTransform);
 
         //TODO: 탄환 던지기
 
