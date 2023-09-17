@@ -439,7 +439,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -460,7 +460,7 @@ MonoBehaviour:
   currentMandooState: 0
   speed: 1
   randomMoveDuration: 1
-  dashSpeed: 2
+  dashSpeed: 1
   dashInterval: 5
   dashDuration: 1
   targetTransform: {fileID: 508276907}
@@ -505,6 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iceArea: {fileID: 4736741985502591037, guid: 7d032dd0e88bf964d907dab8c8cbe5f6, type: 3}
   fireArea: {fileID: 2147598024587805396, guid: 22a4926ca1a935342a817a162c076e4c, type: 3}
+  iceAreaSpawnFrequency: 20
 --- !u!1 &601168494 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3066235771583955237, guid: 30b759723f8b07b40b63ffd0dc3519e4, type: 3}

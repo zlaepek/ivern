@@ -18,8 +18,8 @@ public class MandooTheBoss : Unit
     [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
 
     // 코루틴
-    private Coroutine currentCoroutine = null;
-    private List<IEnumerator> coroutineList = null;
+    private Coroutine currentMoveCoroutine = null;
+    private Coroutine currentAttactCoroutine = null;
     #endregion 변수 선언부
 
     #region MonsterMove 관련 변수 선언부
@@ -62,13 +62,11 @@ public class MandooTheBoss : Unit
 
         effectArea = GetComponent<EffectArea>();
 
-        coroutineList = new List<IEnumerator>();
-
         FrozenInit();
     }
 
-    private void Update() {
-        currentTime += Time.deltaTime;
+    private void FixedUpdate() {
+        currentTime += Time.fixedDeltaTime;
         switch (currentMandooState) {
             case MANDOO_STATE.FROZEN:
                 FrozenPattern();
@@ -93,12 +91,18 @@ public class MandooTheBoss : Unit
         effectArea.SpawnFireArea(targetTransform);
     }
     private void FrozenPattern() {
-        //TODO: 슬라이드 & 냉기 장판
-        //TODO: 대쉬
+        // 슬라이드 & 냉기 장판
         if (currentTime > dashInterval)
         {
-            AddCoroutine(monsterMove.DashToTarget(thisTransform, targetTransform, dashSpeed, dashDuration));
-            effectArea.SpawnIceArea(thisTransform, dashSpeed, dashDuration);
+            Vector3 targetDirection = monsterMove.SetDashPosition(thisTransform, targetTransform);
+            if (currentMoveCoroutine != null) {
+                StopCoroutine(currentMoveCoroutine);
+            }
+            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(thisTransform, targetDirection, dashSpeed, dashDuration));
+            if (currentAttactCoroutine != null) {
+                StopCoroutine(currentAttactCoroutine);
+            }
+            currentAttactCoroutine = StartCoroutine(effectArea.SpawnIceArea(thisTransform, dashSpeed, dashDuration));
             currentTime = 0;
         }
         //TODO: 다 녹았을 때
@@ -120,8 +124,7 @@ public class MandooTheBoss : Unit
         //TODO: 점프 (점프 타이머가 다 돌았을 때)
         if (currentTime > dashInterval) {
             Debug.Log(currentTime);
-            AddCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
-
+            currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
             currentTime = 0;
         }
         //TODO: 랜덤 방향 돌진 (점프를 하지 않을 때)
@@ -157,28 +160,4 @@ public class MandooTheBoss : Unit
         //TODO: 보상으로 이동
     }
     #endregion 각 스테이트 실행 함수 (Init, Update에서 호출 함수)
-
-    #region 코루틴 관리 함수
-    private void AddCoroutine(IEnumerator coroutine)
-    {
-        if (currentCoroutine == null)
-        {
-            StartCoroutine(coroutine);
-        }
-        else
-        {
-            coroutineList.Add(coroutine);
-        }
-    }
-
-    private void StopCurrentCoroutine()
-    {
-        if (currentCoroutine != null)
-        {
-            StopCoroutine(currentCoroutine);
-        }
-        // 동작 대기열 비우기
-        coroutineList = new List<IEnumerator>();
-    }
-    #endregion
 }

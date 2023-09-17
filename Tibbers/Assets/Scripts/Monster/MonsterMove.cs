@@ -70,18 +70,16 @@ public class MonsterMove
     /* END Random Move */
 
     /* Dash */
-    private Vector3 SetDashPosition(Transform thisTransform, Transform targetTransform) 
+    public Vector3 SetDashPosition(Transform thisTransform, Transform targetTransform) 
     {
         Vector3 targetDirection = targetTransform.position - thisTransform.position;
-        targetDirection.Normalize();
+        targetDirection = targetDirection.normalized;
 
         return targetDirection;
     }
 
-    public IEnumerator DashToTarget(Transform thisTransform, Transform targetTransform, float dashSpeed, float dashDuration) 
+    public IEnumerator DashToTarget(Transform thisTransform, Vector3 targetDirection, float dashSpeed, float dashDuration) 
     {
-        Vector3 targetDirection = SetDashPosition(thisTransform, targetTransform);
-
         thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * dashSpeed * Time.deltaTime * TimeScale);
 
         yield return new WaitForSeconds(dashDuration);

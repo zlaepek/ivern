@@ -9,21 +9,20 @@ public class EffectArea : MonoBehaviour
     /* ICE VARIABLES */
     public GameObject iceArea = null;
     public GameObject fireArea = null;
+
+    public float iceAreaSpawnFrequency = 20f;
+    private float iceDuration = 5.0f;
     #endregion
 
     #region MANDOO (ICE, FIRE)
     /* ICE */
-    public void SpawnIceArea(Transform thisTransform, float dashSpeed, float dashDuration)
+    public IEnumerator SpawnIceArea(Transform thisTransform, float dashSpeed, float dashDuration)
     {
-
-         GameObject spawnedIceArea = Instantiate(iceArea, thisTransform.position, Quaternion.Euler(thisTransform.GetComponent<Rigidbody2D>().velocity.normalized));
-
-    }
-
-    public IEnumerator RemoveIceArea(GameObject iceArea)
-    {
-        yield return new WaitForSeconds(2);
-        Destroy(iceArea);
+        for (int i = 0; i < dashDuration * dashSpeed * iceAreaSpawnFrequency; i++) {
+            GameObject spawnedIceArea = Instantiate(iceArea, thisTransform.position, thisTransform.rotation);
+            Destroy(spawnedIceArea, iceDuration);
+            yield return new WaitForSeconds(1 / (dashSpeed * iceAreaSpawnFrequency));
+        }
 
         yield break;
     }
@@ -31,7 +30,7 @@ public class EffectArea : MonoBehaviour
     /* FIRE */
     public void SpawnFireArea(Transform centerTransform)
     {
-        float radius = 5.0f;
+        float radius = 6.0f;
 
         for (int i = 0; i < 6; i++)
         {
@@ -39,8 +38,6 @@ public class EffectArea : MonoBehaviour
             float y = radius * Mathf.Cos(Mathf.Deg2Rad * i * 60);
             Instantiate(fireArea, centerTransform.position + new Vector3(x, y), Quaternion.identity);
         }
-        //TODO: 정해진 위치에 소환
-
     }
     void FireArea()
     {
