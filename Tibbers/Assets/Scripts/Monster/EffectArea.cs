@@ -7,8 +7,10 @@ public class EffectArea : MonoBehaviour
 {
     #region VARIABLES
     /* ICE VARIABLES */
-    public GameObject iceArea = null;
-    public GameObject fireArea = null;
+    [SerializeField] private GameObject iceArea = null;
+    [SerializeField] private GameObject fireArea = null;
+
+    private List<GameObject> fireAreaObjectList = new List<GameObject>();
 
     public float iceAreaSpawnFrequency = 20f;
     private float iceDuration = 5.0f;
@@ -36,7 +38,7 @@ public class EffectArea : MonoBehaviour
         {
             float x = radius * Mathf.Sin(Mathf.Deg2Rad * i * 60);
             float y = radius * Mathf.Cos(Mathf.Deg2Rad * i * 60);
-            Instantiate(fireArea, centerTransform.position + new Vector3(x, y), Quaternion.identity);
+            fireAreaObjectList.Add(Instantiate(fireArea, centerTransform.position + new Vector3(x, y), Quaternion.identity));
         }
     }
     void FireArea()
@@ -48,6 +50,14 @@ public class EffectArea : MonoBehaviour
 
         //TODO: 플레이어가 부딪혔을 때 (도트뎀을 넣는다)
         // 그냥 업데이트문에서 냅다 깐다
+    }
+
+    public void DestroyFireArea()
+    {
+        for (int i =0; i < fireAreaObjectList.Count; i++)
+        {
+            Destroy(fireAreaObjectList[i]);
+        }
     }
     #endregion
 }
