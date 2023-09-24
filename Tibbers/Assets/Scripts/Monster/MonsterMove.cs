@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MonsterMove
 {
@@ -35,7 +36,22 @@ public class MonsterMove
     private MonsterMoveState currentMoveState = MonsterMoveState.Follow;
     */
 
-    float TimeScale = 500f;
+    private float timeScale = 500f;
+    public GameObject targetPositionMarker = null;
+
+    public void Initialize(GameObject targetPositionMarker)
+    {
+        this.targetPositionMarker = targetPositionMarker;
+    }
+
+    private void ActiveTargetMarker(bool active, Vector3 position = default)
+    {
+        targetPositionMarker.SetActive(active);
+        if (active)
+        {
+            targetPositionMarker.transform.position = position;
+        }
+    }
 
     #region Move Methods
     /* Follow */
@@ -46,7 +62,7 @@ public class MonsterMove
             targetDirection.Normalize();
         }
 
-        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * speed * Time.deltaTime * TimeScale);
+        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * speed * Time.deltaTime * timeScale);
     }
     /* END Follow */
 
@@ -63,26 +79,24 @@ public class MonsterMove
     {
         Vector3 targetDirection = SetRandomDirection(); 
 
-        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * speed * Time.deltaTime * TimeScale);
+        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * speed * Time.deltaTime * timeScale);
 
         yield break;
     }
     /* END Random Move */
 
     /* Dash */
-    private Vector3 SetDashPosition(Transform thisTransform, Transform targetTransform) 
+    public Vector3 SetDashPosition(Transform thisTransform, Transform targetTransform) 
     {
         Vector3 targetDirection = targetTransform.position - thisTransform.position;
-        targetDirection.Normalize();
+        targetDirection = targetDirection.normalized;
 
         return targetDirection;
     }
 
-    public IEnumerator DashToTarget(Transform thisTransform, Transform targetTransform, float dashSpeed, float dashDuration) 
+    public IEnumerator DashToTarget(Transform thisTransform, Vector3 targetDirection, float dashSpeed, float dashDuration) 
     {
-        Vector3 targetDirection = SetDashPosition(thisTransform, targetTransform);
-
-        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * dashSpeed * Time.deltaTime * TimeScale);
+        thisTransform.GetComponent<Rigidbody2D>().velocity = (targetDirection * dashSpeed * Time.deltaTime * timeScale);
 
         yield return new WaitForSeconds(dashDuration);
         thisTransform.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
@@ -102,34 +116,47 @@ public class MonsterMove
     public IEnumerator JumpToTarget(Transform targetTransform, Transform thisTransform) {
         float timeCounter = 0f;
 
-        Vector3 jumpTargetPosition = SetJumpPosition(targetTransform);
 
+        float jumpHeight = 25.0f;
         // 그림자를 그린다 
 
         // 그림자를 땅바닥에 두고 만두를 하늘로 보낸다
         thisTransform.GetComponent<Rigidbody2D>().isKinematic = true;
-        while (timeCounter < 2f)
+        while (timeCounter < 1f)
         {
-            thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + (10f * Time.deltaTime), thisTransform.position.z);
+            thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + (jumpHeight * Time.deltaTime), thisTransform.position.z);
             timeCounter += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(2f);
+        timeCounter = 0f;
 
-        // 그림자를 서서히 이동했다가 타겟 좌표에 도착하면
-        // while (x && z) 가 target과 같지 않다면
-        // lerp 
+        Vector3 jumpTargetPosition = SetJumpPosition(targetTransform);
+        ActiveTargetMarker(true, jumpTargetPosition);
 
+        Vector3 lerpStartPosition = thisTransform.position;
+        Vector3 lerpEndPosition1 = new Vector3(jumpTargetPosition.x, thisTransform.position.y, jumpTargetPosition.z);
+        Vector3 lerpEndPosition2 = new Vector3(jumpTargetPosition.x, jumpTargetPosition.y, jumpTargetPosition.z);
+
+        while (timeCounter < 1f)
+        {
+            thisTransform.position = Vector3.Lerp(lerpStartPosition, lerpEndPosition1, timeCounter);
+            timeCounter += Time.deltaTime;
+            yield return null;
+        }
+        timeCounter = 0f;
 
         // 만두를 떨군다
         thisTransform.GetComponent<Rigidbody2D>().isKinematic = false;
-        timeCounter = 0f;
-        while (timeCounter < 2f)
+
+        while (timeCounter < 1f)
         {
-            thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y - (10f * Time.deltaTime), thisTransform.position.z);
+            thisTransform.position = Vector3.Lerp(lerpEndPosition1, lerpEndPosition2, timeCounter);
             timeCounter += Time.deltaTime;
             yield return null;
         }
+        ActiveTargetMarker(false);
+        timeCounter = 0f;
+        // 그림자를 서서히 이동했다가 타겟 좌표에 도착하면
 
         yield break;
     }

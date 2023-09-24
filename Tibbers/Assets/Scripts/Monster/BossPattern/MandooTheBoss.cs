@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
-public class MandooTheBoss : MonoBehaviour
+public class MandooTheBoss : Unit
 {
 
     #region 변수 선언부
@@ -17,9 +18,19 @@ public class MandooTheBoss : MonoBehaviour
     [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
 
     // 코루틴
-    private Coroutine currentCoroutine = null;
-    private List<IEnumerator> coroutineList = null;
+    private Coroutine currentMoveCoroutine = null;
+    private Coroutine currentAttactCoroutine = null;
+
+
     #endregion 변수 선언부
+
+    #region 만두 머리
+    [SerializeField] private GameObject madMandooHeadPrefab = null;
+    private GameObject madMandooHead = null;
+
+    private Coroutine madMandooHeadCoroutine = null;
+    private int mandooBodyJumpCount = 0;
+    #endregion
 
     #region MonsterMove 관련 변수 선언부
     // Monster Move 선언
@@ -35,7 +46,7 @@ public class MandooTheBoss : MonoBehaviour
     public float dashDuration = 0.2f;     // 돌진 지속 시간
 
     // 이동 타겟
-    public Transform targetTransfrom;
+    public Transform targetTransform;
 
     // this 오브젝트
     private Rigidbody2D thisRigidbody2D;
@@ -44,25 +55,33 @@ public class MandooTheBoss : MonoBehaviour
     // 타이머
     private float currentTime = 0;
 
-    private Vector3 targetDirection;
+    public GameObject targetPositionMarker = null;
     #endregion MonsterMove 관련 변수 선언부
 
+    #region 장판 변수 선언부
+    private EffectArea effectArea;
+    #endregion
     #region 라이프 사이클
 
-    private void Start() {
+    private void Start()
+    {
         monsterMove = new MonsterMove();
+
+        monsterMove.Initialize(targetPositionMarker); 
 
         thisRigidbody2D = GetComponentInChildren<Rigidbody2D>();
         thisTransform = GetComponentInChildren<Transform>();
 
-        coroutineList = new List<IEnumerator>();
+        effectArea = GetComponent<EffectArea>();
 
         FrozenInit();
     }
 
-    private void Update() {
-        currentTime += Time.deltaTime;
-        switch (currentMandooState) {
+    private void FixedUpdate()
+    {
+        currentTime += Time.fixedDeltaTime;
+        switch (currentMandooState)
+        {
             case MANDOO_STATE.FROZEN:
                 FrozenPattern();
                 break;
@@ -79,96 +98,163 @@ public class MandooTheBoss : MonoBehaviour
     }
     #endregion 라이프 사이클
 
-    #region 각 스테이트 실행 함수 (Init, Update에서 호출 함수)
-    /* Frozen */
-    private void FrozenInit() {
-        //TODO: 후라이팬 장판 소환
+    #region Frozen
+    private void FrozenInit()
+    {
+        // 후라이팬 장판 소환
+        effectArea.SpawnFireArea(targetTransform);
     }
-    private void FrozenPattern() {
-        //TODO: 슬라이드 & 냉기 장판
-        //TODO: 대쉬
+    private void FrozenPattern()
+    {
+        // 슬라이드 & 냉기 장판
         if (currentTime > dashInterval)
         {
-            AddCoroutine(monsterMove.DashToTarget(thisTransform, targetTransfrom, dashSpeed, dashDuration));
+            Vector3 targetDirection = monsterMove.SetDashPosition(thisTransform, targetTransform);
+            if (currentMoveCoroutine != null)
+            {
+                StopCoroutine(currentMoveCoroutine);
+            }
+            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(thisTransform, targetDirection, dashSpeed, dashDuration));
+            if (currentAttactCoroutine != null)
+            {
+                StopCoroutine(currentAttactCoroutine);
+            }
+            currentAttactCoroutine = StartCoroutine(effectArea.SpawnIceArea(thisTransform, dashSpeed, dashDuration));
             currentTime = 0;
         }
-        //TODO: 다 녹았을 때
+
+        // 다 녹았을 때
+        if (false)
+        {
+            FrozenEnd();
+            NormalInit();
+        }
     }
+
     private void FrozenEnd()
     {
-        //TODO: 장판을 지운다
+        if (currentMoveCoroutine != null)
+        {
+            StopCoroutine(currentMoveCoroutine);
+        }
+        if (currentAttactCoroutine != null)
+        {
+            StopCoroutine(currentAttactCoroutine);
+        }
+        // 장판을 지운다
+        effectArea.DestroyFireArea();
     }
-    /* END Frozen */
+    #endregion
 
-    /* Mad */
-    private void MadInit() {
-        //TODO: 후라이팬 장판
+    #region Mad
+    private void MadInit()
+    {
+        // 머리 몸통 분리
+        madMandooHead = Instantiate(madMandooHead, transform);
     }
-    private void MadPattern() {
+    private void MadPattern()
+    {
 
-
-        //TODO: 점프 (점프 타이머가 다 돌았을 때)
-        if (currentTime > dashInterval) {
-            Debug.Log(currentTime);
-            AddCoroutine(monsterMove.JumpToTarget(targetTransfrom, thisTransform));
-
+        // 머리 랜덤 방향 돌진 (3번의 점프 후)
+        if (mandooBodyJumpCount > 3 && currentTime > dashInterval)
+        {
+            if (madMandooHeadCoroutine != null)
+            {
+                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, speed, randomMoveDuration));
+            }
+            currentTime = 0;
+            mandooBodyJumpCount = 0;
+        }
+        // 점프 (점프 타이머가 다 돌았을 때)
+        else if (currentTime > dashInterval)
+        {
+            if (currentMoveCoroutine != null)
+            {
+                StopCoroutine(currentMoveCoroutine);
+            }
+            currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
             currentTime = 0;
         }
-        //TODO: 랜덤 방향 돌진 (점프를 하지 않을 때)
-        else
-        {
-            monsterMove.RandomMove(thisTransform, speed, randomMoveDuration);
-        }
+
 
         //TODO: 종료 상태 결정
+        if (false) // hp가 0이면 사망
+        {
+            MadEnd();
+            Dead();
+        }
+        if (false) // hp가 일정 깎였을 때 
+        {
+            MadEnd();
+            NormalInit();
+        }
     }
-    /* END Mad */
 
-    /* Normal */
+    private void MadEnd()
+    {
+        if (currentMoveCoroutine != null)
+        {
+            StopCoroutine(currentMoveCoroutine);
+        }
+        if (madMandooHeadCoroutine != null)
+        {
+            StopCoroutine(madMandooHeadCoroutine);
+        }
+        if (currentAttactCoroutine != null)
+        {
+            StopCoroutine(currentAttactCoroutine);
+        }
+        Destroy(madMandooHead);
+    }
+    #endregion
+
+    #region Normal
     private void NormalInit()
     {
-        
+        currentMandooState = MANDOO_STATE.NORMAL;
+
     }
-    private void NormalPattern() {
+    private void NormalPattern()
+    {
         // 이동
-        monsterMove.FollowTarget(speed, thisTransform, targetTransfrom);
+        monsterMove.FollowTarget(speed, thisTransform, targetTransform);
 
         //TODO: 탄환 던지기
 
         //TODO: 체력이 지정된 상태가 되면, ex) 50퍼 미만 => 발악 패턴
         //currentMandooState = MANDOO_STATE.MAD;
         //MadInit();
-    }
-    /* End Normal */
 
-    private void Dead() {
+        if (false) // hp가 0이면 사망
+        {
+            NormalEnd();
+            Dead();
+        }
+        if (false) // hp가 일정 깎였을 때 => 광란패턴
+        {
+            NormalEnd();
+            MadInit();
+        }
+    }
+    private void NormalEnd()
+    {
+        if (currentMoveCoroutine != null)
+        {
+            StopCoroutine(currentMoveCoroutine);
+        }
+        if (currentAttactCoroutine != null)
+        {
+            StopCoroutine(currentAttactCoroutine);
+        }
+    }
+    #endregion
+
+    #region Dead
+    private void Dead()
+    {
         //TODO: 보스 관련 오브젝트 죄다 삭제
         //TODO: 보스 죽는 모션
         //TODO: 보상으로 이동
-    }
-    #endregion 각 스테이트 실행 함수 (Init, Update에서 호출 함수)
-
-    #region 코루틴 관리 함수
-    private void AddCoroutine(IEnumerator coroutine)
-    {
-        if (currentCoroutine == null)
-        {
-            StartCoroutine(coroutine);
-        }
-        else
-        {
-            coroutineList.Add(coroutine);
-        }
-    }
-
-    private void StopCurrentCoroutine()
-    {
-        if (currentCoroutine != null)
-        {
-            StopCoroutine(currentCoroutine);
-        }
-        // 동작 대기열 비우기
-        coroutineList = new List<IEnumerator>();
     }
     #endregion
 }
