@@ -17,6 +17,8 @@ public class Bullet : MonoBehaviour
     private Animator m_Animator;
     private float LifeTime;
 
+    private float fTickDamage;
+
     public float m_fKnockbackForce { get { return m_stStat.fKnockbackForce;  } set { m_stStat.fKnockbackForce = value; } }
     public float m_fMoveSpeed { get { return m_stStat.fMoveSpeed; } set { m_stStat.fMoveSpeed = value; } }
     public float m_fBulletDamage { get { return m_stStat.fBulletDamage; } set { m_stStat.fBulletDamage = value; } }
@@ -53,6 +55,8 @@ public class Bullet : MonoBehaviour
 
         LifeTime = 3.0f;
 
+        fTickDamage = 0.0f;
+
         Destroy(gameObject, LifeTime);
     }
 
@@ -67,6 +71,14 @@ public class Bullet : MonoBehaviour
 #region Collision
     private void OnTriggerEnter2D(Collider2D _Collision)
     {
+        //if(  "ÀåÆÇ")
+        {
+            if(Time.time > fTickDamage)
+            {
+                //fTickDamage = 
+            }
+        }
+
         _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
 
         Destroy(gameObject);

@@ -33,6 +33,7 @@ public class Weapon
             float fTotalSpeed = m_stStat.fAttackSpeed * (1 + (_fBaseAttackSpeed / 100));
             float fAttackInterval = 1 / fTotalSpeed;
 
+            // 코루틴으로 바꾸기
             m_fNextAttack = Time.time + fAttackInterval;
 
 
