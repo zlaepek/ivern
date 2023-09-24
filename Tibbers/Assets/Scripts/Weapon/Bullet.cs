@@ -15,13 +15,16 @@ public class Bullet : MonoBehaviour
     private Vector2 m_vDir;
 
     private Animator m_Animator;
-    private float LifeTime;
 
     private float fTickDamage;
+    
+    private BulletManager.eBulletType m_eType;
 
     public float m_fKnockbackForce { get { return m_stStat.fKnockbackForce;  } set { m_stStat.fKnockbackForce = value; } }
     public float m_fMoveSpeed { get { return m_stStat.fMoveSpeed; } set { m_stStat.fMoveSpeed = value; } }
     public float m_fBulletDamage { get { return m_stStat.fBulletDamage; } set { m_stStat.fBulletDamage = value; } }
+    public float m_fLifeTime { get { return m_stStat.fLifeTime; } set { m_stStat.fLifeTime = value; } }
+    public uint m_nPierce { get { return m_stStat.nPierce; } set { m_stStat.nPierce = value; } }
     private void RotateBullet()
     {
         float fAngle = Mathf.Atan2(m_vDir.y, m_vDir.x) * Mathf.Rad2Deg;
@@ -46,26 +49,51 @@ public class Bullet : MonoBehaviour
         m_RigidBody = GetComponent<Rigidbody2D>();
         m_Animator = GetComponent<Animator>();
 
-        m_Animator.SetTrigger("Create");
+        switch(m_eType)
+        {
+            case BulletManager.eBulletType.BulletType_EnergyBall:
+                {
+                    m_Animator.SetTrigger("Create");
+                }
+                break;
 
-        m_stStat = default;
-        m_fKnockbackForce = 10.0f;
-        m_fMoveSpeed = 5.0f;
-        m_fBulletDamage = 5.0f;
+            case BulletManager.eBulletType.BulletType_Melee:
+                {
 
-        LifeTime = 3.0f;
+                }
+                break;
+            default:
+                break;
+        }
+
+        //m_stStat = default;
+        //m_fKnockbackForce = 10.0f;
+        //m_fMoveSpeed = 5.0f;
+        //m_fBulletDamage = 5.0f;
+
+        //m_stStat.fLifeTime = 3.0f;
 
         fTickDamage = 0.0f;
 
-        Destroy(gameObject, LifeTime);
+        if(m_stStat.fLifeTime > 0.0f)
+        {
+            Destroy(gameObject, m_stStat.fLifeTime);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         MoveBullet();
+        if(m_stStat.fLifeTime < 0.0f)
+        {
+            if (m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !m_Animator.IsInTransition(0))
+            {
+                Destroy(gameObject);
+            }
+        }
+        
     }
-
 #endregion
 
 #region Collision
@@ -81,7 +109,14 @@ public class Bullet : MonoBehaviour
 
         _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
 
-        Destroy(gameObject);
+        if(m_stStat.nPierce == 0)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            --m_stStat.nPierce;
+        }
     }
     #endregion
 
@@ -95,7 +130,10 @@ public class Bullet : MonoBehaviour
     {
         m_Master = _Master;
     }
-
+    public void SetType (BulletManager.eBulletType _Type)
+    {
+        m_eType = _Type;
+    }
     //public float fBulletDamage;
     //public float fKnockbackForce;
     //public float fMoveSpeed;

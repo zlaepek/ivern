@@ -12,6 +12,7 @@ public class BulletManager : MonoBehaviour
         BulletType_MAX,
     }
 
+    // 사용시 하이어아키에 스크립트에 프리팹 등록해야함
     public GameObject EnergyBall;
     public GameObject Melee;
 

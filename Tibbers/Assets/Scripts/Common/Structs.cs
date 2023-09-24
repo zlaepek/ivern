@@ -18,18 +18,26 @@ namespace Structs
         public float fBulletDamage;
         public float fKnockbackForce;
         public float fMoveSpeed;
+        // -1 이면 애니메이션 종료시 파괴
+        // == -1 End Anim
+        public float fLifeTime;
+        public uint  nPierce;
     }
 
     public struct UnitStat
     {
-        public float fBaseHp;
-        public float fMaxHp;
-        public float fCurrentHp;
+        public float fHp_Base;
+        public float fHp_Max;
+        public float fHp_Cur;
 
-        public float fBaseMoveSpeed;
-        public float fBaseMass;
-        public float fBaseDamage;
-        public float fBaseAttackSpeed;
+        public float fMoveSpeed_Base;
+        public float fMoveSpeed_Buf;
+        public float fMoveSpeed_DeBuf;
+
+        public float fMass_Base;
+        public float fDamage_Base;
+        public float fAttackSpeed_Base;
+
     }
 
     //class Monster

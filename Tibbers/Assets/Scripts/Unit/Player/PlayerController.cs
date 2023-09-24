@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Test
+    public float KnockBackForce = 1.0f;
+    public float AttackRange = 1.0f;
 
     #region Private_var
     public enum eState
@@ -29,12 +30,13 @@ public class PlayerController : MonoBehaviour
 
     //private ePlayerState m_eState;
     private eState_Dir m_eState_Dir;
-    private float m_fMoveSpeed;
+    //private float m_fMoveSpeed;
     private float m_fHorizontal;
     private float m_fVertical;
     private Vector2 m_vControlDir;
     private Vector2 m_vTempNormal;
     private Vector2 m_vMovement;
+    private Vector2 m_vLastDir;
 
     private Animator m_Animator;
     private SpriteRenderer m_SpriteRenderer;
@@ -48,54 +50,100 @@ public class PlayerController : MonoBehaviour
     #endregion // Private_var
 
     #region Logic_Basic
-    void Awake()
+    void Start()
     {
         m_WeaponSlot = new List<Weapon>();
 
-        BulletManager Bulletmgr = GameObject.FindObjectOfType<BulletManager>();
-
         Reset();
-        Weapon EnergyBall = new Weapon();
-        EnergyBall.SetAttackDelay = 0.1f;
-        EnergyBall.SetAttackCount = 1;
-        EnergyBall.SetAttackRange = 0.0f;
-        EnergyBall.SetAttackSpeed = 1.0f;
+        //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
+        SetWeapon(BulletManager.eBulletType.BulletType_Melee);
 
-        //GameObject BulletPrefab;
-        //BulletPrefab = Resources.Load<GameObject>("");
-        EnergyBall.SetBullet(Bulletmgr.EnergyBall, BulletManager.eBulletType.BulletType_EnergyBall);
-
-        EnergyBall.SetBulletDamage = 1.0f;
-        EnergyBall.SetBulletKnockback = 10.0f;
-        EnergyBall.SetBulletSpeed = 5.0f;
-
-        EnergyBall.SetMaster(gameObject);
-
-        m_WeaponSlot.Add(EnergyBall);
     }
+    private void SetWeapon(BulletManager.eBulletType _BulletType)
+    {
+        Weapon TempWeapon = new Weapon();
+        BulletManager Bulletmgr = GameObject.FindObjectOfType<BulletManager>();
+        TempWeapon.WeaponType = (int)_BulletType;
 
+        switch (_BulletType)
+        {
+            case BulletManager.eBulletType.BulletType_EnergyBall:
+                {
+                    TempWeapon.SetAttackDelay = 0.1f;
+                    TempWeapon.SetAttackCount = 1;
+                    TempWeapon.SetAttackRange = 0.0f;
+                    TempWeapon.SetAttackSpeed = 1.0f;
+
+                    //GameObject BulletPrefab;
+                    //BulletPrefab = Resources.Load<GameObject>("");
+                    TempWeapon.SetBullet(Bulletmgr.EnergyBall, BulletManager.eBulletType.BulletType_EnergyBall);
+
+                    TempWeapon.SetBulletDamage = 1.0f;
+                    TempWeapon.SetBulletKnockback = 5.0f;
+                    TempWeapon.SetBulletSpeed = 5.0f;
+                    TempWeapon.SetBulletLifeTime = 3.0f;
+                    TempWeapon.SetBulletPierce = 0;
+
+                    TempWeapon.SetMaster(gameObject);
+
+                    m_WeaponSlot.Add(TempWeapon);
+                }
+                break;
+
+            case BulletManager.eBulletType.BulletType_Melee:
+                {
+                    TempWeapon.SetAttackDelay = 0.2f;
+                    TempWeapon.SetAttackCount = 1;
+                    TempWeapon.SetAttackRange = 1.0f;
+                    TempWeapon.SetAttackSpeed = 0.5f;
+
+                    //GameObject BulletPrefab;
+                    //BulletPrefab = Resources.Load<GameObject>("");
+                    TempWeapon.SetBullet(Bulletmgr.Melee, BulletManager.eBulletType.BulletType_Melee);
+
+                    TempWeapon.SetBulletDamage = 5.0f;
+                    TempWeapon.SetBulletKnockback = 40.0f;
+                    TempWeapon.SetBulletSpeed = 7.0f;
+                    // -1 이면 애니메이션 종료시
+                    TempWeapon.SetBulletLifeTime = -1.0f;
+                    TempWeapon.SetBulletPierce = 10000;
+
+                    TempWeapon.SetMaster(gameObject);
+
+                    m_WeaponSlot.Add(TempWeapon);
+                }
+                break;
+            default:
+
+                break;
+        }
+    }
     private void Reset()
     {
         m_fHorizontal = m_fVertical = 0;
         //m_eState = ePlayerState.Idle;
         m_eState_Dir = eState_Dir.Right;
 
-        m_fMoveSpeed = 5.0f;
         m_vControlDir = m_vMovement = m_vTempNormal = Vector2.zero;
+        m_vLastDir = Vector2.right;
 
         m_Animator = GetComponent<Animator>();
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
         m_RigidBody = GetComponent<Rigidbody2D>();
+
         m_UnitStat = GetComponent<Unit>();
+        m_UnitStat.m_stStat = default;
+        m_UnitStat.m_stStat.fMoveSpeed_Base = 5.0f;
+        m_UnitStat.m_stStat.fHp_Base = 10.0f;
+
     }
 
-    void Start()
-    {
-        
-    }
     // Update is called once per frame
     void Update()
     {
+        //m_WeaponSlot[0].SetBulletKnockback = KnockBackForce;
+        //m_WeaponSlot[0].SetAttackRange = AttackRange;
+
         CheckDir();
 
         SetState();
@@ -146,9 +194,26 @@ public class PlayerController : MonoBehaviour
 
     private void Attack()
     {
+        Vector2 vAttackDir = default;
         foreach (Weapon iter in m_WeaponSlot)
         {
-            iter.Attack(transform.position, FindCloseEnemy_Dir(), m_UnitStat.m_stStat.fBaseAttackSpeed);
+            
+            switch(iter.WeaponType)
+            {
+                case (int)BulletManager.eBulletType.BulletType_EnergyBall:
+                    {
+                        vAttackDir = FindCloseEnemy_Dir();
+                    }
+                    break;
+                case (int)BulletManager.eBulletType.BulletType_Melee:
+                    {
+                        vAttackDir = m_vLastDir;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            iter.Attack(transform.position, vAttackDir, m_UnitStat.m_stStat.fAttackSpeed_Base);
         }
     }
 
@@ -163,12 +228,16 @@ public class PlayerController : MonoBehaviour
         m_vTempNormal.y = m_fVertical;
 
         m_vControlDir = m_vTempNormal.normalized;
+        if(m_vLastDir != m_vControlDir && m_vControlDir != Vector2.zero)
+        {
+            m_vLastDir = m_vControlDir;
+        }
     }
 
     private void CharacterMove()
     {
-        //m_vMovement = m_vControlDir * m_fMoveSpeed * Time.deltaTime;
-        m_vMovement = m_vControlDir * m_fMoveSpeed;
+        //m_vMovement = m_vControlDir * m_UnitStat.m_stStat.fMoveSpeed_Base * Time.deltaTime;
+        m_vMovement = m_vControlDir * m_UnitStat.m_stStat.fMoveSpeed_Base;
 
         //transform.Translate(m_vMovement);
         m_RigidBody.velocity = m_vMovement;
