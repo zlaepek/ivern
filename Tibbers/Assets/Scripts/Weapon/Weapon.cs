@@ -8,6 +8,7 @@ public class Weapon
     public GameObject m_BulletPrefab;
 
     private Structs.WeaponStat m_stStat;
+    private int m_iWeaponType;
     private float m_fNextAttack;
     private float m_fNextDelay;
     private Quaternion m_BulletRotation;
@@ -52,6 +53,7 @@ public class Weapon
 
                                 GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                                 tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
+                                tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
                             }
                         }
                     }
@@ -59,7 +61,20 @@ public class Weapon
 
                 case BulletManager.eBulletType.BulletType_Melee:
                     {
+                        RotateBullet(_vAttackDir);
+                        CreateAttackPos(_vShotterPos, _vAttackDir);
 
+                        for (int i = 0; i < m_stStat.iAttackCount; ++i)
+                        {
+                            if (Time.time > m_fNextDelay)
+                            {
+                                m_fNextDelay = Time.time + m_stStat.fAttackDelay;
+
+                                GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                                tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
+                                tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                            }
+                        }
                     }
                     break;
                 default:
@@ -86,11 +101,18 @@ public class Weapon
     public float SetBulletSpeed { set { m_BulletPrefab.GetComponent<Bullet>().m_fMoveSpeed = value; } }
     public float SetBulletDamage { set { m_BulletPrefab.GetComponent<Bullet>().m_fBulletDamage = value; } }
     public float SetBulletKnockback { set { m_BulletPrefab.GetComponent<Bullet>().m_fKnockbackForce = value; } }
+    public float SetBulletLifeTime { set { m_BulletPrefab.GetComponent<Bullet>().m_fLifeTime = value; } }
+    public uint SetBulletPierce { set { m_BulletPrefab.GetComponent<Bullet>().m_nPierce = value; } }
+
+    public int WeaponType { set { m_iWeaponType = value; } get { return m_iWeaponType; } }
+
     public void SetMaster(GameObject _Master) { m_Master = _Master; }
     public void SetBullet(GameObject _BulletPrefab, BulletManager.eBulletType _eType) 
     { 
         m_BulletPrefab = _BulletPrefab;
         m_eType = _eType;
+        m_BulletPrefab.GetComponent<Bullet>().SetType(_eType);
     }
+    
     #endregion
 }
