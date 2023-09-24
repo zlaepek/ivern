@@ -59,7 +59,7 @@ public class MandooTheBoss : Unit
     #endregion MonsterMove 관련 변수 선언부
 
     #region 장판 변수 선언부
-    private EffectArea effectArea;
+    [SerializeField] private EffectArea effectArea;
     #endregion
     #region 라이프 사이클
 
@@ -72,9 +72,10 @@ public class MandooTheBoss : Unit
         thisRigidbody2D = GetComponentInChildren<Rigidbody2D>();
         thisTransform = GetComponentInChildren<Transform>();
 
-        effectArea = GetComponent<EffectArea>();
+        effectArea = thisTransform.parent.GetComponentInChildren<EffectArea>();
 
-        FrozenInit();
+        // FrozenInit();
+        MadInit();
     }
 
     private void FixedUpdate()
@@ -102,7 +103,7 @@ public class MandooTheBoss : Unit
     private void FrozenInit()
     {
         // 후라이팬 장판 소환
-        effectArea.SpawnFireArea(targetTransform);
+        effectArea.SpawnFireArea(targetTransform, transform.parent);
     }
     private void FrozenPattern()
     {
@@ -150,23 +151,13 @@ public class MandooTheBoss : Unit
     private void MadInit()
     {
         // 머리 몸통 분리
-        madMandooHead = Instantiate(madMandooHead, transform);
+        madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
     }
     private void MadPattern()
     {
 
-        // 머리 랜덤 방향 돌진 (3번의 점프 후)
+        // (3번의 돌진 후) 점프
         if (mandooBodyJumpCount > 3 && currentTime > dashInterval)
-        {
-            if (madMandooHeadCoroutine != null)
-            {
-                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, speed, randomMoveDuration));
-            }
-            currentTime = 0;
-            mandooBodyJumpCount = 0;
-        }
-        // 점프 (점프 타이머가 다 돌았을 때)
-        else if (currentTime > dashInterval)
         {
             if (currentMoveCoroutine != null)
             {
@@ -174,6 +165,19 @@ public class MandooTheBoss : Unit
             }
             currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
             currentTime = 0;
+            mandooBodyJumpCount = 0;
+        }
+        // 머리 랜덤 방향 돌진
+        else if (currentTime > dashInterval)
+        {
+            Debug.Log("HEAD");
+            if (madMandooHeadCoroutine != null)
+            {
+                StopCoroutine(madMandooHeadCoroutine);
+            }
+            madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, speed, randomMoveDuration));
+            currentTime = 0;
+            mandooBodyJumpCount++;
         }
 
 

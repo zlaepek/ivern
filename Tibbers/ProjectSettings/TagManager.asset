@@ -6,6 +6,7 @@ TagManager:
   tags:
   - tag_Player
   - tag_Enemy
+  - tag_EffectArea
   layers:
   - Default
   - TransparentFX
