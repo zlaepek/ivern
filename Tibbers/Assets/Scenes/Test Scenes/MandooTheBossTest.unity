@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnergyBall: {fileID: 2735632238914027577, guid: 2d5784c59d42f744ca64d65ec06586cf, type: 3}
-  Melee: {fileID: 0}
+  Melee: {fileID: 2735632238914027577, guid: 2d5784c59d42f744ca64d65ec06586cf, type: 3}
 --- !u!4 &260960629
 Transform:
   m_ObjectHideFlags: 0
@@ -709,8 +709,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1239070752}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -811,6 +810,10 @@ PrefabInstance:
       propertyPath: madMandooHeadPrefab
       value: 
       objectReference: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
+    - target: {fileID: 5988838988200356262, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
+      propertyPath: targetPositionMarker
+      value: 
+      objectReference: {fileID: 1518863705}
     - target: {fileID: 7149512496641647251, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
       propertyPath: m_RootOrder
       value: 2
