@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-public class MandooTheBoss : Unit
+public class MandooTheBoss : MonoBehaviour
 {
 
     #region 변수 선언부
@@ -74,7 +74,7 @@ public class MandooTheBoss : Unit
 
         effectArea = thisTransform.parent.GetComponentInChildren<EffectArea>();
 
-        // FrozenInit();
+        FrozenInit();
         MadInit();
     }
 
@@ -170,7 +170,6 @@ public class MandooTheBoss : Unit
         // 머리 랜덤 방향 돌진
         else if (currentTime > dashInterval)
         {
-            Debug.Log("HEAD");
             if (madMandooHeadCoroutine != null)
             {
                 StopCoroutine(madMandooHeadCoroutine);
