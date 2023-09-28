@@ -43,7 +43,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9019382022716573704}
-  - component: {fileID: 3503679162081993072}
+  - component: {fileID: 2237673938247917110}
   m_Layer: 0
   m_Name: EffectAreaController
   m_TagString: Untagged
@@ -66,7 +66,7 @@ Transform:
   m_Father: {fileID: 7149512496641647251}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3503679162081993072
+--- !u!114 &2237673938247917110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3220817904818255337}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83852683409a4f24e9ea729c1fa11d1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 2906bc55c29b85b4aa5fc92ffc922770, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iceAreaSpawnFrequency: 20
@@ -173,10 +173,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6697086567052688332}
   - component: {fileID: 3457460718503858869}
-  - component: {fileID: 5502070408092249199}
   - component: {fileID: 6905166779917186981}
   - component: {fileID: 629052594337528201}
   - component: {fileID: 4847001436909014343}
+  - component: {fileID: 123110476823767827}
   m_Layer: 0
   m_Name: Mandoo The Boss
   m_TagString: tag_Enemy
@@ -251,8 +251,72 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &5502070408092249199
-CircleCollider2D:
+--- !u!114 &6905166779917186981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659793149286639379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 814266b5a5691844bbfec9e3f926dc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMandooState: 2
+  maxFrozenValue: 30
+  currentFrozenValue: 0
+  frozenSlider: {fileID: 0}
+  madMandooHeadPrefab: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
+  randomMoveDuration: 1
+  dashSpeed: 1
+  dashInterval: 5
+  dashDuration: 1
+  targetTransform: {fileID: 0}
+  targetPositionMarker: {fileID: 7129882270540015921}
+  effectAreaController: {fileID: 0}
+--- !u!50 &629052594337528201
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659793149286639379}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 100
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &4847001436909014343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659793149286639379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb5798bc65527043b54546234292ac4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mass: 1
+--- !u!61 &123110476823767827
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -284,66 +348,15 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.42, y: 0.42}
+    newSize: {x: 0.42, y: 0.42}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.21
---- !u!114 &6905166779917186981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659793149286639379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814266b5a5691844bbfec9e3f926dc91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentMandooState: 2
-  madMandooHeadPrefab: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
-  speed: 0.3
-  randomMoveDuration: 1
-  dashSpeed: 1
-  dashInterval: 5
-  dashDuration: 1
-  targetTransform: {fileID: 0}
-  targetPositionMarker: {fileID: 7129882270540015921}
-  effectArea: {fileID: 3503679162081993072}
---- !u!50 &629052594337528201
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659793149286639379}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &4847001436909014343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8659793149286639379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bb5798bc65527043b54546234292ac4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Size: {x: 0.42, y: 0.42}
+  m_EdgeRadius: 0

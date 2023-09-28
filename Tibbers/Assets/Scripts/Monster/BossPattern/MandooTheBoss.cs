@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
 public class MandooTheBoss : MonoBehaviour
 {
@@ -17,11 +18,18 @@ public class MandooTheBoss : MonoBehaviour
 
     [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
 
-    // 코루틴
+    // Coroutine
     private Coroutine currentMoveCoroutine = null;
     private Coroutine currentAttactCoroutine = null;
 
+    // Unit
+    private Unit unit;
 
+    // Frozen Value
+    public float maxFrozenValue = 30f;
+    public float currentFrozenValue;
+
+    public Slider frozenSlider;
     #endregion 변수 선언부
 
     #region 만두 머리
@@ -37,7 +45,6 @@ public class MandooTheBoss : MonoBehaviour
     private MonsterMove monsterMove;
 
     // 기본 이속
-    public float speed = 1.0f;
     public float randomMoveDuration = 1.0f;
 
     // 돌진 관련
@@ -48,10 +55,6 @@ public class MandooTheBoss : MonoBehaviour
     // 이동 타겟
     public Transform targetTransform;
 
-    // this 오브젝트
-    private Rigidbody2D thisRigidbody2D;
-    private Transform thisTransform;
-
     // 타이머
     private float currentTime = 0;
 
@@ -59,23 +62,37 @@ public class MandooTheBoss : MonoBehaviour
     #endregion MonsterMove 관련 변수 선언부
 
     #region 장판 변수 선언부
-    [SerializeField] private EffectArea effectArea;
+    [SerializeField] private MandooEffectAreaController effectAreaController;
     #endregion
+
     #region 라이프 사이클
 
     private void Start()
     {
+        // Unit Init
+        unit = GetComponent<Unit>();
+
+        unit.m_stStat.fDamage_Base = 2.0f;
+        unit.m_stStat.fHp_Base = 30.0f;
+        unit.m_stStat.fMoveSpeed_Base = 1.0f;
+
+        unit.ResetHp();
+
+        // Frozen Init
+        frozenSlider.maxValue = maxFrozenValue;
+        frozenSlider.minValue = 0f;
+        currentFrozenValue = maxFrozenValue;
+        frozenSlider.value = currentFrozenValue;
+
+        // Move Init
         monsterMove = new MonsterMove();
 
-        monsterMove.Initialize(targetPositionMarker); 
+        monsterMove.Initialize(targetPositionMarker);
 
-        thisRigidbody2D = GetComponentInChildren<Rigidbody2D>();
-        thisTransform = GetComponentInChildren<Transform>();
-
-        effectArea = thisTransform.parent.GetComponentInChildren<EffectArea>();
+        effectAreaController = transform.parent.GetComponentInChildren<MandooEffectAreaController>();
 
         FrozenInit();
-        MadInit();
+        // MadInit();
     }
 
     private void FixedUpdate()
@@ -103,29 +120,29 @@ public class MandooTheBoss : MonoBehaviour
     private void FrozenInit()
     {
         // 후라이팬 장판 소환
-        effectArea.SpawnFireArea(targetTransform, transform.parent);
+        effectAreaController.SpawnFireArea(targetTransform, transform.parent);
     }
     private void FrozenPattern()
     {
         // 슬라이드 & 냉기 장판
         if (currentTime > dashInterval)
         {
-            Vector3 targetDirection = monsterMove.SetDashPosition(thisTransform, targetTransform);
+            Vector3 targetDirection = monsterMove.SetDashPosition(transform, targetTransform);
             if (currentMoveCoroutine != null)
             {
                 StopCoroutine(currentMoveCoroutine);
             }
-            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(thisTransform, targetDirection, dashSpeed, dashDuration));
+            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
             if (currentAttactCoroutine != null)
             {
                 StopCoroutine(currentAttactCoroutine);
             }
-            currentAttactCoroutine = StartCoroutine(effectArea.SpawnIceArea(thisTransform, dashSpeed, dashDuration));
+            currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
             currentTime = 0;
         }
 
         // 다 녹았을 때
-        if (false)
+        if (currentFrozenValue <= 0f)
         {
             FrozenEnd();
             NormalInit();
@@ -143,7 +160,12 @@ public class MandooTheBoss : MonoBehaviour
             StopCoroutine(currentAttactCoroutine);
         }
         // 장판을 지운다
-        effectArea.DestroyFireArea();
+        effectAreaController.DestroyFireArea();
+    }
+
+    public void GetMelt(float value) {
+        currentFrozenValue -= value;
+        frozenSlider.value = currentFrozenValue;
     }
     #endregion
 
@@ -163,7 +185,7 @@ public class MandooTheBoss : MonoBehaviour
             {
                 StopCoroutine(currentMoveCoroutine);
             }
-            currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, thisTransform));
+            currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, transform));
             currentTime = 0;
             mandooBodyJumpCount = 0;
         }
@@ -174,7 +196,7 @@ public class MandooTheBoss : MonoBehaviour
             {
                 StopCoroutine(madMandooHeadCoroutine);
             }
-            madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, speed, randomMoveDuration));
+            madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
             currentTime = 0;
             mandooBodyJumpCount++;
         }
@@ -220,7 +242,7 @@ public class MandooTheBoss : MonoBehaviour
     private void NormalPattern()
     {
         // 이동
-        monsterMove.FollowTarget(speed, thisTransform, targetTransform);
+        monsterMove.FollowTarget(unit.fCurMoveSpeed, transform, targetTransform);
 
         //TODO: 탄환 던지기
 

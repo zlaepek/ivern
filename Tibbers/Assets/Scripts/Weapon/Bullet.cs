@@ -106,7 +106,7 @@ public class Bullet : MonoBehaviour
                 //fTickDamage = 
             }
         }
-
+        if (_Collision.tag == "tag_Player" || _Collision.tag == "tag_Enemy")
         _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
 
         if(m_stStat.nPierce == 0)
