@@ -30,6 +30,9 @@ public class MandooTheBoss : MonoBehaviour
     public float currentFrozenValue;
 
     public Slider frozenSlider;
+
+    // UI
+    public BossUI bossUI;
     #endregion 변수 선언부
 
     #region 만두 머리
@@ -69,14 +72,20 @@ public class MandooTheBoss : MonoBehaviour
 
     private void Start()
     {
+        bossUI = GameObject.FindGameObjectWithTag("Canvas").GetComponentInChildren<BossUI>();
         // Unit Init
         unit = GetComponent<Unit>();
 
         unit.m_stStat.fDamage_Base = 2.0f;
-        unit.m_stStat.fHp_Base = 30.0f;
+        unit.m_stStat.fHp_Base = 100.0f;
+        bossUI.bossHpSlider.maxValue = 100;
+
+        unit.m_stStat.fMoveSpeed_Base = 1.0f;
         unit.m_stStat.fMoveSpeed_Base = 1.0f;
 
         unit.ResetHp();
+
+      
 
         // Frozen Init
         frozenSlider.maxValue = maxFrozenValue;
@@ -92,12 +101,12 @@ public class MandooTheBoss : MonoBehaviour
         effectAreaController = transform.parent.GetComponentInChildren<MandooEffectAreaController>();
 
         FrozenInit();
-        // MadInit();
     }
 
     private void FixedUpdate()
     {
         currentTime += Time.fixedDeltaTime;
+        bossUI.updateHPSlider(unit.m_stStat.fHp_Cur);
         switch (currentMandooState)
         {
             case MANDOO_STATE.FROZEN:

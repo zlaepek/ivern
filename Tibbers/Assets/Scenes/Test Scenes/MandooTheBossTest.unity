@@ -531,6 +531,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3107650038306670090, guid: f2230d0eec09be84f965ffa7a3f7e02d, type: 3}
   m_PrefabInstance: {fileID: 1239424232}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1239424234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4342569024604731018, guid: f2230d0eec09be84f965ffa7a3f7e02d, type: 3}
+  m_PrefabInstance: {fileID: 1239424232}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef111a0e12377244fa1cc8fce19ee074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1353403691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -547,6 +558,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mandoo The Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 6905166779917186981, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
+      propertyPath: bossUI
+      value: 
+      objectReference: {fileID: 1239424234}
     - target: {fileID: 6905166779917186981, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
       propertyPath: frozenSlider
       value: 
@@ -687,7 +702,7 @@ PrefabInstance:
     - target: {fileID: 3406642154704017421, guid: 76309e2a59089b1429868ecb91fc989e, type: 3}
       propertyPath: Melee
       value: 
-      objectReference: {fileID: 111261893738346266, guid: 6da25ba69ba4781438a4cbf29c19362e, type: 3}
+      objectReference: {fileID: 2735632238914027577, guid: 2d5784c59d42f744ca64d65ec06586cf, type: 3}
     - target: {fileID: 4024551999430680331, guid: 76309e2a59089b1429868ecb91fc989e, type: 3}
       propertyPath: m_Name
       value: BulletManager
@@ -711,7 +726,7 @@ GameObject:
   - component: {fileID: 1682322224}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -15,4 +15,8 @@ public class BossUI : MonoBehaviour
     {
         bossNameText.text = bossName;
     }
+
+    public void updateHPSlider(float value) {
+        bossHpSlider.value = value;
+    }
 }
