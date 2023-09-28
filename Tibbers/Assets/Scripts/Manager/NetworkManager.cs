@@ -22,7 +22,7 @@ public class NetworkManager : MonoBehaviour
     public static NetworkManager Instance { get; private set; }
     #endregion
 
-    #region Test
+    #region Life Cycle (Initialize)
     private void Awake()
     {
         if (Instance == null)
@@ -84,6 +84,30 @@ public class NetworkManager : MonoBehaviour
 
         if (!sendToken || _AddToken(www))
         {
+            yield return www.SendWebRequest();
+
+            _RespondMessage(www, callback);
+        }
+        www.Dispose();
+    }
+
+    public IEnumerator RequestPut(string path, string stringData, Action<string> callback = null, bool sendToken = false) {
+        Debug.Log($"request put : {path}");
+
+        UnityWebRequest www = UnityWebRequest.Put(path, stringData);
+        if (!sendToken || _AddToken(www)) {
+            yield return www.SendWebRequest();
+
+            _RespondMessage(www, callback);
+        }
+        www.Dispose();
+    }
+
+    public IEnumerator RequestDelete(string path, Action<string> callback = null, bool sendToken = false) {
+        Debug.Log($"request put : {path}");
+
+        UnityWebRequest www = UnityWebRequest.Delete(path);
+        if (!sendToken || _AddToken(www)) {
             yield return www.SendWebRequest();
 
             _RespondMessage(www, callback);
