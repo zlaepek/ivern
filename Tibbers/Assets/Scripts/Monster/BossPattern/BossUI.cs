@@ -1,19 +1,32 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BossUI : MonoBehaviour
 {
+    // common
     public TMP_Text bossNameText;
     public Slider bossHpSlider;
 
-    public string bossName;
+    // specific
+    public Slider bossFrozenSlider;
 
-    void Start()
-    {
-        bossNameText.text = bossName;
+    public void SpawnNewBoss(BossName bossName) {
+        bossNameText.gameObject.SetActive(true);
+        bossNameText.text = bossName.ToString();
+
+        bossHpSlider.gameObject.SetActive(true);
+
+        if (bossName == BossName.Mandoo) {
+            bossFrozenSlider.gameObject.SetActive(true);
+        }
+    }
+
+    public void HideBossUI() {
+        bossNameText.gameObject.SetActive(false);
+        bossHpSlider.gameObject.SetActive(false);
+        bossFrozenSlider.gameObject.SetActive(false);
     }
 
     public void updateHPSlider(float value) {

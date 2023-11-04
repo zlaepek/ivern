@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class MandooTheBoss : MonoBehaviour
@@ -72,6 +69,10 @@ public class MandooTheBoss : MonoBehaviour
 
     private void Start()
     {
+        // player Init
+        targetTransform = GameObject.FindGameObjectWithTag("tag_Player").transform;
+
+
         bossUI = GameObject.FindGameObjectWithTag("Canvas").GetComponentInChildren<BossUI>();
         // Unit Init
         unit = GetComponent<Unit>();
@@ -85,9 +86,10 @@ public class MandooTheBoss : MonoBehaviour
 
         unit.ResetHp();
 
-      
+
 
         // Frozen Init
+        frozenSlider = bossUI.bossFrozenSlider;
         frozenSlider.maxValue = maxFrozenValue;
         frozenSlider.minValue = 0f;
         currentFrozenValue = maxFrozenValue;
@@ -205,9 +207,14 @@ public class MandooTheBoss : MonoBehaviour
             {
                 StopCoroutine(madMandooHeadCoroutine);
             }
-            madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
-            currentTime = 0;
-            mandooBodyJumpCount++;
+            if (madMandooHead != null) {
+                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
+                currentTime = 0;
+                mandooBodyJumpCount++;
+            }
+            else {
+                MadInit();
+            }
         }
 
 
