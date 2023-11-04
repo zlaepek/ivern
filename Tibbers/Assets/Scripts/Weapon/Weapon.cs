@@ -8,6 +8,8 @@ public class Weapon
     public GameObject m_BulletPrefab;
 
     private Structs.WeaponStat m_stStat;
+    private int m_iBulletCount_Cur;
+    //private int m_iWeaponSlot;
     private int m_iWeaponType;
     private float m_fNextAttack;
     private float m_fNextDelay;
@@ -26,61 +28,71 @@ public class Weapon
 
     public void Attack(Vector3 _vShotterPos, Vector2 _vAttackDir, float _fBaseAttackSpeed)
     {
+        // 공격속도 = 기본공격속도 * ( 1 + 장비보너스 / 100 ) * ( 1 + 능력치보너스 / 100 )
+        float fTotalSpeed = m_stStat.fAttackSpeed * (1 + (_fBaseAttackSpeed / 100));
+        float fAttackInterval = 1 / fTotalSpeed;
+
+        // 코루틴으로 바꾸기
         
-        // 일정 주기마다 발사하기
-        if (Time.time > m_fNextAttack)
+
+        if (m_iBulletCount_Cur >= m_stStat.iAttackCount)
         {
-            // 공격속도 = 기본공격속도 * ( 1 + 장비보너스 / 100 ) * ( 1 + 능력치보너스 / 100 )
-            float fTotalSpeed = m_stStat.fAttackSpeed * (1 + (_fBaseAttackSpeed / 100));
-            float fAttackInterval = 1 / fTotalSpeed;
-
-            // 코루틴으로 바꾸기
-            m_fNextAttack = Time.time + fAttackInterval;
-
-
-            switch (m_eType)
+            // 일정 주기마다 발사하기
+            if (Time.time > m_fNextAttack)
             {
-                case BulletManager.eBulletType.BulletType_EnergyBall:
-                    {
-                        RotateBullet(_vAttackDir);
-                        CreateAttackPos(_vShotterPos, _vAttackDir);
-
-                        for (int i = 0; i < m_stStat.iAttackCount; ++i)
-                        {
-                            if (Time.time > m_fNextDelay)
-                            {
-                                m_fNextDelay = Time.time + m_stStat.fAttackDelay;
-
-                                GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
-                                tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
-                                tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            }
-                        }
-                    }
-                    break;
-
-                case BulletManager.eBulletType.BulletType_Melee:
-                    {
-                        RotateBullet(_vAttackDir);
-                        CreateAttackPos(_vShotterPos, _vAttackDir);
-
-                        for (int i = 0; i < m_stStat.iAttackCount; ++i)
-                        {
-                            if (Time.time > m_fNextDelay)
-                            {
-                                m_fNextDelay = Time.time + m_stStat.fAttackDelay;
-
-                                GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
-                                tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
-                                tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                m_iBulletCount_Cur = 0;
             }
         }
+        else
+        {
+            m_fNextAttack = Time.time + fAttackInterval;
+
+            if (Time.time > m_fNextDelay)
+            {
+                m_fNextDelay = Time.time + m_stStat.fAttackDelay;
+
+                switch (m_eType)
+                {
+                    case BulletManager.eBulletType.BulletType_EnergyBall:
+                        {
+                            RotateBullet(_vAttackDir);
+                            CreateAttackPos(_vShotterPos, _vAttackDir);
+
+
+                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
+                            tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                        }
+                        break;
+
+                    case BulletManager.eBulletType.BulletType_Melee:
+                        {
+                            RotateBullet(_vAttackDir);
+                            CreateAttackPos(_vShotterPos, _vAttackDir);
+
+                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
+                            tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                        }
+                        break;
+
+                    case BulletManager.eBulletType.BulletType_HolyBomb:
+                        {
+                            CreateAttackPos_CameraRand();
+
+                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+
+                            Debug.Log(m_iBulletCount_Cur);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                ++m_iBulletCount_Cur;
+            }
+        }
+        
     }
 
     private void RotateBullet(Vector2 _vAttackDir)
@@ -92,8 +104,20 @@ public class Weapon
     {
         m_vBulletPos = _vShotterPos + (Vector3)(_vAttackDir * m_stStat.fAttackRange);
     }
+    private void CreateAttackPos_CameraRand()
+    {
+        // 
+        float fCameraLeft = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Left);
+        float fCameraRight = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Right);
+        float fCameraBottom = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Bottom);
+        float fCameraTop = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Top);
+
+        m_vBulletPos.x = Random.Range(fCameraLeft, fCameraRight);
+        m_vBulletPos.y = Random.Range(fCameraBottom, fCameraTop);
+    }
 
     #region Setter
+    //public int SetWeaponSlot { set { m_iWeaponSlot = value; } }
     public int SetAttackCount { set { m_stStat.iAttackCount = value; } }
     public float SetAttackSpeed { set { m_stStat.fAttackSpeed = value; } }
     public float SetAttackRange { set { m_stStat.fAttackRange = value; } }

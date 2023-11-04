@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Mon_Mob : MonoBehaviour
 {
+    public int SerialNumber;
     private MonsterMove monsterMove;
 
     private GameObject playerCharacter;
@@ -20,6 +21,8 @@ public class Mon_Mob : MonoBehaviour
         m_Unit.m_stStat.fHp_Base = 10.0f;
         m_Unit.m_stStat.fMoveSpeed_Base = 2.0f;
         m_Unit.ResetHp();
+        int iLayerNum = LayerMask.NameToLayer("Monster_Mob");
+        //Physics2D.IgnoreLayerCollision(iLayerNum, iLayerNum);
     }
 
     // Update is called once per frame

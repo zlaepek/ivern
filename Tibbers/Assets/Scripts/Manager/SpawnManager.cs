@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    static int iSerial = 0;
+    public static SpawnManager Instance { get; private set; }
     public GameObject Monster_1;
 
     private Camera mainCamera;
     private GameObject playerCharacter;
 
-    public enum eSpawnPos
+    public enum eCameraEdgePos
     {
         Top,
         Bottom,
@@ -20,7 +22,18 @@ public class SpawnManager : MonoBehaviour
     }
     float[] fPositions = new float[4];
 
-
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +55,15 @@ public class SpawnManager : MonoBehaviour
             RandomSpawn(Monster_1);
         }
     }
+
+    public float GetCameraEdgePos(eCameraEdgePos _ePos)
+    {
+        if (_ePos == eCameraEdgePos.Max)
+            return 0.0f;
+
+
+        return fPositions[(int)_ePos];
+    }
      
     private void SetCameraPos()
     {
@@ -50,16 +72,19 @@ public class SpawnManager : MonoBehaviour
         float fHalfHeight = fcamHeight / 2;
         float fHalfWidth = fcamWidth / 2;
 
-        fPositions[(int)eSpawnPos.Top] = playerCharacter.transform.position.y + fHalfHeight;
-        fPositions[(int)eSpawnPos.Bottom] = playerCharacter.transform.position.y - fHalfHeight;
-        fPositions[(int)eSpawnPos.Left] = playerCharacter.transform.position.x - fHalfWidth;
-        fPositions[(int)eSpawnPos.Right] = playerCharacter.transform.position.x + fHalfWidth;
+        fPositions[(int)eCameraEdgePos.Top] = playerCharacter.transform.position.y + fHalfHeight;
+        fPositions[(int)eCameraEdgePos.Bottom] = playerCharacter.transform.position.y - fHalfHeight;
+        fPositions[(int)eCameraEdgePos.Left] = playerCharacter.transform.position.x - fHalfWidth;
+        fPositions[(int)eCameraEdgePos.Right] = playerCharacter.transform.position.x + fHalfWidth;
     }
 
     private void SpawnObject(GameObject _object, Vector2 _vPoint)
     {
-        GameObject gameObject = GameObject.Instantiate(_object, _vPoint, Quaternion.identity);
+        
 
+        GameObject gameObject = GameObject.Instantiate(_object, _vPoint, Quaternion.identity);
+        _object.GetComponent<Mon_Mob>().SerialNumber = iSerial;
+        ++iSerial;
         Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }
     private void RandomSpawn(GameObject _object)
@@ -69,21 +94,21 @@ public class SpawnManager : MonoBehaviour
         //Random.Range
         Vector2 vSpawnPoint = default;
 
-        int iRand = Random.Range(0, (int)eSpawnPos.Max);
+        int iRand = Random.Range(0, (int)eCameraEdgePos.Max);
         switch (iRand)
         {
-            case (int)eSpawnPos.Top:
-            case (int)eSpawnPos.Bottom:
+            case (int)eCameraEdgePos.Top:
+            case (int)eCameraEdgePos.Bottom:
                 {
-                    vSpawnPoint.x = Random.Range(fPositions[(int)eSpawnPos.Left], fPositions[(int)eSpawnPos.Right]);
+                    vSpawnPoint.x = Random.Range(fPositions[(int)eCameraEdgePos.Left], fPositions[(int)eCameraEdgePos.Right]);
                     vSpawnPoint.y = fPositions[iRand];
                 }
                 break;
-            case (int)eSpawnPos.Left:
-            case (int)eSpawnPos.Right:
+            case (int)eCameraEdgePos.Left:
+            case (int)eCameraEdgePos.Right:
                 {
                     vSpawnPoint.x = fPositions[iRand];
-                    vSpawnPoint.y = Random.Range(fPositions[(int)eSpawnPos.Bottom], fPositions[(int)eSpawnPos.Top]);
+                    vSpawnPoint.y = Random.Range(fPositions[(int)eCameraEdgePos.Bottom], fPositions[(int)eCameraEdgePos.Top]);
                 }
                 break;
 

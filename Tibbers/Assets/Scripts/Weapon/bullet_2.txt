@@ -62,11 +62,6 @@ public class Bullet : MonoBehaviour
 
                 }
                 break;
-            case BulletManager.eBulletType.BulletType_HolyBomb:
-                {
-
-                }
-                break;
             default:
                 break;
         }
@@ -104,14 +99,14 @@ public class Bullet : MonoBehaviour
 #region Collision
     private void OnTriggerEnter2D(Collider2D _Collision)
     {
-        //if(  "ÀåÆÇ")
+        //if(  "ìž¥íŒ")
         {
             if(Time.time > fTickDamage)
             {
                 //fTickDamage = 
             }
         }
-        if (_Collision.tag == "tag_Player" || _Collision.tag == "tag_Enemy")
+
         _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
 
         if(m_stStat.nPierce == 0)
@@ -123,9 +118,31 @@ public class Bullet : MonoBehaviour
             --m_stStat.nPierce;
         }
     }
+
+    //private void OnCollisionEnter2D(Collision2D _Collision)
+    //{
+    //    //if(  "ìž¥íŒ")
+    //    {
+    //        if (Time.time > fTickDamage)
+    //        {
+    //            //fTickDamage = 
+    //        }
+    //    }
+
+    //    _Collision.collider.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
+
+    //    if (m_stStat.nPierce == 0)
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //    else
+    //    {
+    //        --m_stStat.nPierce;
+    //    }
+    //}
     #endregion
 
-#region Setter
+    #region Setter
     public void SetDir(Vector2 _Vec)
     {
         m_vDir = _Vec;

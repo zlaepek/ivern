@@ -56,7 +56,8 @@ public class PlayerController : MonoBehaviour
 
         Reset();
         //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
-        SetWeapon(BulletManager.eBulletType.BulletType_Melee);
+        //SetWeapon(BulletManager.eBulletType.BulletType_Melee);
+        //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
 
     }
     private void SetWeapon(BulletManager.eBulletType _BulletType)
@@ -83,10 +84,6 @@ public class PlayerController : MonoBehaviour
                     TempWeapon.SetBulletSpeed = 5.0f;
                     TempWeapon.SetBulletLifeTime = 3.0f;
                     TempWeapon.SetBulletPierce = 0;
-
-                    TempWeapon.SetMaster(gameObject);
-
-                    m_WeaponSlot.Add(TempWeapon);
                 }
                 break;
 
@@ -107,16 +104,36 @@ public class PlayerController : MonoBehaviour
                     // -1 이면 애니메이션 종료시
                     TempWeapon.SetBulletLifeTime = -1.0f;
                     TempWeapon.SetBulletPierce = 10000;
+                }
+                break;
+            case BulletManager.eBulletType.BulletType_HolyBomb:
+                {
+                    TempWeapon.SetAttackDelay = 1.0f;
+                    TempWeapon.SetAttackCount = 5;
+                    TempWeapon.SetAttackRange = 1.0f;
+                    //TempWeapon.SetAttackSpeed = 1.0f / 3.0f;
+                    TempWeapon.SetAttackSpeed = 1.0f / (5.0f); // sec
 
-                    TempWeapon.SetMaster(gameObject);
+                    //GameObject BulletPrefab;
+                    //BulletPrefab = Resources.Load<GameObject>("");
+                    TempWeapon.SetBullet(Bulletmgr.HolyBomb, BulletManager.eBulletType.BulletType_HolyBomb);
 
-                    m_WeaponSlot.Add(TempWeapon);
+                    TempWeapon.SetBulletDamage = 1.0f;
+                    TempWeapon.SetBulletKnockback = 0.0f;
+                    TempWeapon.SetBulletSpeed = 0.0f;
+                    // -1 이면 애니메이션 종료시
+                    TempWeapon.SetBulletLifeTime = 2.0f;
+                    TempWeapon.SetBulletPierce = 10000;
                 }
                 break;
             default:
 
                 break;
         }
+
+        TempWeapon.SetMaster(gameObject);
+        //TempWeapon.SetWeaponSlot = m_WeaponSlot.Count;
+        m_WeaponSlot.Add(TempWeapon);
     }
     private void Reset()
     {
@@ -208,6 +225,11 @@ public class PlayerController : MonoBehaviour
                 case (int)BulletManager.eBulletType.BulletType_Melee:
                     {
                         vAttackDir = m_vLastDir;
+                    }
+                    break;
+                case (int)BulletManager.eBulletType.BulletType_HolyBomb:
+                    {
+                        //vAttackDir = m_vLastDir;
                     }
                     break;
                 default:

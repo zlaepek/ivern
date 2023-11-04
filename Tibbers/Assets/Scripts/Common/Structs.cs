@@ -8,9 +8,9 @@ namespace Structs
     {
         // Attack Speed (sec)
         public float fAttackSpeed; 
-        public int iAttackCount;
+        public int iAttackCount; // 공격 횟수
         public float fAttackRange;
-        public float fAttackDelay;
+        public float fAttackDelay; // 공격 속도 (초단위)
     }
     
     public struct BulletStat

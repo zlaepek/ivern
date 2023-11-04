@@ -4,17 +4,36 @@ using UnityEngine;
 
 public class BulletManager : MonoBehaviour
 {
+    public static BulletManager Instance { get; private set; }
     public enum eBulletType
     {
+        // 참격
         BulletType_Melee,
+        // 매직 완드
         BulletType_EnergyBall,
+        //HolyBomb_0
+        BulletType_HolyBomb,
 
         BulletType_MAX,
     }
 
     // 사용시 하이어아키에 스크립트에 프리팹 등록해야함
+    public GameObject HolyBomb;
     public GameObject EnergyBall;
     public GameObject Melee;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
