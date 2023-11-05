@@ -83,7 +83,20 @@ public class Weapon
                             GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
 
-                            Debug.Log(m_iBulletCount_Cur);
+                            //Debug.Log(m_iBulletCount_Cur);
+                        }
+                        break;
+
+                    case BulletManager.eBulletType.BulletType_RuneTracer:
+                        {
+                            //RotateBullet(_vAttackDir);
+                            CreateAttackPos(_vShotterPos, _vAttackDir);
+
+
+                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
+                            tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                            tempBullet.GetComponent<Bullet>().SetType(m_eType);
                         }
                         break;
                     default:

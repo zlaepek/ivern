@@ -33,8 +33,40 @@ public class Bullet : MonoBehaviour
     private void MoveBullet()
     {
         m_RigidBody.velocity = m_vDir * m_stStat.fMoveSpeed;
-
     }
+    private void CheckReflect()
+    {
+        float fCameraLeft = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Left);
+        float fCameraRight = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Right);
+        float fCameraBottom = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Bottom);
+        float fCameraTop = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Top);
+
+        Vector2 vNormal = Vector2.zero;
+
+        if(fCameraTop < this.transform.position.y && m_vDir.y > 0)
+        {
+            vNormal = Vector2.down;
+        }
+        else if (fCameraBottom > this.transform.position.y && m_vDir.y < 0)
+        {
+            vNormal = Vector2.up;
+        }
+        else if (fCameraLeft > this.transform.position.x && m_vDir.x < 0)
+        {
+            vNormal = Vector2.right;
+        }
+        else if (fCameraRight < this.transform.position.x && m_vDir.x > 0)
+        {
+            vNormal = Vector2.left;
+        }
+        else 
+        {
+            return;
+        }
+
+        m_vDir = Vector3.Reflect(m_vDir, vNormal);
+    }
+
     //private void FlipX()
     //{
     //    Vector3 vScale = transform.localScale;
@@ -67,6 +99,11 @@ public class Bullet : MonoBehaviour
 
                 }
                 break;
+            case BulletManager.eBulletType.BulletType_RuneTracer:
+                {
+
+                }
+                break;
             default:
                 break;
         }
@@ -89,6 +126,32 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        switch(m_eType)
+        {
+            case BulletManager.eBulletType.BulletType_EnergyBall:
+                {
+                    
+                }
+                break;
+            case BulletManager.eBulletType.BulletType_Melee:
+                {
+
+                }
+                break;
+            case BulletManager.eBulletType.BulletType_HolyBomb:
+                {
+
+                }
+                break;
+            case BulletManager.eBulletType.BulletType_RuneTracer:
+                {
+                    CheckReflect();
+                }
+                break;
+            default:
+                break;
+        }
+
         MoveBullet();
         if(m_stStat.fLifeTime < 0.0f)
         {

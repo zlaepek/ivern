@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
         //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
         //SetWeapon(BulletManager.eBulletType.BulletType_Melee);
         //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
+        SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
 
     }
     private void SetWeapon(BulletManager.eBulletType _BulletType)
@@ -70,13 +71,11 @@ public class PlayerController : MonoBehaviour
         {
             case BulletManager.eBulletType.BulletType_EnergyBall:
                 {
-                    TempWeapon.SetAttackDelay = 0.1f;
+                    TempWeapon.SetAttackDelay = 1.0f;
                     TempWeapon.SetAttackCount = 1;
                     TempWeapon.SetAttackRange = 0.0f;
-                    TempWeapon.SetAttackSpeed = 1.0f;
+                    TempWeapon.SetAttackSpeed = 1.0f / (1.0f); // sec
 
-                    //GameObject BulletPrefab;
-                    //BulletPrefab = Resources.Load<GameObject>("");
                     TempWeapon.SetBullet(Bulletmgr.EnergyBall, BulletManager.eBulletType.BulletType_EnergyBall);
 
                     TempWeapon.SetBulletDamage = 1.0f;
@@ -89,19 +88,17 @@ public class PlayerController : MonoBehaviour
 
             case BulletManager.eBulletType.BulletType_Melee:
                 {
-                    TempWeapon.SetAttackDelay = 0.2f;
+                    TempWeapon.SetAttackDelay = 2.0f;
                     TempWeapon.SetAttackCount = 1;
                     TempWeapon.SetAttackRange = 1.0f;
-                    TempWeapon.SetAttackSpeed = 0.5f;
+                    TempWeapon.SetAttackSpeed = 1.0f / (2.0f); // sec
 
-                    //GameObject BulletPrefab;
-                    //BulletPrefab = Resources.Load<GameObject>("");
+
                     TempWeapon.SetBullet(Bulletmgr.Melee, BulletManager.eBulletType.BulletType_Melee);
 
                     TempWeapon.SetBulletDamage = 5.0f;
                     TempWeapon.SetBulletKnockback = 40.0f;
                     TempWeapon.SetBulletSpeed = 7.0f;
-                    // -1 이면 애니메이션 종료시
                     TempWeapon.SetBulletLifeTime = -1.0f;
                     TempWeapon.SetBulletPierce = 10000;
                 }
@@ -114,15 +111,30 @@ public class PlayerController : MonoBehaviour
                     //TempWeapon.SetAttackSpeed = 1.0f / 3.0f;
                     TempWeapon.SetAttackSpeed = 1.0f / (5.0f); // sec
 
-                    //GameObject BulletPrefab;
-                    //BulletPrefab = Resources.Load<GameObject>("");
+                    
                     TempWeapon.SetBullet(Bulletmgr.HolyBomb, BulletManager.eBulletType.BulletType_HolyBomb);
 
                     TempWeapon.SetBulletDamage = 1.0f;
                     TempWeapon.SetBulletKnockback = 0.0f;
                     TempWeapon.SetBulletSpeed = 0.0f;
-                    // -1 이면 애니메이션 종료시
                     TempWeapon.SetBulletLifeTime = 2.0f;
+                    TempWeapon.SetBulletPierce = 10000;
+                }
+                break;
+
+            case BulletManager.eBulletType.BulletType_RuneTracer:
+                {
+                    TempWeapon.SetAttackDelay = 1.0f;
+                    TempWeapon.SetAttackCount = 1;
+                    TempWeapon.SetAttackRange = 0.0f;
+                    TempWeapon.SetAttackSpeed = 1.0f / (3.0f); // sec
+
+                    TempWeapon.SetBullet(Bulletmgr.RuneTracer, BulletManager.eBulletType.BulletType_RuneTracer);
+
+                    TempWeapon.SetBulletDamage = 3.0f;
+                    TempWeapon.SetBulletKnockback = 0.0f;
+                    TempWeapon.SetBulletSpeed = 20.0f;
+                    TempWeapon.SetBulletLifeTime = 10.0f;
                     TempWeapon.SetBulletPierce = 10000;
                 }
                 break;
@@ -209,6 +221,23 @@ public class PlayerController : MonoBehaviour
         return vRes;
     }
 
+    private Vector2 RandomDir()
+    {
+
+        Vector2 vRes = new Vector2();
+        float fCameraLeft = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Left);
+        float fCameraRight = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Right);
+        float fCameraBottom = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Bottom);
+        float fCameraTop = SpawnManager.Instance.GetCameraEdgePos(SpawnManager.eCameraEdgePos.Top);
+
+        vRes.x = Random.Range(fCameraLeft, fCameraRight);
+        vRes.y = Random.Range(fCameraBottom, fCameraTop);
+
+        vRes.Normalize();
+
+        return vRes;
+    }
+
     private void Attack()
     {
         Vector2 vAttackDir = default;
@@ -230,6 +259,12 @@ public class PlayerController : MonoBehaviour
                 case (int)BulletManager.eBulletType.BulletType_HolyBomb:
                     {
                         //vAttackDir = m_vLastDir;
+                    }
+                    break;
+                case (int)BulletManager.eBulletType.BulletType_RuneTracer:
+                    {
+                        //vAttackDir = m_vLastDir;
+                        vAttackDir = RandomDir();
                     }
                     break;
                 default:

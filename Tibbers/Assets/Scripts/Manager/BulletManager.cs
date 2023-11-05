@@ -13,6 +13,8 @@ public class BulletManager : MonoBehaviour
         BulletType_EnergyBall,
         //HolyBomb_0
         BulletType_HolyBomb,
+        // RuneTracer
+        BulletType_RuneTracer,
 
         BulletType_MAX,
     }
@@ -21,6 +23,7 @@ public class BulletManager : MonoBehaviour
     public GameObject HolyBomb;
     public GameObject EnergyBall;
     public GameObject Melee;
+    public GameObject RuneTracer;
 
     private void Awake()
     {
