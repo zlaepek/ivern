@@ -8,10 +8,11 @@ using UnityEngine.Networking;
 public class NetworkManager : MonoBehaviour
 {
     #region Url Path
-    public const string serverUrl = "http://52.78.186.214:8000";
+    public const string serverUrl = "http://3.34.48.46:8000";
 
     public const string chapter = "chapter";
     public const string stage = "stage";
+    public const string gacha = "gatcha";
     #endregion
 
     #region Login Variables

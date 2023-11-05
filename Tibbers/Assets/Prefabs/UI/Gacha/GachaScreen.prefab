@@ -244,7 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b83e14dd0f11b47b96d663d1787147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gachaEventList: []
   container: {fileID: 1751970759942353731}
   buttonPrefab: {fileID: 9126855490362211289, guid: da9b12de8307e754d8090b7050be7530, type: 3}
   eeeeeeee: {fileID: 0}
@@ -258,6 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3188734564689743962}
   - component: {fileID: 9046436805706233700}
+  - component: {fileID: 7256594204899639197}
   m_Layer: 5
   m_Name: GachaButtons
   m_TagString: Untagged
@@ -313,6 +313,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &7256594204899639197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 912325270977348942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25219decb2494f04e9d34a40d7202f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &959310513870814990
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,7 +975,7 @@ GameObject:
   - component: {fileID: 8180259138662977221}
   - component: {fileID: 5755701821927451679}
   m_Layer: 5
-  m_Name: Gacha10Button
+  m_Name: Gacha100Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1138,7 +1150,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "10\uD68C \uBF51\uAE30"
+  m_text: "100\uD68C \uBF51\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 23325509a88fd9a42808087a7656b775, type: 2}
   m_sharedMaterial: {fileID: 4851467340274118640, guid: 23325509a88fd9a42808087a7656b775, type: 2}
@@ -2103,7 +2115,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8711056794551931227}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7256594204899639197}
+        m_TargetAssemblyTypeName: GachaButton, Assembly-CSharp
+        m_MethodName: RequestGetDancha
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6344878101468992409
 GameObject:
   m_ObjectHideFlags: 0

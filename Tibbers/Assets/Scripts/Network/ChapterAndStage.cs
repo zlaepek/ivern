@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class ChapterAndStage : MonoBehaviour
 {
+    private void Start()
+    {
+        RequestPostChapterStart(1);
+    }
     #region Public Web Request Methods
     public void RequestPostChapterStart(int chapterId)
     {
