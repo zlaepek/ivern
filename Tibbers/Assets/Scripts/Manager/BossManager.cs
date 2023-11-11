@@ -1,8 +1,18 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Collections;
 
 public enum BossName
 {
     Mandoo,
+}
+
+[Serializable]
+public class BossDictionary
+{
+    public BossName bossName;
+    public GameObject bossPrefab;
 }
 
 public class BossManager : MonoBehaviour
@@ -13,7 +23,6 @@ public class BossManager : MonoBehaviour
     public static BossManager Instance {
         get {
             if (instance == null) {
-                //게임 인스턴스가 없다면 하나 생성해서 넣어준다.
                 instance = new BossManager();
             }
             return instance;
@@ -21,49 +30,57 @@ public class BossManager : MonoBehaviour
     }
     #endregion
 
+    #region Get Methods
+    public Transform PlayerTransform {
+        get {
+            if (_playerTransform == null) {
+                _playerTransform = GameObject.FindGameObjectWithTag("tag_Player").transform;
+            }
+            return _playerTransform;
+
+        }
+    }
+    #endregion
+
     // UI
     public BossUI bossUI = null;
 
-    // 보스
-    public BossName currentBossName = BossName.Mandoo;
-
+    [HideInInspector]
     public GameObject currentBoss = null;
-    public GameObject mandooTheBossPrefab = null;
-    
-    // 
-    /// 플레이어 이동 제한 테두리 생성
 
-    
+    // 보스 프리팹 관리
+    public List<BossDictionary> bossPrefabs = new List<BossDictionary>();
 
-    // Start is called before the first frame update
+    // 바운더리
+    public Boundary boundary = null;
+
+    // 플레이어 위치에 바운더리 생성하기 위함
+    private Transform _playerTransform = null;
+
+    private GameObject _currentBossPrefab = null;
+
+    ///////// 테스트용 Spawn()
     void Start()
     {
-        Spawn();
+        Spawn(BossName.Mandoo);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+    public void Spawn(BossName bossName) {
+        bossUI.SpawnNewBoss(bossName);
+        boundary.SpawnNewBoss(PlayerTransform.position);
+
+        _currentBossPrefab = bossPrefabs.Find(boss => boss.bossName == bossName).bossPrefab;
+        StartCoroutine(InstantiateBossPrefab());
     }
 
-    public void Spawn() {
-        bossUI.SpawnNewBoss(currentBossName);
+    public IEnumerator InstantiateBossPrefab() {
 
-        BossSpawnByName();
+        yield return new WaitForSeconds(1.0f);
+        currentBoss = Instantiate(_currentBossPrefab);
+
+        yield return null;
     }
 
-    public void BossSpawnByName() {
-        switch (currentBossName) {
-
-            case BossName.Mandoo:
-                currentBoss = Instantiate(mandooTheBossPrefab);
-                break;
-
-            default:
-
-                break;
-        }
-    }
 }
 

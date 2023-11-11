@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class Boundary : MonoBehaviour
 {
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public GameObject boundary = null;
+    public void SpawnNewBoss(Vector3 position) {
+        boundary.SetActive(true);
     }
 }
