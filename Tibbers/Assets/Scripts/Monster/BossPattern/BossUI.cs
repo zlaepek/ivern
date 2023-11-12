@@ -12,24 +12,28 @@ public class BossUI : MonoBehaviour
     // specific
     public Slider bossFrozenSlider;
 
-    public void SpawnNewBoss(BossName bossName) {
+    public void SpawnNewBoss(BossName bossName)
+    {
         bossNameText.gameObject.SetActive(true);
         bossNameText.text = bossName.ToString();
 
         bossHpSlider.gameObject.SetActive(true);
 
-        if (bossName == BossName.Mandoo) {
+        if (bossName == BossName.Mandoo)
+        {
             bossFrozenSlider.gameObject.SetActive(true);
         }
     }
 
-    public void HideBossUI() {
+    public void HideBossUI()
+    {
         bossNameText.gameObject.SetActive(false);
         bossHpSlider.gameObject.SetActive(false);
         bossFrozenSlider.gameObject.SetActive(false);
     }
 
-    public void UpdateHPSlider(float value) {
+    public void UpdateHPSlider(float value)
+    {
         bossHpSlider.value = value;
     }
 

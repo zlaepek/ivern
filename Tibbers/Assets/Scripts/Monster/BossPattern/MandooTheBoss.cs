@@ -171,7 +171,8 @@ public class MandooTheBoss : MonoBehaviour
         effectAreaController.DestroyFireArea();
     }
 
-    public void GetMelt(float value) {
+    public void GetMelt(float value)
+    {
         currentFrozenValue -= value;
         frozenSlider.value = currentFrozenValue;
     }
@@ -204,12 +205,14 @@ public class MandooTheBoss : MonoBehaviour
             {
                 StopCoroutine(madMandooHeadCoroutine);
             }
-            if (madMandooHead != null) {
+            if (madMandooHead != null)
+            {
                 madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
                 currentTime = 0;
                 mandooBodyJumpCount++;
             }
-            else {
+            else
+            {
                 MadInit();
             }
         }

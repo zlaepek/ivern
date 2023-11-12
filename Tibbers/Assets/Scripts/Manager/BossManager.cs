@@ -20,10 +20,13 @@ public class BossManager : MonoBehaviour
     #region Instance
     private static BossManager instance = null;
 
-    public static BossManager Instance {
-        get {
-            if (instance == null) {
-                instance = new BossManager();
+    public static BossManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = GameObject.FindObjectOfType<BossManager>();
             }
             return instance;
         }
@@ -31,9 +34,12 @@ public class BossManager : MonoBehaviour
     #endregion
 
     #region Get Methods
-    public Transform PlayerTransform {
-        get {
-            if (_playerTransform == null) {
+    public Transform PlayerTransform
+    {
+        get
+        {
+            if (_playerTransform == null)
+            {
                 _playerTransform = GameObject.FindGameObjectWithTag("tag_Player").transform;
             }
             return _playerTransform;
@@ -71,7 +77,8 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    public void Spawn(BossName bossName) {
+    public void Spawn(BossName bossName)
+    {
         bossUI.SpawnNewBoss(bossName);
         boundary.SpawnNewBoss(PlayerTransform.position);
 
@@ -79,7 +86,8 @@ public class BossManager : MonoBehaviour
         StartCoroutine(InstantiateBossPrefab());
     }
 
-    public IEnumerator InstantiateBossPrefab() {
+    public IEnumerator InstantiateBossPrefab()
+    {
         spawnPositionMarker.SetActive(true);
         yield return new WaitForSeconds(1.0f);
         spawnPositionMarker.SetActive(false);
