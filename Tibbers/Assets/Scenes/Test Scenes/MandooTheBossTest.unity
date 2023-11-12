@@ -892,17 +892,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &1533594898 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5415531245051186430, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
-  m_PrefabInstance: {fileID: 7038395099649158646}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef111a0e12377244fa1cc8fce19ee074, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1637466399
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1619,22 +1608,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 939075507268944369, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
-      propertyPath: bossUI
-      value: 
-      objectReference: {fileID: 1533594898}
-    - target: {fileID: 939075507268944369, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
-      propertyPath: bossPrefabs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 939075507268944369, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
-      propertyPath: bossPrefabs.Array.data[0].bossPrefab
-      value: 
-      objectReference: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
-    - target: {fileID: 939075507268944369, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
-      propertyPath: bossPrefabs.Array.data[1].bossPrefab
-      value: 
-      objectReference: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
     - target: {fileID: 1442775748429402366, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
       propertyPath: m_Name
       value: BossManager
@@ -1643,6 +1616,10 @@ PrefabInstance:
       propertyPath: boundary
       value: 
       objectReference: {fileID: 1824699919}
+    - target: {fileID: 2134543824213926821, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5415531245051186430, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
       propertyPath: bossHpSlider
       value: 

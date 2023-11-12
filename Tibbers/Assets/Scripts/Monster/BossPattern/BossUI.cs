@@ -29,7 +29,28 @@ public class BossUI : MonoBehaviour
         bossFrozenSlider.gameObject.SetActive(false);
     }
 
-    public void updateHPSlider(float value) {
+    public void UpdateHPSlider(float value) {
         bossHpSlider.value = value;
     }
+
+    public void SetMaxHP(float value)
+    {
+        bossHpSlider.maxValue = value;
+        bossHpSlider.value = value;
+    }
+
+    #region
+    public void UpdateFrozenSlider(float value)
+    {
+        bossFrozenSlider.value = value;
+    }
+
+    public void InitFrozenSlider(float minValue, float maxValue)
+    {
+        bossFrozenSlider.maxValue = maxValue;
+        bossFrozenSlider.minValue = minValue;
+        bossFrozenSlider.value = maxValue;
+    }
+
+    #endregion
 }

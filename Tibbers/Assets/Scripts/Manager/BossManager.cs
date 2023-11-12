@@ -45,26 +45,31 @@ public class BossManager : MonoBehaviour
     // UI
     public BossUI bossUI = null;
 
+
+    // [보스]
     [HideInInspector]
     public GameObject currentBoss = null;
-
+    private GameObject _currentBossPrefab = null;
     // 보스 프리팹 관리
     public List<BossDictionary> bossPrefabs = new List<BossDictionary>();
 
-    // 바운더리
+    // [바운더리]
+    // 보스 소환 위치
+    public GameObject spawnPositionMarker = null;
     public Boundary boundary = null;
-
     // 플레이어 위치에 바운더리 생성하기 위함
     private Transform _playerTransform = null;
 
-    private GameObject _currentBossPrefab = null;
+
 
     ///////// 테스트용 Spawn()
-    void Start()
+    private void Update()
     {
-        Spawn(BossName.Mandoo);
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            Spawn(BossName.Mandoo);
+        }
     }
-
 
     public void Spawn(BossName bossName) {
         bossUI.SpawnNewBoss(bossName);
@@ -75,11 +80,18 @@ public class BossManager : MonoBehaviour
     }
 
     public IEnumerator InstantiateBossPrefab() {
-
+        spawnPositionMarker.SetActive(true);
         yield return new WaitForSeconds(1.0f);
+        spawnPositionMarker.SetActive(false);
         currentBoss = Instantiate(_currentBossPrefab);
 
         yield return null;
+    }
+
+    public void BossClear()
+    {
+        bossUI.HideBossUI();
+        currentBoss = null;
     }
 
 }

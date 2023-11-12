@@ -67,37 +67,33 @@ public class MandooTheBoss : MonoBehaviour
 
     #region 라이프 사이클
 
+
     private void Start()
     {
-        // player Init
-        targetTransform = GameObject.FindGameObjectWithTag("tag_Player").transform;
+        // get from BossManager
+        targetTransform = BossManager.Instance.PlayerTransform;
+        bossUI = BossManager.Instance.bossUI;
 
-
-        bossUI = GameObject.FindGameObjectWithTag("Canvas").GetComponentInChildren<BossUI>();
         // Unit Init
         unit = GetComponent<Unit>();
 
         unit.m_stStat.fDamage_Base = 2.0f;
-        unit.m_stStat.fHp_Base = 100.0f;
-        bossUI.bossHpSlider.maxValue = 100;
 
-        unit.m_stStat.fMoveSpeed_Base = 1.0f;
+        unit.m_stStat.fHp_Base = 100.0f;
+        bossUI.SetMaxHP(unit.m_stStat.fHp_Base);
+
         unit.m_stStat.fMoveSpeed_Base = 1.0f;
 
         unit.ResetHp();
 
-
-
         // Frozen Init
         frozenSlider = bossUI.bossFrozenSlider;
-        frozenSlider.maxValue = maxFrozenValue;
-        frozenSlider.minValue = 0f;
+        bossUI.InitFrozenSlider(0f, maxFrozenValue);
         currentFrozenValue = maxFrozenValue;
         frozenSlider.value = currentFrozenValue;
 
         // Move Init
         monsterMove = new MonsterMove();
-
         monsterMove.Initialize(targetPositionMarker);
 
         effectAreaController = transform.parent.GetComponentInChildren<MandooEffectAreaController>();
@@ -108,7 +104,7 @@ public class MandooTheBoss : MonoBehaviour
     private void FixedUpdate()
     {
         currentTime += Time.fixedDeltaTime;
-        bossUI.updateHPSlider(unit.m_stStat.fHp_Cur);
+        bossUI.UpdateHPSlider(unit.m_stStat.fHp_Cur);
         switch (currentMandooState)
         {
             case MANDOO_STATE.FROZEN:
@@ -130,6 +126,7 @@ public class MandooTheBoss : MonoBehaviour
     #region Frozen
     private void FrozenInit()
     {
+        currentMandooState = MANDOO_STATE.FROZEN;
         // 후라이팬 장판 소환
         effectAreaController.SpawnFireArea(targetTransform, transform.parent);
     }
@@ -183,12 +180,12 @@ public class MandooTheBoss : MonoBehaviour
     #region Mad
     private void MadInit()
     {
+        currentMandooState = MANDOO_STATE.MAD;
         // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
     }
     private void MadPattern()
     {
-
         // (3번의 돌진 후) 점프
         if (mandooBodyJumpCount > 3 && currentTime > dashInterval)
         {
@@ -219,16 +216,17 @@ public class MandooTheBoss : MonoBehaviour
 
 
         //TODO: 종료 상태 결정
-        if (false) // hp가 0이면 사망
-        {
-            MadEnd();
-            Dead();
-        }
-        if (false) // hp가 일정 깎였을 때 
+        if (unit.m_stStat.fHp_Cur == 30f) // hp가 일정 깎였을 때 
         {
             MadEnd();
             NormalInit();
         }
+        if (unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
+        {
+            MadEnd();
+            Dead();
+        }
+
     }
 
     private void MadEnd()
@@ -253,8 +251,8 @@ public class MandooTheBoss : MonoBehaviour
     private void NormalInit()
     {
         currentMandooState = MANDOO_STATE.NORMAL;
-
     }
+
     private void NormalPattern()
     {
         // 이동
@@ -262,19 +260,15 @@ public class MandooTheBoss : MonoBehaviour
 
         //TODO: 탄환 던지기
 
-        //TODO: 체력이 지정된 상태가 되면, ex) 50퍼 미만 => 발악 패턴
-        //currentMandooState = MANDOO_STATE.MAD;
-        //MadInit();
-
-        if (false) // hp가 0이면 사망
-        {
-            NormalEnd();
-            Dead();
-        }
-        if (false) // hp가 일정 깎였을 때 => 광란패턴
+        if (unit.m_stStat.fHp_Cur == 50) // hp가 일정 깎였을 때 => 광란패턴
         {
             NormalEnd();
             MadInit();
+        }
+        if (unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
+        {
+            NormalEnd();
+            Dead();
         }
     }
     private void NormalEnd()
@@ -293,6 +287,8 @@ public class MandooTheBoss : MonoBehaviour
     #region Dead
     private void Dead()
     {
+        currentMandooState = MANDOO_STATE.DEAD;
+        BossManager.Instance.BossClear();
         //TODO: 보스 관련 오브젝트 죄다 삭제
         //TODO: 보스 죽는 모션
         //TODO: 보상으로 이동

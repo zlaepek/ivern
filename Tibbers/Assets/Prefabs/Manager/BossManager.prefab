@@ -33,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 5104459319939953636}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &939075507268944369
 MonoBehaviour:
@@ -48,9 +48,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossUI: {fileID: 5415531245051186430}
-  currentBossName: 0
   currentBoss: {fileID: 0}
-  mandooTheBossPrefab: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
+  bossPrefabs:
+  - bossName: 0
+    bossPrefab: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
+  spawnPositionMarker: {fileID: 2134543824213926821}
   boundary: {fileID: 1663503366657714201}
 --- !u!114 &1663503366657714201
 MonoBehaviour:
