@@ -55,10 +55,10 @@ public class PlayerController : MonoBehaviour
         m_WeaponSlot = new List<Weapon>();
 
         Reset();
-        //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
+        SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
         //SetWeapon(BulletManager.eBulletType.BulletType_Melee);
         //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
-        SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
+        //SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
 
     }
     private void SetWeapon(BulletManager.eBulletType _BulletType)
@@ -192,14 +192,19 @@ public class PlayerController : MonoBehaviour
     private Vector2 FindCloseEnemy_Dir()
     {
         Vector2 vRes = new Vector2();
-        vRes = default;
+        vRes = transform.position;
 
+        GameObject Enemy = SpawnManager.Instance.FindCloseMonster(gameObject);
+
+        Vector3 vPos_dir = Enemy.transform.position - transform.position;
+
+        /*
         GameObject[] Enemys = GameObject.FindGameObjectsWithTag("tag_Enemy");
 
         GameObject Enemy = default;
 
         Vector3 temp = default;
-        
+
         float fCompare = 1000000.0f;
         float fTemp = 0.0f;
         foreach (GameObject iter in Enemys)
@@ -212,9 +217,7 @@ public class PlayerController : MonoBehaviour
                 Enemy = iter;
             }
         }
-
-
-        Vector3 vPos_dir = Enemy.transform.position - transform.position;
+        */
         vRes = vPos_dir;
         vRes = vRes.normalized;
 
@@ -248,6 +251,8 @@ public class PlayerController : MonoBehaviour
             {
                 case (int)BulletManager.eBulletType.BulletType_EnergyBall:
                     {
+                        if (!SpawnManager.Instance.CheckActiveMonster())
+                            return;
                         vAttackDir = FindCloseEnemy_Dir();
                     }
                     break;

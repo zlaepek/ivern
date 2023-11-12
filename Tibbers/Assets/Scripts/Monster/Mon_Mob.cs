@@ -19,16 +19,21 @@ public class Mon_Mob : MonoBehaviour
 
         m_Unit.m_stStat.fDamage_Base = 2.0f;
         m_Unit.m_stStat.fHp_Base = 10.0f;
-        m_Unit.m_stStat.fMoveSpeed_Base = 2.0f;
+        m_Unit.m_stStat.fMoveSpeed_Base = 1.0f * 0.1f;
         m_Unit.ResetHp();
-        int iLayerNum = LayerMask.NameToLayer("Monster_Mob");
-        Physics2D.IgnoreLayerCollision(iLayerNum, iLayerNum);
+        //int iLayerNum = LayerMask.NameToLayer("Monster_Mob");
+        //Physics2D.IgnoreLayerCollision(iLayerNum, iLayerNum);
     }
 
     // Update is called once per frame
-    void Update()
+    //void Update()
+    //{
+    //    if(!m_Unit.isKnockBack)
+    //        monsterMove.FollowTarget(m_Unit.fCurMoveSpeed, transform, playerCharacter.transform);
+    //}
+    void FixedUpdate()
     {
-        if(!m_Unit.isKnockBack)
+        if (!m_Unit.isKnockBack)
             monsterMove.FollowTarget(m_Unit.fCurMoveSpeed, transform, playerCharacter.transform);
     }
 }

@@ -10,6 +10,7 @@ public class SpawnManager : MonoBehaviour
 
     private Camera mainCamera;
     private GameObject playerCharacter;
+    private List<GameObject> MonsterPool;
 
     public enum eCameraEdgePos
     {
@@ -24,6 +25,8 @@ public class SpawnManager : MonoBehaviour
 
     private void Awake()
     {
+        MonsterPool = new List<GameObject>();
+
         if (Instance == null)
         {
             Instance = this;
@@ -42,6 +45,15 @@ public class SpawnManager : MonoBehaviour
         mainCamera = Camera.GetComponent<Camera>();
 
         playerCharacter = GameObject.FindGameObjectWithTag("tag_Player");
+
+
+        GameObject[] Enemys = GameObject.FindGameObjectsWithTag("tag_Enemy");
+
+        foreach (GameObject iter in Enemys)
+        {
+            AddPool(iter);
+        }
+
     }
 
     // Update is called once per frame
@@ -64,6 +76,39 @@ public class SpawnManager : MonoBehaviour
 
         return fPositions[(int)_ePos];
     }
+
+    public bool CheckActiveMonster()
+    {
+        foreach (GameObject it in MonsterPool)
+        {
+            if (it.activeSelf == true)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public GameObject FindCloseMonster(GameObject _Object)
+    {
+        GameObject Res = null;
+        float fDistance = 10000000.0f;
+        float fCompare = fDistance;
+        Vector3 vPoint = _Object.transform.position;
+        foreach (GameObject it in MonsterPool)
+        {
+            if(it.activeSelf == true)
+            {
+                fCompare = Vector3.Magnitude(it.transform.position - vPoint);
+                if (fCompare < fDistance)
+                {
+                    Res = it;
+                }
+            }
+        }
+
+        return Res;
+    }
      
     private void SetCameraPos()
     {
@@ -78,14 +123,39 @@ public class SpawnManager : MonoBehaviour
         fPositions[(int)eCameraEdgePos.Right] = playerCharacter.transform.position.x + fHalfWidth;
     }
 
+    private GameObject FindNoActiveMonster()
+    {
+        foreach(GameObject it in MonsterPool)
+        {
+            if(it.activeSelf == false)
+            {
+                return it;
+            }
+        }
+        return null;
+    }
+
     private void SpawnObject(GameObject _object, Vector2 _vPoint)
     {
-        
+        GameObject Monster = FindNoActiveMonster();
 
-        GameObject gameObject = GameObject.Instantiate(_object, _vPoint, Quaternion.identity);
-        _object.GetComponent<Mon_Mob>().SerialNumber = iSerial;
-        ++iSerial;
+        if( !Monster)
+        {
+            Monster = GameObject.Instantiate(_object, _vPoint, Quaternion.identity);
+            AddPool(Monster);
+        }
+        else
+        {
+            Monster.SetActive(true);
+            Monster.transform.position = _vPoint;
+        }
         Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
+    }
+    private void AddPool(GameObject _Monster)
+    {
+        MonsterPool.Add(_Monster);
+        _Monster.GetComponent<Mon_Mob>().SerialNumber = iSerial;
+        ++iSerial;
     }
     private void RandomSpawn(GameObject _object)
     {

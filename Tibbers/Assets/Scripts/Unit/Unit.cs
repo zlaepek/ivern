@@ -74,7 +74,8 @@ public class Unit : MonoBehaviour
     {
         // 사망 애니메이션 + 죽는 처리
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void GetDamage(float _Damage, float _fKnockbackForce = default , Vector2 _vForcePoint = default)
