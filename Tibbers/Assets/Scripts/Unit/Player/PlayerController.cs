@@ -165,6 +165,7 @@ public class PlayerController : MonoBehaviour
         m_UnitStat.m_stStat.fMoveSpeed_Base = 5.0f;
         m_UnitStat.m_stStat.fHp_Base = 10.0f;
 
+        m_UnitStat.m_stStat.fAttackSpeed_Base = 1.0f;
     }
 
     // Update is called once per frame
@@ -180,6 +181,25 @@ public class PlayerController : MonoBehaviour
         CharacterMove();
 
         Attack();
+
+        #region Test
+
+        // Attack Speed +
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            m_UnitStat.m_stStat.fAttackSpeed_Buf += 50;
+
+            Debug.Log("\nAttack Speed : " + m_UnitStat.m_stStat.fAttackSpeed_Buf);
+        }
+        // Attack Speed -
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            m_UnitStat.m_stStat.fAttackSpeed_Buf -= 50;
+
+            Debug.Log("\nAttack Speed : " + m_UnitStat.m_stStat.fAttackSpeed_Buf);
+        }
+        #endregion //Test
+
     }
     #endregion //Logic_Basic
 
@@ -275,7 +295,7 @@ public class PlayerController : MonoBehaviour
                 default:
                     break;
             }
-            iter.Attack(transform.position, vAttackDir, m_UnitStat.m_stStat.fAttackSpeed_Base);
+            iter.Attack(transform.position, vAttackDir, m_UnitStat.fCurAttackSpeed);
         }
     }
 

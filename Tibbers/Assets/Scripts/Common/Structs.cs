@@ -36,8 +36,11 @@ namespace Structs
 
         public float fMass_Base;
         public float fDamage_Base;
-        public float fAttackSpeed_Base;
 
+        public float fAttackSpeed_Base;
+        // %
+        public float fAttackSpeed_Buf;
+        public float fAttackSpeed_DeBuf;
     }
 
     //class Monster

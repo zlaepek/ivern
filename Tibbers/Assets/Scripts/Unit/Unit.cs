@@ -14,6 +14,8 @@ public class Unit : MonoBehaviour
     public Structs.UnitStat m_stStat;
 
     public float fCurMoveSpeed { get { return m_stStat.fMoveSpeed_Base * ((100 + m_stStat.fMoveSpeed_Buf - m_stStat.fMoveSpeed_DeBuf) / 100); } }
+
+    public float fCurAttackSpeed { get { return m_stStat.fAttackSpeed_Base * ((100 + m_stStat.fAttackSpeed_Buf - m_stStat.fAttackSpeed_DeBuf) / 100); } }
     public bool isKnockBack { get { return m_fAcceleration > 0.001f; } }
     //float m_fBaseHp;
     //float m_fBaseMoveSpeed;

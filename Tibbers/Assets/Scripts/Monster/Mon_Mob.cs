@@ -17,13 +17,19 @@ public class Mon_Mob : MonoBehaviour
         playerCharacter = GameObject.FindGameObjectWithTag("tag_Player");
         m_Unit = GetComponent<Unit>();
 
+        Init(1);
+        //int iLayerNum = LayerMask.NameToLayer("Monster_Mob");
+        //Physics2D.IgnoreLayerCollision(iLayerNum, iLayerNum);
+    }
+
+    public void Init(int _iType)
+    {
         m_Unit.m_stStat.fDamage_Base = 2.0f;
         m_Unit.m_stStat.fHp_Base = 10.0f;
         m_Unit.m_stStat.fMoveSpeed_Base = 1.0f * 0.1f;
         m_Unit.ResetHp();
-        //int iLayerNum = LayerMask.NameToLayer("Monster_Mob");
-        //Physics2D.IgnoreLayerCollision(iLayerNum, iLayerNum);
     }
+
 
     // Update is called once per frame
     //void Update()

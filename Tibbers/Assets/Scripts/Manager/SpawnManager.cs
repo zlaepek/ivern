@@ -149,6 +149,9 @@ public class SpawnManager : MonoBehaviour
             Monster.SetActive(true);
             Monster.transform.position = _vPoint;
         }
+
+        Monster.GetComponent<Mon_Mob>().Init(1);
+
         Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }
     private void AddPool(GameObject _Monster)

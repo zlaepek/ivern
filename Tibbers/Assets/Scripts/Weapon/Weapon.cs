@@ -29,7 +29,8 @@ public class Weapon
     public void Attack(Vector3 _vShotterPos, Vector2 _vAttackDir, float _fBaseAttackSpeed)
     {
         // 공격속도 = 기본공격속도 * ( 1 + 장비보너스 / 100 ) * ( 1 + 능력치보너스 / 100 )
-        float fTotalSpeed = m_stStat.fAttackSpeed * (1 + (_fBaseAttackSpeed / 100));
+        //float fTotalSpeed = m_stStat.fAttackSpeed * (1 + (_fBaseAttackSpeed / 100));
+        float fTotalSpeed = m_stStat.fAttackSpeed * _fBaseAttackSpeed;
         float fAttackInterval = 1 / fTotalSpeed;
 
         // 코루틴으로 바꾸기
@@ -49,7 +50,7 @@ public class Weapon
 
             if (Time.time > m_fNextDelay)
             {
-                m_fNextDelay = Time.time + m_stStat.fAttackDelay;
+                m_fNextDelay = Time.time + m_stStat.fAttackDelay * fAttackInterval;
 
                 switch (m_eType)
                 {
