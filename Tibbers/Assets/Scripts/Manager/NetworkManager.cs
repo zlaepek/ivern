@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.Networking;
 
-public class NetworkManager : MonoBehaviour
+public partial class NetworkManager : MonoBehaviour
 {
     #region Url Path
     public const string serverUrl = "http://3.34.48.46:8000";
@@ -20,7 +18,22 @@ public class NetworkManager : MonoBehaviour
     #endregion
 
     #region Static NetworkManager
-    public static NetworkManager Instance { get; private set; }
+    private static NetworkManager _instance = null;
+    public static NetworkManager Instance {
+        get 
+        {
+            if (_isServerAlive)
+            {
+                return _instance;
+            }
+            return null; 
+        }
+        private set
+        {
+
+        }
+    }
+    private static bool _isServerAlive = false;
     #endregion
 
     #region Life Cycle (Initialize)
@@ -30,6 +43,7 @@ public class NetworkManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            CheckServerLive();
         }
         else
         {

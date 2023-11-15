@@ -5,18 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public string PanelName;
 
     public void OpenPanel()
@@ -26,7 +14,7 @@ public class SceneManager : MonoBehaviour
 
     private void SceneChange(string _strSceneName)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(_strSceneName, LoadSceneMode.Additive);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(_strSceneName);
     }
 
     public void SceneChange_Title()
@@ -37,5 +25,6 @@ public class SceneManager : MonoBehaviour
     public void SceneChange_Stage()
     {
         SceneChange("Scene_Stage");
+        NetworkManager.Instance?.RequestPostChapterStart(1);
     }
 }

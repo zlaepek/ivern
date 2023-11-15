@@ -1,20 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
-public class ChapterAndStage : MonoBehaviour
+public partial class NetworkManager : MonoBehaviour
 {
-    private void Start()
-    {
-        RequestPostChapterStart(1);
-    }
     #region Public Web Request Methods
     public void RequestPostChapterStart(int chapterId)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = NetworkManager.serverUrl + "/" + NetworkManager.chapter + "/start/v1" + "/" + chapterId;
-        StartCoroutine(NetworkManager.Instance.RequestPost(url, wwwForm, CallBackPostChapterStart));
+        string url = serverUrl + "/" + chapter + "/start/v1" + "/" + chapterId;
+        StartCoroutine(Instance.RequestPost(url, wwwForm, CallBackPostChapterStart));
     }
 
     public void CallBackPostChapterStart(string json)
@@ -28,22 +21,22 @@ public class ChapterAndStage : MonoBehaviour
     public void RequestPostChapterClear(int chapterId)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = NetworkManager.serverUrl + "/" + NetworkManager.chapter + "/clear/v1" + "/" + chapterId;
-        StartCoroutine(NetworkManager.Instance.RequestPost(url, wwwForm));
+        string url = serverUrl + "/" + chapter + "/clear/v1" + "/" + chapterId;
+        StartCoroutine(Instance.RequestPost(url, wwwForm));
     }
 
     public void RequestPostStageStart(int stageId)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = NetworkManager.serverUrl + "/" + NetworkManager.stage + "/clear/v1" + "/" + stageId;
-        StartCoroutine(NetworkManager.Instance.RequestPost(url, wwwForm));
+        string url = serverUrl + "/" + stage + "/start/v1" + "/" + stageId;
+        StartCoroutine(Instance.RequestPost(url, wwwForm));
     }
 
     public void RequestPostStageClear(int stageId, int coin)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = NetworkManager.serverUrl + "/" + NetworkManager.stage + "/clear/v1" + "/" + stageId + "/" + coin;
-        StartCoroutine(NetworkManager.Instance.RequestPost(url, wwwForm));
+        string url = serverUrl + "/" + stage + "/clear/v1" + "/" + stageId + "/" + coin;
+        StartCoroutine(Instance.RequestPost(url, wwwForm));
     }
     #endregion
 }

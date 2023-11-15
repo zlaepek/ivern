@@ -798,23 +798,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 75331683476084793, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -823,6 +823,18 @@ PrefabInstance:
     - target: {fileID: 800288019417514098, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274757099197628022, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
+      propertyPath: m_CellSize.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274757099197628022, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
+      propertyPath: m_CellSize.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 1274757099197628022, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
+      propertyPath: m_ConstraintCount
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2492811628277062750, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
       propertyPath: m_Pivot.x
@@ -909,7 +921,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4532293708729112340, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
@@ -1122,6 +1135,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2686016601510399794, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: m_Name
+      value: Gacha10Button
+      objectReference: {fileID: 0}
     - target: {fileID: 2698668630222543052, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1216,27 +1233,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1819586359}
+      objectReference: {fileID: 1191817513}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CallBackGetGacha100
+      value: RequestGetGacha10
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GachaButton, Assembly-CSharp
+      value: NetworkManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1191817513}
+    - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RequestGetDancha
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NetworkManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6068663472156368923, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_fontSize
@@ -1391,17 +1420,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1832318019320552289, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
   m_PrefabInstance: {fileID: 1625256859}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1819586359 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7256594204899639197, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
-  m_PrefabInstance: {fileID: 1625256859}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25219decb2494f04e9d34a40d7202f54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1927220930
 PrefabInstance:
   m_ObjectHideFlags: 0
