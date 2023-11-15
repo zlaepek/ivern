@@ -25,11 +25,15 @@ public partial class NetworkManager : MonoBehaviour
 
     public void CallBackGetGacha10(string json)
     {
-        List<GachaJson> gachaJsonList = ParseGachaJsonList(json);
+        List<GachaJson> gachaJsonList = new List<GachaJson>();
 
-        foreach (var gachaJson in gachaJsonList)
+        string[] jsonSubStringArray = json.Split(new[] { "[" }, StringSplitOptions.RemoveEmptyEntries);
+
+        for (int i = 0; i < 10; i++)
         {
-            Debug.Log($"Type: {gachaJson.type}, Part: {gachaJson.part}");
+            GachaJson gachaJson = new GachaJson(jsonSubStringArray[i]);
+
+            gachaJsonList.Add(gachaJson);
         }
     }
     #endregion

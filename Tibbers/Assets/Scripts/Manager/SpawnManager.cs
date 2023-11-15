@@ -21,6 +21,7 @@ public class SpawnManager : MonoBehaviour
 
         Max
     }
+
     float[] fPositions = new float[4];
 
     private void Awake()

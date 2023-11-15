@@ -26,7 +26,7 @@ public class BossManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = GameObject.FindObjectOfType<BossManager>();
+                instance = FindObjectOfType<BossManager>();
             }
             return instance;
         }
