@@ -33,6 +33,7 @@ public partial class NetworkManager : MonoBehaviour
 
         }
     }
+
     private static bool _isServerAlive = false;
     #endregion
 
@@ -41,7 +42,7 @@ public partial class NetworkManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
             CheckServerLive();
         }

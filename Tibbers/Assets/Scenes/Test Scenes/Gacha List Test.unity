@@ -666,7 +666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &710351648
 RectTransform:
   m_ObjectHideFlags: 0
@@ -923,6 +923,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7528750560463957694, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4532293708729112340, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
@@ -932,6 +936,11 @@ PrefabInstance:
 --- !u!224 &1596562447 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2492811628277062750, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
+  m_PrefabInstance: {fileID: 1596562446}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1596562448 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2860688665041530597, guid: 608039f7f220ca24889d2ee62aa13741, type: 3}
   m_PrefabInstance: {fileID: 1596562446}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1625256859
@@ -1241,34 +1250,38 @@ PrefabInstance:
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1625256861}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RequestGetGacha10
+      value: ButtonGacha10
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: NetworkManager, Assembly-CSharp
+      value: Gacha, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5755701821927451679, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1625256861}
+    - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RequestGetDancha
+      value: ButtonDancha
       objectReference: {fileID: 0}
     - target: {fileID: 5837767729583403245, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: NetworkManager, Assembly-CSharp
+      value: Gacha, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6068663472156368923, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_fontSize
@@ -1370,6 +1383,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7360949967548153484, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: gachaResultsPrefab
+      value: 
+      objectReference: {fileID: 6973767520489424737, guid: cfab9b6b557272b41bf8de899f32114e, type: 3}
+    - target: {fileID: 7360949967548153484, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+      propertyPath: gachaResultsTransform
+      value: 
+      objectReference: {fileID: 1596562448}
     - target: {fileID: 7514471252667880640, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1423,6 +1444,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1832318019320552289, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
   m_PrefabInstance: {fileID: 1625256859}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1625256861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7360949967548153484, guid: 7265104cd570a4441b8385224badbcf5, type: 3}
+  m_PrefabInstance: {fileID: 1625256859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce42b1426d6654941aeb85451564a4b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1927220930
 PrefabInstance:
   m_ObjectHideFlags: 0

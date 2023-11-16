@@ -5,38 +5,20 @@ using UnityEngine;
 public partial class NetworkManager : MonoBehaviour
 {
     #region Gacha Server Call
-    public void RequestGetDancha()
+    public void RequestGetDancha(Action<string> callBack)
     {
         string url = serverUrl + "/" + gacha + "/1";
-        StartCoroutine(RequestGet(url, "", CallBackGetDancha));
+        StartCoroutine(RequestGet(url, "", callBack));
     }
 
-    public void CallBackGetDancha(string json)
-    {
-        GachaJson info = new GachaJson(json);
-        Debug.Log(info.type + info.part);
-    }
 
-    public void RequestGetGacha10()
+    public void RequestGetGacha10(Action<string> callBack)
     {
         string url = serverUrl + "/" + gacha + "/10";
-        StartCoroutine(RequestGet(url, "", CallBackGetGacha10));
-    }
-
-    public void CallBackGetGacha10(string json)
-    {
-        List<GachaJson> gachaJsonList = new List<GachaJson>();
-
-        string[] jsonSubStringArray = json.Split(new[] { "[" }, StringSplitOptions.RemoveEmptyEntries);
-
-        for (int i = 0; i < 10; i++)
-        {
-            GachaJson gachaJson = new GachaJson(jsonSubStringArray[i]);
-
-            gachaJsonList.Add(gachaJson);
-        }
+        StartCoroutine(RequestGet(url, "", callBack));
     }
     #endregion
+
     private List<GachaJson> ParseGachaJsonList(string jsonString)
     {
         List<GachaJson> gachaJsonList = new List<GachaJson>();
@@ -55,6 +37,7 @@ public partial class NetworkManager : MonoBehaviour
 
 }
 
+[System.Serializable]
 public class GachaJson
 {
     public string type;
