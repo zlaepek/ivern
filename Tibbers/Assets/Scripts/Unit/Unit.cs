@@ -27,12 +27,17 @@ public class Unit : MonoBehaviour
     private float m_fAcceleration;
     private float m_fDecelerationRate;
 
+    private bool m_isBlinking = false;
+
     private Vector2 m_vForcePoint;
+
+    private SpriteRenderer m_SpriteRenderer;
+
     #endregion  변수
     void Awake()
     {
         //m_stStat = default;
-
+        m_SpriteRenderer = GetComponent<SpriteRenderer>();
         m_fDecelerationRate = 0.9f;
         //m_stStatus = default;
     }
@@ -82,6 +87,10 @@ public class Unit : MonoBehaviour
 
     public void GetDamage(float _Damage, float _fKnockbackForce = default , Vector2 _vForcePoint = default)
     {
+        if(m_isBlinking)
+        {
+            return;
+        }
         if(m_stStat.fHp_Cur <= 0 )
         {
             if(gameObject.tag == "tag_Player")
@@ -94,6 +103,11 @@ public class Unit : MonoBehaviour
                 Death();
             }
         }
+        if (gameObject.tag == "tag_Player")
+        {
+            m_isBlinking = true;
+            StartCoroutine(BlinkEffect());
+        }
         m_stStat.fHp_Cur -= _Damage;
         
 
@@ -101,11 +115,31 @@ public class Unit : MonoBehaviour
         Knockback();
         Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name);
         Debug.Log("\nfForce : " + _fKnockbackForce + " ,vPoint : " + _vForcePoint + ", Dmage : "  + _Damage);
+        Debug.Log("\nCurHp : " + m_stStat.fHp_Cur);
     }
 
     public void ResetHp()
     {
         m_stStat.fHp_Max = m_stStat.fHp_Base;
         m_stStat.fHp_Cur = m_stStat.fHp_Max;
+    }
+
+    IEnumerator BlinkEffect()
+    {
+        float fTime = Time.time + 2.0f;
+        while (true)
+        {
+            m_SpriteRenderer.enabled = !m_SpriteRenderer.enabled; // 스프라이트 깜빡임
+
+            yield return new WaitForSeconds(0.1f); // 0.1초간 대기
+
+            // 2초가 지나면 깜빡임 중지
+            if (fTime - Time.time <= 0f)
+            {
+                m_SpriteRenderer.enabled = true; // 스프라이트 활성화
+                m_isBlinking = false;
+                yield break;
+            }
+        }
     }
 }

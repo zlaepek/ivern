@@ -150,8 +150,8 @@ public class SpawnManager : MonoBehaviour
             Monster.SetActive(true);
             Monster.transform.position = _vPoint;
         }
-
-        Monster.GetComponent<Mon_Mob>().Init(1);
+        Mon_Mob Temp_Mob = Monster.GetComponent<Mon_Mob>();
+        Temp_Mob.Init(1);
 
         Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }

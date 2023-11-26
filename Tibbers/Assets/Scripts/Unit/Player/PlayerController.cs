@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         m_WeaponSlot = new List<Weapon>();
 
         Reset();
-        SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
+        //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
         //SetWeapon(BulletManager.eBulletType.BulletType_Melee);
         //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
         //SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
@@ -165,6 +165,8 @@ public class PlayerController : MonoBehaviour
         m_UnitStat.m_stStat.fMoveSpeed_Base = 5.0f;
         m_UnitStat.m_stStat.fHp_Base = 10.0f;
 
+        m_UnitStat.ResetHp();
+
         m_UnitStat.m_stStat.fAttackSpeed_Base = 1.0f;
     }
 
@@ -218,6 +220,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 vPos_dir = Enemy.transform.position - transform.position;
 
+        #region Old_Ver
         /*
         GameObject[] Enemys = GameObject.FindGameObjectsWithTag("tag_Enemy");
 
@@ -238,6 +241,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         */
+        #endregion Old_Ver
         vRes = vPos_dir;
         vRes = vRes.normalized;
 
