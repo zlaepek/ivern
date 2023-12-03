@@ -34,7 +34,8 @@ public class Weapon
         float fAttackInterval = 1 / fTotalSpeed;
 
         // 코루틴으로 바꾸기
-        
+
+        GameObject tempBullet;
 
         if (m_iBulletCount_Cur >= m_stStat.iAttackCount)
         {
@@ -60,9 +61,10 @@ public class Weapon
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
 
-                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
 
@@ -71,9 +73,10 @@ public class Weapon
                             RotateBullet(_vAttackDir);
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
-                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
+                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
 
@@ -81,9 +84,9 @@ public class Weapon
                         {
                             CreateAttackPos_CameraRand();
 
-                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-
+                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                             //Debug.Log(m_iBulletCount_Cur);
                         }
                         break;
@@ -94,15 +97,18 @@ public class Weapon
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
 
-                            GameObject tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
+                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
                             tempBullet.GetComponent<Bullet>().SetType(m_eType);
+                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
                     default:
                         break;
                 }
+
+
                 ++m_iBulletCount_Cur;
             }
         }

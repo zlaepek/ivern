@@ -26,7 +26,8 @@ public class Mon_Mob : MonoBehaviour
     //    if (_Collision.tag == "tag_Player")
     //        _Collision.GetComponent<Unit>().GetDamage(m_Unit.m_stStat.fDamage_Base);
     //}
-    private void OnCollisionEnter2D(Collision2D collision)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("tag_Player"))
         {

@@ -167,6 +167,14 @@ public class Bullet : MonoBehaviour
 #region Collision
     private void OnTriggerEnter2D(Collider2D _Collision)
     {
+        if(m_Master.tag == "tag_Player")
+        {
+            if (_Collision.tag == "tag_Player")
+            {
+                return;
+            }
+        }
+
         //if(  "ÀåÆÇ")
         {
             if(Time.time > fTickDamage)
@@ -174,10 +182,12 @@ public class Bullet : MonoBehaviour
                 //fTickDamage = 
             }
         }
-        if (_Collision.tag == "tag_Player" || _Collision.tag == "tag_Enemy")
-        _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
+        if ( _Collision.tag == "tag_Enemy")
+        {
+            _Collision.GetComponent<Unit>().GetDamage(m_stStat.fBulletDamage, m_stStat.fKnockbackForce, m_vDir);
+        }
 
-        if(m_stStat.nPierce == 0)
+        if (m_stStat.nPierce == 0)
         {
             Destroy(gameObject);
         }

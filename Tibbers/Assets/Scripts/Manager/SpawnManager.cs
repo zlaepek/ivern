@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
         Max
     }
 
-    float[] fPositions = new float[4];
+    float[] fPositions = new float[(int)eCameraEdgePos.Max];
 
     private void Awake()
     {

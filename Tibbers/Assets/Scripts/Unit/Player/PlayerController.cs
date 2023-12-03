@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         m_WeaponSlot = new List<Weapon>();
 
         Reset();
-        //SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
+        SetWeapon(BulletManager.eBulletType.BulletType_EnergyBall);
         //SetWeapon(BulletManager.eBulletType.BulletType_Melee);
         //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
         //SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
                     TempWeapon.SetBullet(Bulletmgr.EnergyBall, BulletManager.eBulletType.BulletType_EnergyBall);
 
-                    TempWeapon.SetBulletDamage = 1.0f;
+                    TempWeapon.SetBulletDamage = 5.0f;
                     TempWeapon.SetBulletKnockback = 5.0f;
                     TempWeapon.SetBulletSpeed = 5.0f;
                     TempWeapon.SetBulletLifeTime = 3.0f;

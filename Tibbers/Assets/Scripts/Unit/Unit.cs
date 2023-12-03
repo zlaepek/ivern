@@ -91,24 +91,27 @@ public class Unit : MonoBehaviour
         {
             return;
         }
-        if(m_stStat.fHp_Cur <= 0 )
+        m_stStat.fHp_Cur -= _Damage;
+
+        if (m_stStat.fHp_Cur <= 0 )
         {
             if(gameObject.tag == "tag_Player")
             {
                 return;
             }
-            else
+            else if (gameObject.tag == "tag_Enemy")
             {
                 // 나중에 죽는 애니메이션 불러오고 끝나면 죽게 설정
+                ItemManager.Instance.DropItem( ItemManager.Instance.EXP_Ball, gameObject.transform.position, (int)ItemManager.eItemType.EXP_ball);
                 Death();
             }
         }
+
         if (gameObject.tag == "tag_Player")
         {
             m_isBlinking = true;
             StartCoroutine(BlinkEffect());
         }
-        m_stStat.fHp_Cur -= _Damage;
         
 
         SetKnockback(_fKnockbackForce, _vForcePoint);
