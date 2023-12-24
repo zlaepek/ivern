@@ -11,7 +11,7 @@ public class GoogleLogin : MonoBehaviour
     /* 구글 로그인 버튼을 클릭하면 실행되는 함수 */
     public void OnClickGoogleLoginButton()
     {
-        PlayGamesPlatform.Activate();
+        // PlayGamesPlatform.Activate();
         Social.localUser.Authenticate((bool success) =>
         {
             if (success) //로그인에 성공하면
