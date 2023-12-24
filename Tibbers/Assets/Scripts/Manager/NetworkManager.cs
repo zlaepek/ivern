@@ -26,7 +26,9 @@ public partial class NetworkManager : MonoBehaviour
             {
                 return _instance;
             }
-            return null; 
+            else {
+                return null;
+            }
         }
         private set
         {

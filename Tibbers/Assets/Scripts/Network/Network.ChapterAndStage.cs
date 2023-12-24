@@ -7,7 +7,7 @@ public partial class NetworkManager : MonoBehaviour
     {
         WWWForm wwwForm = new WWWForm();
         string url = serverUrl + "/" + chapter + "/start/v1" + "/" + chapterId;
-        StartCoroutine(Instance.RequestPost(url, wwwForm, CallBackPostChapterStart));
+        StartCoroutine(Instance?.RequestPost(url, wwwForm, CallBackPostChapterStart));
     }
 
     public void CallBackPostChapterStart(string json)
@@ -22,21 +22,21 @@ public partial class NetworkManager : MonoBehaviour
     {
         WWWForm wwwForm = new WWWForm();
         string url = serverUrl + "/" + chapter + "/clear/v1" + "/" + chapterId;
-        StartCoroutine(Instance.RequestPost(url, wwwForm));
+        StartCoroutine(Instance?.RequestPost(url, wwwForm));
     }
 
     public void RequestPostStageStart(int stageId)
     {
         WWWForm wwwForm = new WWWForm();
         string url = serverUrl + "/" + stage + "/start/v1" + "/" + stageId;
-        StartCoroutine(Instance.RequestPost(url, wwwForm));
+        StartCoroutine(Instance?.RequestPost(url, wwwForm));
     }
 
     public void RequestPostStageClear(int stageId, int coin)
     {
         WWWForm wwwForm = new WWWForm();
         string url = serverUrl + "/" + stage + "/clear/v1" + "/" + stageId + "/" + coin;
-        StartCoroutine(Instance.RequestPost(url, wwwForm));
+        StartCoroutine(Instance?.RequestPost(url, wwwForm));
     }
     #endregion
 }
