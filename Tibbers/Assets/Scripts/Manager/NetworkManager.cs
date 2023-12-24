@@ -5,6 +5,10 @@ using UnityEngine.Networking;
 
 public partial class NetworkManager : MonoBehaviour
 {
+
+#if UNITY_EDITOR
+    public bool IsOfflineMode = false;
+#endif
     #region Url Path
     public const string serverUrl = "http://3.34.48.46:8000";
 
