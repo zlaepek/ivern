@@ -447,7 +447,7 @@ RectTransform:
   - {fileID: 3141485731048923960}
   - {fileID: 2809072038246459374}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -557,7 +557,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: dd01af4fe64abd5459b3bf7a793c26e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9dd9338835e51f04c81e6a67fe0601ee, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -662,6 +662,22 @@ PrefabInstance:
     - target: {fileID: 5059446473360042015, guid: 0e9d2191b8be15c4b91c89549b4ab41c, type: 3}
       propertyPath: m_Name
       value: BossFrozenSlider
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438497864934813151, guid: 0e9d2191b8be15c4b91c89549b4ab41c, type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6133144529090027232, guid: 0e9d2191b8be15c4b91c89549b4ab41c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6133144529090027232, guid: 0e9d2191b8be15c4b91c89549b4ab41c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8142825521418354171, guid: 0e9d2191b8be15c4b91c89549b4ab41c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
