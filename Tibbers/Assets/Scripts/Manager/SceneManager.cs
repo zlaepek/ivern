@@ -59,6 +59,8 @@ public class SceneManager : MonoBehaviour
     public void SceneChange_Stage()
     {
         _SceneChange("Scene_Stage");
+        _SceneAdd("UI_Scene_Stage");
+        _SceneAdd("UI_Scene_Setting");
         NetworkManager.Instance?.RequestPostChapterStart(1);
     }
     #endregion
