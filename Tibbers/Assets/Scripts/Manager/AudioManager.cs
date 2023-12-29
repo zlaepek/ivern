@@ -6,6 +6,18 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    #region Static AudioManager
+    private static AudioManager _instance = null;
+    public static AudioManager Instance
+    {
+        get
+        {
+            return _instance;
+
+        }
+    }
+    #endregion
+
     #region VARIABLES
     public AudioSource audioSource;
 
@@ -21,8 +33,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioBank musicBank;
 
     public static AudioSource camAudio;
-    /// Singleton
-    public static AudioManager Instance { get; private set; }
     #endregion
 
     #region LIFE CYCLE
@@ -30,7 +40,7 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
             InitBanks();
             audioSource.outputAudioMixerGroup = bgmMixer;

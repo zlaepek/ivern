@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Static GameManager
+    private static GameManager _instance = null;
+    public static GameManager Instance
     {
-        AudioManager.PlayMusic("Demo");
-    }
+        get
+        {
+            return _instance;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        }
     }
+    #endregion
+
+    #region Life Cycle (Initialize)
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
 
 
 }
