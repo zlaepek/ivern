@@ -6,9 +6,9 @@ using UnityEngine.Networking;
 public partial class NetworkManager : MonoBehaviour
 {
 
-#if UNITY_EDITOR
-    public bool IsOfflineMode = false;
-#endif
+// #if UNITY_EDITOR
+    public bool isOfflineMode = true;
+// #endif
     #region Url Path
     public const string serverUrl = "http://3.34.48.46:8000";
 
@@ -31,6 +31,7 @@ public partial class NetworkManager : MonoBehaviour
                 return _instance;
             }
             else {
+                Debug.Log("오프라인 모드 입니다.");
                 return null;
             }
         }
@@ -50,7 +51,10 @@ public partial class NetworkManager : MonoBehaviour
         {
             _instance = this;
             DontDestroyOnLoad(gameObject);
-            CheckServerLive();
+            if (!isOfflineMode)
+            {
+                CheckServerLive();
+            }
         }
         else
         {
