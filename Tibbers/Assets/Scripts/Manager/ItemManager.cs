@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 인게임 드랍되는 아이템들
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
@@ -108,7 +109,7 @@ public class ItemManager : MonoBehaviour
         Item Temp_Item = Item.GetComponent<Item>();
         Temp_Item.Init(_iType);
 
-        Debug.Log("\n ItemDropPos : " + _vPoint.x + ", " + _vPoint.y + " :: Type : " + Temp_Item.Type);
+        //Debug.Log("\n ItemDropPos : " + _vPoint.x + ", " + _vPoint.y + " :: Type : " + Temp_Item.Type);
     }
 
     private void AddPool(GameObject _Item, int _Type)

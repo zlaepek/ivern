@@ -4,6 +4,19 @@ using UnityEngine;
 
 namespace Structs
 {
+    public struct ExpData
+    {
+        public ulong ulRequire; // 해당 레벨 달성시 필요한 필요량
+        public ulong ulTotal; // 해당 레벨 달성시 누적된 경험치량
+    }
+
+    public struct PlayerGameData
+    {
+        public ulong ulExp_Current;
+        public ulong ulExp_Total;
+
+        public int iLevel;    }
+
     public struct WeaponStat
     {
         // Attack Speed (sec)

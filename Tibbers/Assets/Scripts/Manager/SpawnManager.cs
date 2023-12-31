@@ -153,7 +153,7 @@ public class SpawnManager : MonoBehaviour
         Mon_Mob Temp_Mob = Monster.GetComponent<Mon_Mob>();
         Temp_Mob.Init(1);
 
-        Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
+        //Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }
     private void AddPool(GameObject _Monster)
     {

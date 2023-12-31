@@ -35,7 +35,12 @@ public class Item : MonoBehaviour
             case (int)ItemManager.eItemType.EXP_ball:
                 {
                     // 뭐 경험치 증가 효과 구현
-                    Debug.Log("Get EXP_ball !");
+                    //Debug.Log("Get EXP_ball !");
+
+                    //DataManager.Instance.Get_Exp(Random.Range(0, (int)DataManager.eExpBall_Type.eExpBall_Max));
+                    
+                    DataManager.Instance.Get_Exp((int)DataManager.eExpBall_Type.D);
+
                     gameObject.SetActive(false);
                 }
                 break;

@@ -74,11 +74,13 @@ public class PlayerController : MonoBehaviour
                     TempWeapon.SetAttackDelay = 1.0f;
                     TempWeapon.SetAttackCount = 1;
                     TempWeapon.SetAttackRange = 0.0f;
-                    TempWeapon.SetAttackSpeed = 1.0f / (1.0f); // sec
+                    //TempWeapon.SetAttackSpeed = 1.0f / (1.0f); // sec
+                    TempWeapon.SetAttackSpeed = 1.0f / (0.5f); // sec
 
                     TempWeapon.SetBullet(Bulletmgr.EnergyBall, BulletManager.eBulletType.BulletType_EnergyBall);
 
-                    TempWeapon.SetBulletDamage = 5.0f;
+                    //TempWeapon.SetBulletDamage = 5.0f;
+                    TempWeapon.SetBulletDamage = 10.0f;
                     TempWeapon.SetBulletKnockback = 5.0f;
                     TempWeapon.SetBulletSpeed = 5.0f;
                     TempWeapon.SetBulletLifeTime = 3.0f;
