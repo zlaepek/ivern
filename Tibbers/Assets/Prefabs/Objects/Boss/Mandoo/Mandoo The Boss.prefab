@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 629052594337528201}
   - component: {fileID: 4847001436909014343}
   - component: {fileID: 123110476823767827}
+  - component: {fileID: 1360568311372863258}
   m_Layer: 0
   m_Name: Mandoo The Boss
   m_TagString: tag_Enemy
@@ -267,6 +268,7 @@ MonoBehaviour:
   maxFrozenValue: 30
   currentFrozenValue: 0
   frozenSlider: {fileID: 0}
+  bossUI: {fileID: 0}
   madMandooHeadPrefab: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
   randomMoveDuration: 1
   dashSpeed: 1
@@ -360,3 +362,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.42, y: 0.42}
   m_EdgeRadius: 0
+--- !u!95 &1360568311372863258
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8659793149286639379}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e19031b8c12caa4581721fb653bea9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

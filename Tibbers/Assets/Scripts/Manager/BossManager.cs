@@ -71,7 +71,7 @@ public class BossManager : MonoBehaviour
     ///////// 테스트용 Spawn()
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             Spawn(BossName.Mandoo);
         }
