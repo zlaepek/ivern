@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace Structs
 {
+    // 클라에서 서버로 넘길것
+    /*
+     * 스테이지 클리어시 넘기는것
+     * - 얻은 보물들
+     * - 경험지(전체, 현재) 레벨
+     *
+     */
+    
     public struct ExpData
     {
         public ulong ulRequire; // 해당 레벨 달성시 필요한 필요량
@@ -15,7 +23,8 @@ namespace Structs
         public ulong ulExp_Current;
         public ulong ulExp_Total;
 
-        public int iLevel;    }
+        public int iLevel;    
+    }
 
     public struct WeaponStat
     {

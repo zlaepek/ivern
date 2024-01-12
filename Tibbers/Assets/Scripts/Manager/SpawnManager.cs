@@ -93,17 +93,19 @@ public class SpawnManager : MonoBehaviour
     public GameObject FindCloseMonster(GameObject _Object)
     {
         GameObject Res = null;
+        
+        float fCompare = 0f;
         float fDistance = 10000000.0f;
-        float fCompare = fDistance;
         Vector3 vPoint = _Object.transform.position;
         foreach (GameObject it in MonsterPool)
         {
             if(it.activeSelf == true)
             {
                 fCompare = Vector3.Magnitude(it.transform.position - vPoint);
-                if (fCompare < fDistance)
+                if (fCompare <= fDistance)
                 {
                     Res = it;
+                    fDistance = fCompare;
                 }
             }
         }
@@ -150,6 +152,9 @@ public class SpawnManager : MonoBehaviour
             Monster.SetActive(true);
             Monster.transform.position = _vPoint;
         }
+        InGameUIManager.Instance.SetHpBar(Monster);
+        Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
+        //InGameUIManager.Instance.fPos_Y
         Mon_Mob Temp_Mob = Monster.GetComponent<Mon_Mob>();
         Temp_Mob.Init(1);
 
