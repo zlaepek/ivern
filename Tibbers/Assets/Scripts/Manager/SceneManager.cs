@@ -31,6 +31,7 @@ public class SceneManager : MonoBehaviour
         }
     }
     #endregion
+
     private void _SceneChange(string _strSceneName)
     {
         UnitySceneManager.LoadScene(_strSceneName);

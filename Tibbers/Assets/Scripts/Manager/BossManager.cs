@@ -49,7 +49,26 @@ public class BossManager : MonoBehaviour
     #endregion
 
     // UI
-    public BossUI bossUI = null;
+    private BossUI _bossUI = null;
+
+    public BossUI BossUI
+    {
+        get
+        {
+            if (_bossUI == null)
+            {
+                _bossUI = FindObjectOfType<BossUI>();
+            }
+
+            return _bossUI;
+
+        }
+        set
+        {
+            _bossUI = value;
+        }
+    }
+
 
 
     // [º¸½º]
@@ -79,7 +98,7 @@ public class BossManager : MonoBehaviour
 
     public void Spawn(BossName bossName)
     {
-        bossUI.SpawnNewBoss(bossName);
+        BossUI.SpawnNewBoss(bossName);
         boundary.SpawnNewBoss(PlayerTransform.position);
 
         _currentBossPrefab = bossPrefabs.Find(boss => boss.bossName == bossName).bossPrefab;
@@ -98,7 +117,7 @@ public class BossManager : MonoBehaviour
 
     public void BossClear()
     {
-        bossUI.HideBossUI();
+        BossUI.HideBossUI();
         currentBoss = null;
     }
 

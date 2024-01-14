@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2814274968302060794}
   - component: {fileID: 7907308302500593959}
   m_Layer: 0
-  m_Name: Mandoo Head
+  m_Name: Boss_Mandoo_Head_Prefab
   m_TagString: tag_Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

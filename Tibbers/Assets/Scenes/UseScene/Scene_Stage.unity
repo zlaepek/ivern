@@ -709,11 +709,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 939075507268944369, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
+      propertyPath: bossUI
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1442775748429402366, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
       propertyPath: m_Name
       value: BossManager
       objectReference: {fileID: 0}
     - target: {fileID: 2134543824213926821, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3849343380632875332, guid: 205fe93442f39c1408d3e41b60abcb97, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}

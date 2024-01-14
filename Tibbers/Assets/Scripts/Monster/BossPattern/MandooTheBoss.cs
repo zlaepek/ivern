@@ -30,6 +30,9 @@ public class MandooTheBoss : MonoBehaviour
 
     // UI
     public BossUI bossUI;
+
+    // Animation
+    public Animator animator = null;
     #endregion 변수 선언부
 
     #region 만두 머리
@@ -72,7 +75,7 @@ public class MandooTheBoss : MonoBehaviour
     {
         // get from BossManager
         targetTransform = BossManager.Instance.PlayerTransform;
-        bossUI = BossManager.Instance.bossUI;
+        bossUI = BossManager.Instance.BossUI;
 
         // Unit Init
         unit = GetComponent<Unit>();
@@ -129,6 +132,8 @@ public class MandooTheBoss : MonoBehaviour
         currentMandooState = MANDOO_STATE.FROZEN;
         // 후라이팬 장판 소환
         effectAreaController.SpawnFireArea(targetTransform, transform.parent);
+
+        animator.SetBool("isFrozen", true);
     }
     private void FrozenPattern()
     {
