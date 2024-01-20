@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d862279bf02495f438d34ff8437004d5
+guid: 85a54863a7527df46b3eefd5e31ab6af
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boss_walk_sheet_0
+      name: only_head_idle-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1ca0620624d0004f8c0e2e16a28f2f5
-      internalID: -1396140544
+      spriteID: 714d1b7f8ef63284e8ed7d55f46ee8e6
+      internalID: 1253153178
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_walk_sheet_1
+      name: only_head_idle-Sheet_1
       rect:
         serializedVersion: 2
         x: 128
@@ -158,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1e117c1b31c29fb4e983c6174e7a4004
-      internalID: -137210884
+      spriteID: a1e9f755f39d9854482a1a6a53056149
+      internalID: 731752604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_walk_sheet_2
+      name: only_head_idle-Sheet_2
       rect:
         serializedVersion: 2
         x: 256
@@ -179,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 47801ff6774c0e84a857e4aafc4b56e6
-      internalID: 148675606
+      spriteID: 74f89d373a5410c4aae31fbe012295ee
+      internalID: -1016068006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_walk_sheet_3
+      name: only_head_idle-Sheet_3
       rect:
         serializedVersion: 2
         x: 384
@@ -200,14 +200,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 49d58bfb28eacd240a3a596b674caa61
-      internalID: -822360224
+      spriteID: 04b73c0527ec7fe4f98e2c722846d2fe
+      internalID: -1140610797
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_walk_sheet_4
+      name: only_head_idle-Sheet_4
       rect:
         serializedVersion: 2
         x: 512
@@ -221,71 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a538432fd0105bd4b811e36a41eedc77
-      internalID: 970850092
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boss_walk_sheet_5
-      rect:
-        serializedVersion: 2
-        x: 640
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 518b4d4ccce13ff489c89b8250c383eb
-      internalID: 2087960488
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boss_walk_sheet_6
-      rect:
-        serializedVersion: 2
-        x: 768
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b0baa55e21579314a9c172c8a139e3a3
-      internalID: -223677027
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boss_walk_sheet_7
-      rect:
-        serializedVersion: 2
-        x: 896
-        y: 0
-        width: 128
-        height: 128
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b4fad8e4791cbbc4ba5f929219d66599
-      internalID: 1034070054
+      spriteID: 6aad28c5d0362204b9ef5f7e26279242
+      internalID: -2035907570
       vertices: []
       indices: 
       edges: []
@@ -301,14 +238,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      boss_walk_sheet_0: -1396140544
-      boss_walk_sheet_1: -137210884
-      boss_walk_sheet_2: 148675606
-      boss_walk_sheet_3: -822360224
-      boss_walk_sheet_4: 970850092
-      boss_walk_sheet_5: 2087960488
-      boss_walk_sheet_6: -223677027
-      boss_walk_sheet_7: 1034070054
+      only_head_idle-Sheet_0: 1253153178
+      only_head_idle-Sheet_1: 731752604
+      only_head_idle-Sheet_2: -1016068006
+      only_head_idle-Sheet_3: -1140610797
+      only_head_idle-Sheet_4: -2035907570
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

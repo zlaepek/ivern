@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d816ee521c2c2e044adce44554bb792d
+guid: 529f54f7bc44b254dbd9c56d96b097df
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boss_ice_sheet_0
+      name: boss_ice-sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,14 +137,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8663e63448d9e540846e98530ecd143
-      internalID: 1467327222
+      spriteID: 8eb271a5d3b017c4a917ca658b3aa4f4
+      internalID: -2004171433
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_ice_sheet_1
+      name: boss_ice-sheet_1
       rect:
         serializedVersion: 2
         x: 128
@@ -158,14 +158,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f024226aa2964ef4882b8305d61ac0da
-      internalID: -759006892
+      spriteID: 28b4e43ea1b377b4c94604c954b8d7b1
+      internalID: -1781036247
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_ice_sheet_2
+      name: boss_ice-sheet_2
       rect:
         serializedVersion: 2
         x: 256
@@ -179,14 +179,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 38be8cf3cd4a832449126b3dcf57eefb
-      internalID: -594288941
+      spriteID: ce3c5e78645dfa4429bc80ff4cff2bc3
+      internalID: -808814940
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_ice_sheet_3
+      name: boss_ice-sheet_3
       rect:
         serializedVersion: 2
         x: 384
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 08202feaaabe2de41914c94b9491a4c8
-      internalID: 1740205022
+      spriteID: 3d00a2ee5195a024ba5096f776db82e7
+      internalID: 367194170
       vertices: []
       indices: 
       edges: []
@@ -217,10 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      boss_ice_sheet_0: 1467327222
-      boss_ice_sheet_1: -759006892
-      boss_ice_sheet_2: -594288941
-      boss_ice_sheet_3: 1740205022
+      boss_ice-sheet_0: -2004171433
+      boss_ice-sheet_1: -1781036247
+      boss_ice-sheet_2: -808814940
+      boss_ice-sheet_3: 367194170
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

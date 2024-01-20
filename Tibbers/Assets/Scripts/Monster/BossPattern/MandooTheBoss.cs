@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class MandooTheBoss : MonoBehaviour
 {
-
     #region 변수 선언부
     private enum MANDOO_STATE
     {
@@ -30,9 +29,6 @@ public class MandooTheBoss : MonoBehaviour
 
     // UI
     public BossUI bossUI;
-
-    // Animation
-    public Animator animator = null;
     #endregion 변수 선언부
 
     #region 만두 머리
@@ -63,6 +59,12 @@ public class MandooTheBoss : MonoBehaviour
 
     public GameObject targetPositionMarker = null;
     #endregion MonsterMove 관련 변수 선언부
+
+    #region 애니메이션
+    // Animation
+    public Animator mandooAnimator = null;
+    public Animator mandooHeadAnimator = null;
+    #endregion
 
     #region 장판 변수 선언부
     [SerializeField] private MandooEffectAreaController effectAreaController;
@@ -133,8 +135,10 @@ public class MandooTheBoss : MonoBehaviour
         // 후라이팬 장판 소환
         effectAreaController.SpawnFireArea(targetTransform, transform.parent);
 
-        animator.SetBool("isFrozen", true);
+        // 애니메이션 종료
+        mandooAnimator.SetBool("isFrozen", true);
     }
+
     private void FrozenPattern()
     {
         // 슬라이드 & 냉기 장판
@@ -172,6 +176,10 @@ public class MandooTheBoss : MonoBehaviour
         {
             StopCoroutine(currentAttactCoroutine);
         }
+
+        // 애니메이션 종료
+        mandooAnimator.SetBool("isFrozen", false);
+
         // 장판을 지운다
         effectAreaController.DestroyFireArea();
     }
