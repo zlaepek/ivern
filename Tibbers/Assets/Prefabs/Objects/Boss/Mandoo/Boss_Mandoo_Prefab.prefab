@@ -276,7 +276,8 @@ MonoBehaviour:
   dashDuration: 1
   targetTransform: {fileID: 0}
   targetPositionMarker: {fileID: 7129882270540015921}
-  animator: {fileID: 1360568311372863258}
+  mandooAnimator: {fileID: 1360568311372863258}
+  mandooHeadAnimator: {fileID: 0}
   effectAreaController: {fileID: 0}
 --- !u!50 &629052594337528201
 Rigidbody2D:
