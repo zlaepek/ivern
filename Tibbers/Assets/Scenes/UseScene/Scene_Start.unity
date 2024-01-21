@@ -684,6 +684,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1494444160}
+    - target: {fileID: 1652337543915161249, guid: e9d029850522be1459ac307721b2a4f7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SceneChange_Title
+      objectReference: {fileID: 0}
     - target: {fileID: 3580710405289231265, guid: e9d029850522be1459ac307721b2a4f7, type: 3}
       propertyPath: m_Name
       value: Btn_GameStart

@@ -23,6 +23,10 @@ namespace Structs
         public ulong ulExp_Current;
         public ulong ulExp_Total;
 
+        public ulong ulStageKill;
+
+        public ulong ulTotalKill;
+
         public int iLevel;    
     }
 

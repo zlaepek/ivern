@@ -30,6 +30,15 @@ public class DataManager : MonoBehaviour
 
     public ulong[] ExpBall_Table { get; private set; }
 
+    public void Add_Kill_Score(ulong _ulKill_Score)
+    {
+        stPlayerData.ulStageKill += _ulKill_Score;
+
+        stPlayerData.ulTotalKill += _ulKill_Score;
+
+        Debug.Log("Stage_Kill_Score : " + stPlayerData.ulStageKill);
+    }
+
 #if (__Not_Use__)
     public class GachaItem
     {
@@ -128,7 +137,8 @@ public class DataManager : MonoBehaviour
         if (PlayerData.iLevel >= ExpDataTable.Count)
         {
             stPlayerData.ulExp_Current = 0;
-            stPlayerData.ulExp_Total = ExpDataTable[ExpDataTable.Count - 1].ulTotal;
+            // 임시로 Exp 무한 누적
+            //stPlayerData.ulExp_Total = ExpDataTable[ExpDataTable.Count - 1].ulTotal;
         }
 
         Debug.Log("ExpValue : " + TempA + ", " + " :: Level : " + PlayerData.iLevel + " :: Exp_Cur : " + PlayerData.ulExp_Current + ":: Exp_Total : " + PlayerData.ulExp_Total);

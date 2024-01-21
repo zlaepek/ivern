@@ -7,9 +7,6 @@ public class InGameUIManager : MonoBehaviour
     public GameObject UI_HpBar;
     public static InGameUIManager Instance { get; private set; }
 
-    [SerializeField]
-    public float fPos_Y;
-
     private List<GameObject> HpBarPool;
 
     private void Awake()
@@ -25,7 +22,6 @@ public class InGameUIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        fPos_Y = 1.5f;
     }
 
     public void SetHpBar(GameObject _Object)
@@ -43,7 +39,20 @@ public class InGameUIManager : MonoBehaviour
         }
         HpBar Temp_UI = HpBar.GetComponent<HpBar>();
         Temp_UI.SetTarget(_Object);
-        Temp_UI.Test_Position_Y = fPos_Y;
+
+        if(_Object.CompareTag("tag_Player"))
+        {
+            Temp_UI.SetPosY(1.0f);
+        }
+        else if(_Object.CompareTag("tag_Enemy"))
+        {
+            Temp_UI.SetPosY(1.5f);
+        }
+        else
+        {
+            Temp_UI.SetPosY(1.5f);
+        }
+
         System.String strName = "HP_Bar";
         HpBar.transform.SetParent(FindParent(strName).transform);
     }

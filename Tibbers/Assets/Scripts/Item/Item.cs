@@ -40,7 +40,7 @@ public class Item : MonoBehaviour
                     //DataManager.Instance.Get_Exp(Random.Range(0, (int)DataManager.eExpBall_Type.eExpBall_Max));
                     
                     DataManager.Instance.Get_Exp((int)DataManager.eExpBall_Type.D);
-
+                    
                     gameObject.SetActive(false);
                 }
                 break;

@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour
         //SetWeapon(BulletManager.eBulletType.BulletType_HolyBomb);
         //SetWeapon(BulletManager.eBulletType.BulletType_RuneTracer);
 
+        InGameUIManager.Instance.SetHpBar(gameObject);
+
     }
     private void SetWeapon(BulletManager.eBulletType _BulletType)
     {

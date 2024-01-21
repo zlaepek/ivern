@@ -77,7 +77,7 @@ public class Unit : MonoBehaviour
         m_vForcePoint = _vForcePoint;
     }
 
-    private void Death()
+    public void Death()
     {
         // 사망 애니메이션 + 죽는 처리
 
@@ -103,6 +103,7 @@ public class Unit : MonoBehaviour
             {
                 // 나중에 죽는 애니메이션 불러오고 끝나면 죽게 설정
                 ItemManager.Instance.DropItem( ItemManager.Instance.EXP_Ball, gameObject.transform.position, (int)ItemManager.eItemType.EXP_ball);
+                DataManager.Instance.Add_Kill_Score(1);
                 Death();
             }
         }
@@ -116,9 +117,9 @@ public class Unit : MonoBehaviour
 
         SetKnockback(_fKnockbackForce, _vForcePoint);
         Knockback();
-        Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name);
-        Debug.Log("\nfForce : " + _fKnockbackForce + " ,vPoint : " + _vForcePoint + ", Dmage : "  + _Damage);
-        Debug.Log("\nCurHp : " + m_stStat.fHp_Cur);
+        //Debug.Log(System.Reflection.MethodBase.GetCurrentMethod().Name);
+        //Debug.Log("\nfForce : " + _fKnockbackForce + " ,vPoint : " + _vForcePoint + ", Dmage : "  + _Damage);
+        //Debug.Log("\nCurHp : " + m_stStat.fHp_Cur);
     }
 
     public void ResetHp()

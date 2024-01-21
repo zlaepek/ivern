@@ -6,7 +6,24 @@ public class SpawnManager : MonoBehaviour
 {
     static int iSerial = 0;
     public static SpawnManager Instance { get; private set; }
-    public GameObject Monster_1;
+
+    public enum eMonsterMobType
+    {
+        Test,
+
+        Mob_Egg_Man,
+        Mob_Egg_Man_Tall,
+        Mob_Eye,
+
+        Max,
+    }
+
+    public GameObject Monster_Test;
+    public GameObject Monster_Mob_Egg_Man;
+    public GameObject Monster_Mob_Egg_Man_Tall;
+    public GameObject Monster_Mob_Eye;
+
+    private GameObject[] arrMonster;
 
     private Camera mainCamera;
     private GameObject playerCharacter;
@@ -27,6 +44,14 @@ public class SpawnManager : MonoBehaviour
     private void Awake()
     {
         MonsterPool = new List<GameObject>();
+
+        arrMonster = new GameObject[(int)eMonsterMobType.Max];
+
+        arrMonster[(int)eMonsterMobType.Test] = Monster_Test;
+        arrMonster[(int)eMonsterMobType.Mob_Egg_Man] = Monster_Mob_Egg_Man;
+        arrMonster[(int)eMonsterMobType.Mob_Egg_Man_Tall] = Monster_Mob_Egg_Man_Tall;
+        arrMonster[(int)eMonsterMobType.Mob_Eye] = Monster_Mob_Eye;
+
 
         if (Instance == null)
         {
@@ -55,6 +80,7 @@ public class SpawnManager : MonoBehaviour
             AddPool(iter);
         }
 
+        StartCoroutine(SpawnMonster_Routine());
     }
 
     // Update is called once per frame
@@ -63,9 +89,16 @@ public class SpawnManager : MonoBehaviour
         SetCameraPos();
 
 
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    RandomSpawn((int)eMonsterMobType.Test);
+        //}
+
         if (Input.GetKeyDown(KeyCode.T))
         {
-            RandomSpawn(Monster_1);
+            //RandomSpawn((int)eMonsterMobType.Test);
+            StartCoroutine(SpawnMonster_Routine());
+
         }
     }
 
@@ -138,13 +171,13 @@ public class SpawnManager : MonoBehaviour
         return null;
     }
 
-    private void SpawnObject(GameObject _object, Vector2 _vPoint)
+    private void SpawnObject(int _objectNumber, Vector2 _vPoint)
     {
         GameObject Monster = FindNoActiveMonster();
 
         if( !Monster)
         {
-            Monster = GameObject.Instantiate(_object, _vPoint, Quaternion.identity);
+            Monster = GameObject.Instantiate(arrMonster[_objectNumber], _vPoint, Quaternion.identity);
             AddPool(Monster);
         }
         else
@@ -152,11 +185,14 @@ public class SpawnManager : MonoBehaviour
             Monster.SetActive(true);
             Monster.transform.position = _vPoint;
         }
-        InGameUIManager.Instance.SetHpBar(Monster);
-        Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
+        //InGameUIManager.Instance.SetHpBar(Monster);
+        //Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
+
+
         //InGameUIManager.Instance.fPos_Y
         Mon_Mob Temp_Mob = Monster.GetComponent<Mon_Mob>();
-        Temp_Mob.Init(1);
+        Temp_Mob.Init(_objectNumber);
+        Debug.Log("Type : " + _objectNumber + ", Mass :" + Temp_Mob.Stat.Mass + ", Speed : " + Temp_Mob.Stat.fCurMoveSpeed);
 
         //Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }
@@ -166,7 +202,7 @@ public class SpawnManager : MonoBehaviour
         _Monster.GetComponent<Mon_Mob>().SerialNumber = iSerial;
         ++iSerial;
     }
-    private void RandomSpawn(GameObject _object)
+    private void RandomSpawn(int _objectNumber)
     {
         // 실수 min , max 모두포함
         // 정수 max 제외
@@ -195,6 +231,38 @@ public class SpawnManager : MonoBehaviour
                 break;
         }
 
-        SpawnObject(_object, vSpawnPoint);
+        SpawnObject(_objectNumber, vSpawnPoint);
+    }
+
+    IEnumerator SpawnMonster_Routine()
+    {
+        float fTime = 1.0f;
+        ulong ulCheck_Score = 5;
+
+        while (true)
+        {
+            // 플레이어 킬수가 정해진 만큼 킬하면 정지
+            if (ulCheck_Score <= DataManager.Instance.PlayerData.ulStageKill)
+            {
+                GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
+
+                foreach(GameObject iter in Monsters)
+                {
+                    iter.GetComponent<Unit>().Death();
+                }
+
+
+                BossManager.Instance.Spawn(BossName.Mandoo);
+                yield break;
+            }
+
+            yield return new WaitForSeconds(fTime); // 1초 마다 스폰
+
+            int iRand = Random.Range((int)eMonsterMobType.Mob_Egg_Man, (int)eMonsterMobType.Max);
+
+            RandomSpawn(iRand);
+
+            
+        }
     }
 }

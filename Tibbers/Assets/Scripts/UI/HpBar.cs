@@ -6,12 +6,11 @@ using UnityEngine.UI;
 // UI 에 쓰이는 HP Bar 
 public class HpBar : MonoBehaviour
 {
-    [SerializeField]
-    public float Test_Position_Y = 0f;
-
     private GameObject TargetObject;
     private Unit TargetUnit;
     private Image BarImage;
+
+    private float fPosY;
 
     public void SetTarget(GameObject _Target)
     {
@@ -19,6 +18,11 @@ public class HpBar : MonoBehaviour
         TargetUnit = _Target.GetComponent<Unit>();
 
         BarImage = GetComponent<Image>();
+    }
+
+    public void SetPosY(float _fPosY)
+    {
+        fPosY = _fPosY;
     }
 
     // Start is called before the first frame update
@@ -45,7 +49,7 @@ public class HpBar : MonoBehaviour
         //Vector3 screenPos = Camera.main.WorldToScreenPoint(monsterHead.position + Vector3.up * 2f); // 몬스터 머리에서 약간 위로 올려줌
         //hpBarUI.position = screenPos;
 
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(TargetObject.transform.position + Vector3.up * Test_Position_Y); // 몬스터 머리에서 약간 위로 올려줌
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(TargetObject.transform.position + Vector3.up * fPosY); // 몬스터 머리에서 약간 위로 올려줌
         transform.position = screenPos;
     }
 

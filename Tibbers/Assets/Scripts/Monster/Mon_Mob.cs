@@ -10,6 +10,7 @@ public class Mon_Mob : MonoBehaviour
     private GameObject playerCharacter;
 
     private Unit m_Unit;
+    public Unit Stat { get { return m_Unit; } private set { } }
     // Start is called before the first frame update
     void Start()
     {
@@ -42,10 +43,48 @@ public class Mon_Mob : MonoBehaviour
         playerCharacter = GameObject.FindGameObjectWithTag("tag_Player");
         m_Unit = GetComponent<Unit>();
 
-        m_Unit.m_stStat.fDamage_Base = 2.0f;
-        m_Unit.m_stStat.fHp_Base = 10.0f;
-        m_Unit.m_stStat.fMoveSpeed_Base = 1.0f * 0.1f;
+        switch (_iType)
+        {
+            case (int)SpawnManager.eMonsterMobType.Test:
+                {
+                    m_Unit.m_stStat.fDamage_Base = 2.0f;
+                    m_Unit.m_stStat.fHp_Base = 10.0f;
+                    m_Unit.m_stStat.fMoveSpeed_Base = 1.0f * 0.1f;
+                    m_Unit.Mass = 1.0f;
+                }
+                break;
+
+            case (int)SpawnManager.eMonsterMobType.Mob_Egg_Man:
+                {
+                    m_Unit.m_stStat.fDamage_Base = 2.0f;
+                    m_Unit.m_stStat.fHp_Base = 15.0f;
+                    m_Unit.m_stStat.fMoveSpeed_Base = 0.8f * 0.1f;
+                    m_Unit.Mass = 4.0f;
+                }
+                break;
+
+            case (int)SpawnManager.eMonsterMobType.Mob_Egg_Man_Tall:
+                {
+                    m_Unit.m_stStat.fDamage_Base = 4.0f;
+                    m_Unit.m_stStat.fHp_Base = 10.0f;
+                    m_Unit.m_stStat.fMoveSpeed_Base = 1.0f * 0.1f;
+                    m_Unit.Mass = 1.0f;
+                }
+                break;
+
+            case (int)SpawnManager.eMonsterMobType.Mob_Eye:
+                {
+                    m_Unit.m_stStat.fDamage_Base = 0.5f;
+                    m_Unit.m_stStat.fHp_Base = 6.0f;
+                    m_Unit.m_stStat.fMoveSpeed_Base = 3.0f * 0.1f;
+                    m_Unit.Mass = 0.5f;
+                }
+                break;
+
+        }
+
         m_Unit.ResetHp();
+        GetComponent<Rigidbody2D>().mass = m_Unit.Mass;
     }
 
 
