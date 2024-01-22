@@ -107,11 +107,13 @@ public class BossManager : MonoBehaviour
 
     public IEnumerator InstantiateBossPrefab()
     {
+        spawnPositionMarker.transform.position = _playerTransform.position;
         spawnPositionMarker.SetActive(true);
         yield return new WaitForSeconds(1.0f);
+
         spawnPositionMarker.SetActive(false);
         currentBoss = Instantiate(_currentBossPrefab);
-
+        currentBoss.transform.position = spawnPositionMarker.transform.position;
         yield return null;
     }
 

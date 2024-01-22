@@ -197,6 +197,7 @@ public class MandooTheBoss : MonoBehaviour
         currentMandooState = MANDOO_STATE.MAD;
         // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
+        // 만두 머리 애니메이션
         mandooHeadAnimator = madMandooHead.GetComponent<Animator>();
     }
     private void MadPattern()
