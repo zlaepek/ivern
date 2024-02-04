@@ -25,7 +25,17 @@ public class MandooTheBoss : MonoBehaviour
     public float maxFrozenValue = 30f;
     public float currentFrozenValue;
 
-    public Slider frozenSlider;
+    public Slider FrozenSlider
+    {
+        get
+        {
+            return bossUI.bossFrozenSlider;
+        }
+        set
+        {
+            bossUI.bossFrozenSlider = value;
+        }
+    }
 
     // UI
     public BossUI bossUI;
@@ -36,7 +46,7 @@ public class MandooTheBoss : MonoBehaviour
     private GameObject madMandooHead = null;
 
     private Coroutine madMandooHeadCoroutine = null;
-    private int mandooBodyJumpCount = 0;
+    private int mandooBodyDashCount = 0;
     #endregion
 
     #region MonsterMove 관련 변수 선언부
@@ -60,26 +70,15 @@ public class MandooTheBoss : MonoBehaviour
     public GameObject targetPositionMarker = null;
     #endregion MonsterMove 관련 변수 선언부
 
-    #region 애니메이션
-    // Animation
-    public Animator mandooAnimator = null;
-    public Animator mandooHeadAnimator = null;
-    #endregion
+    public MandooAnimation mandooAnimation = null;
 
     #region 장판 변수 선언부
     [SerializeField] private MandooEffectAreaController effectAreaController;
     #endregion
 
     #region 라이프 사이클
-
-
-    private void Start()
+    private void InitializeUnitValues()
     {
-        // get from BossManager
-        targetTransform = BossManager.Instance.PlayerTransform;
-        bossUI = BossManager.Instance.BossUI;
-
-        // Unit Init
         unit = GetComponent<Unit>();
 
         unit.m_stStat.fDamage_Base = 2.0f;
@@ -90,12 +89,15 @@ public class MandooTheBoss : MonoBehaviour
         unit.m_stStat.fMoveSpeed_Base = 1.0f;
 
         unit.ResetHp();
+    }
 
-        // Frozen Init
-        frozenSlider = bossUI.bossFrozenSlider;
-        bossUI.InitFrozenSlider(0f, maxFrozenValue);
-        currentFrozenValue = maxFrozenValue;
-        frozenSlider.value = currentFrozenValue;
+    private void Start()
+    {
+        // Get from BossManager
+        targetTransform = BossManager.Instance.PlayerTransform;
+        bossUI = BossManager.Instance.BossUI;
+
+        InitializeUnitValues();
 
         // Move Init
         monsterMove = new MonsterMove();
@@ -128,45 +130,8 @@ public class MandooTheBoss : MonoBehaviour
     }
     #endregion 라이프 사이클
 
-    #region Frozen
-    private void FrozenInit()
-    {
-        currentMandooState = MANDOO_STATE.FROZEN;
-        // 후라이팬 장판 소환
-        effectAreaController.SpawnFireArea(targetTransform, transform.parent);
-
-        // 애니메이션 종료
-        mandooAnimator.SetBool("isFrozen", true);
-    }
-
-    private void FrozenPattern()
-    {
-        // 슬라이드 & 냉기 장판
-        if (currentTime > dashInterval)
-        {
-            Vector3 targetDirection = monsterMove.SetDashPosition(transform, targetTransform);
-            if (currentMoveCoroutine != null)
-            {
-                StopCoroutine(currentMoveCoroutine);
-            }
-            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
-            if (currentAttactCoroutine != null)
-            {
-                StopCoroutine(currentAttactCoroutine);
-            }
-            currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
-            currentTime = 0;
-        }
-
-        // 다 녹았을 때
-        if (currentFrozenValue <= 0f)
-        {
-            FrozenEnd();
-            NormalInit();
-        }
-    }
-
-    private void FrozenEnd()
+    #region Coroutine
+    private void ResetCoroutine()
     {
         if (currentMoveCoroutine != null)
         {
@@ -176,9 +141,61 @@ public class MandooTheBoss : MonoBehaviour
         {
             StopCoroutine(currentAttactCoroutine);
         }
+        if (madMandooHeadCoroutine != null)
+        {
+            StopCoroutine(madMandooHeadCoroutine);
+        }
+    }
+    #endregion
+
+    #region Frozen
+    private void FrozenInit()
+    {
+        // Value
+        currentFrozenValue = maxFrozenValue;
+        bossUI.InitFrozenSlider(0f, maxFrozenValue);
+
+        currentMandooState = MANDOO_STATE.FROZEN;
+        
+        effectAreaController.SpawnFireArea(targetTransform, transform.parent);
+
+        mandooAnimation.FrozenAnimation(true);
+    }
+
+    private void FrozenPattern()
+    {
+        if (currentTime > dashInterval)
+        {
+            Vector3 targetDirection = monsterMove.SetDashPosition(transform, targetTransform);
+
+            if (currentMoveCoroutine != null)
+            {
+                StopCoroutine(currentMoveCoroutine);
+            }
+            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
+
+            if (currentAttactCoroutine != null)
+            {
+                StopCoroutine(currentAttactCoroutine);
+            }
+            currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
+
+            currentTime = 0;
+        }
+
+        if (currentFrozenValue <= 0f)
+        {
+            FrozenEnd();
+            NormalInit();
+        }
+    }
+
+    private void FrozenEnd()
+    {
+        ResetCoroutine();
 
         // 애니메이션 종료
-        mandooAnimator.SetBool("isFrozen", false);
+        mandooAnimation.FrozenAnimation(false);
 
         // 장판을 지운다
         effectAreaController.DestroyFireArea();
@@ -187,7 +204,7 @@ public class MandooTheBoss : MonoBehaviour
     public void GetMelt(float value)
     {
         currentFrozenValue -= value;
-        frozenSlider.value = currentFrozenValue;
+        FrozenSlider.value = currentFrozenValue;
     }
     #endregion
 
@@ -195,25 +212,50 @@ public class MandooTheBoss : MonoBehaviour
     private void MadInit()
     {
         currentMandooState = MANDOO_STATE.MAD;
+
+        ThrowHead();
+
+        mandooAnimation.StartMad(madMandooHead);
+    }
+
+    private void ThrowHead()
+    {
+        // 던지기 애니메이션
+        // 머리 없음 만두 던짐
         // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
-        // 만두 머리 애니메이션
-        mandooHeadAnimator = madMandooHead.GetComponent<Animator>();
     }
+
+    private void MergeHead()
+    {
+
+    }
+
+    private void RandomBodyDash()
+    {
+        if (currentMoveCoroutine != null)
+        {
+            StopCoroutine(currentMoveCoroutine);
+        }
+        currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, transform));
+        currentTime = 0;
+        mandooBodyDashCount = 0;
+    }
+
+    private void MandooHeadJump()
+    {
+
+    }
+
     private void MadPattern()
     {
         // (3번의 돌진 후) 점프
-        if (mandooBodyJumpCount > 3 && currentTime > dashInterval)
+        if (mandooBodyDashCount > 3 && currentTime > dashInterval)
         {
-            if (currentMoveCoroutine != null)
-            {
-                StopCoroutine(currentMoveCoroutine);
-            }
-            currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, transform));
-            currentTime = 0;
-            mandooBodyJumpCount = 0;
+            RandomBodyDash();
         }
-        // 머리 랜덤 방향 돌진
+
+        // 머리 랜덤 방향 점프
         else if (currentTime > dashInterval)
         {
             if (madMandooHeadCoroutine != null)
@@ -224,14 +266,13 @@ public class MandooTheBoss : MonoBehaviour
             {
                 madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
                 currentTime = 0;
-                mandooBodyJumpCount++;
+                mandooBodyDashCount++;
             }
             else
             {
                 MadInit();
             }
         }
-
 
         //TODO: 종료 상태 결정
         if (unit.m_stStat.fHp_Cur == 30f) // hp가 일정 깎였을 때 
@@ -249,18 +290,8 @@ public class MandooTheBoss : MonoBehaviour
 
     private void MadEnd()
     {
-        if (currentMoveCoroutine != null)
-        {
-            StopCoroutine(currentMoveCoroutine);
-        }
-        if (madMandooHeadCoroutine != null)
-        {
-            StopCoroutine(madMandooHeadCoroutine);
-        }
-        if (currentAttactCoroutine != null)
-        {
-            StopCoroutine(currentAttactCoroutine);
-        }
+        ResetCoroutine();
+
         Destroy(madMandooHead);
     }
     #endregion
@@ -273,11 +304,9 @@ public class MandooTheBoss : MonoBehaviour
 
     private void NormalPattern()
     {
-        // 이동
         monsterMove.FollowTarget(unit.fCurMoveSpeed, transform, targetTransform);
 
         //TODO: 탄환 던지기
-
         if (unit.m_stStat.fHp_Cur == 50) // hp가 일정 깎였을 때 => 광란패턴
         {
             NormalEnd();
@@ -289,16 +318,10 @@ public class MandooTheBoss : MonoBehaviour
             Dead();
         }
     }
+
     private void NormalEnd()
     {
-        if (currentMoveCoroutine != null)
-        {
-            StopCoroutine(currentMoveCoroutine);
-        }
-        if (currentAttactCoroutine != null)
-        {
-            StopCoroutine(currentAttactCoroutine);
-        }
+        ResetCoroutine();
     }
     #endregion
 

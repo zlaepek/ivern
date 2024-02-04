@@ -108,4 +108,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 1.0833334
+    functionName: JumpEnd
+    data: 
+    objectReferenceParameter: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

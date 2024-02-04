@@ -14,42 +14,8 @@ public class EffectArea : MonoBehaviour
 {
     public EffectAreaType thisEffectAreaType = EffectAreaType.None;
 
-    private float playerDamageTime;
-    private float enemyDamageTime;
-
-    private void Start() {
-        
-    }
-    //#region Collision & Trigger
-    //private void OnCollisionEnter2D(Collision2D collision) {
-
-    //    if (collision.collider.CompareTag("tag_Enemy")) {
-    //        switch (thisEffectAreaType) {
-    //            case EffectAreaType.Fire:
-    //                FireAreaEnterMeltMandoo(collision);
-    //                enemyDamageTime = 0;
-    //                break;
-    //        }
-    //    }
-    //}
-
-    //private void OnCollisionStay2D(Collision2D collision) {
-
-    //    if (collision.collider.CompareTag("tag_Enemy")) {
-    //        switch (thisEffectAreaType) {
-    //            case EffectAreaType.Fire:
-    //                FireAreaStayMeltMandoo(collision);
-    //                break;
-    //        }
-    //    } else if (collision.collider.CompareTag("tag_Player")) {
-    //        switch (thisEffectAreaType) {
-    //            case EffectAreaType.Fire:
-    //                FireAreaStayAttackPlayer(collision);
-    //                break;
-    //        }
-    //    }
-    //}
-    //#endregion
+    private float fireDotDamage = 0.1f;
+    private float fireEnterDamage = 5f;
 
     #region  Trigger
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -57,7 +23,6 @@ public class EffectArea : MonoBehaviour
             switch (thisEffectAreaType) {
                 case EffectAreaType.Fire:
                     FireAreaEnterMeltMandoo(collision);
-                    enemyDamageTime = 0;
                     break;
             }
         }
@@ -83,18 +48,22 @@ public class EffectArea : MonoBehaviour
 
     #region damage methods
     public void FireAreaStayMeltMandoo(Collider2D collision) {
-        //TODO: 만두가 부딪혔을 때 (얼음 게이지를 깐다)
-        // 들어섰을 때 훅 까고 
-        collision.GetComponent<MandooTheBoss>().GetMelt(0.1f);
+        MandooTheBoss mandooTheBossTemp = collision.GetComponent<MandooTheBoss>();
+        if (mandooTheBossTemp != null)
+        {
+            mandooTheBossTemp.GetMelt(fireDotDamage);
+        }
     }
     public void FireAreaEnterMeltMandoo(Collider2D collision) {
-
-        collision.GetComponent<MandooTheBoss>().GetMelt(5f);
+        MandooTheBoss mandooTheBossTemp = collision.GetComponent<MandooTheBoss>();
+        if (mandooTheBossTemp != null)
+        {
+            mandooTheBossTemp.GetMelt(fireEnterDamage);
+        }
     }
 
     public void FireAreaStayAttackPlayer(Collider2D collision) {
-        // TODO: 플레이어가 부딪혔을 때 (도트뎀을 넣는다)
-        // collision.GetComponent<Unit>().GetDamage(0.01f);
+        collision.gameObject.GetComponent<Unit>().GetDamage(fireDotDamage);
     }
 
     public void IceAreaSlowPlayer(Collider2D collision) {

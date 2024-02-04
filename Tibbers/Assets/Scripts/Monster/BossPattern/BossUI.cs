@@ -4,13 +4,16 @@ using UnityEngine.UI;
 
 public class BossUI : MonoBehaviour
 {
+    #region variables
     // common
     public TMP_Text bossNameText;
     public Slider bossHpSlider;
 
     // specific
     public Slider bossFrozenSlider;
+    #endregion
 
+    #region common
     public void SpawnNewBoss(BossName bossName)
     {
         bossNameText.gameObject.SetActive(true);
@@ -41,8 +44,9 @@ public class BossUI : MonoBehaviour
         bossHpSlider.maxValue = value;
         bossHpSlider.value = value;
     }
+    #endregion
 
-    #region
+    #region specific
     public void UpdateFrozenSlider(float value)
     {
         bossFrozenSlider.value = value;
