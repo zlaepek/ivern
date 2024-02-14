@@ -80,7 +80,7 @@ public class SpawnManager : MonoBehaviour
             AddPool(iter);
         }
 
-        StartCoroutine(SpawnMonster_Routine());
+        //StartCoroutine(SpawnMonster_Routine());
     }
 
     // Update is called once per frame
@@ -97,7 +97,7 @@ public class SpawnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             //RandomSpawn((int)eMonsterMobType.Test);
-            StartCoroutine(SpawnMonster_Routine());
+            //StartCoroutine(SpawnMonster_Routine());
 
         }
     }

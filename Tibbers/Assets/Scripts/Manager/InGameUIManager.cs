@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InGameUIManager : MonoBehaviour
 {
+    public GameObject oBackground; // 조이스틱 배경 오브젝트
+
     public GameObject UI_HpBar;
     public static InGameUIManager Instance { get; private set; }
 
@@ -22,6 +24,11 @@ public class InGameUIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void HideUI_Joystick()
+    {
+        oBackground.SetActive(false);
     }
 
     public void SetHpBar(GameObject _Object)
@@ -87,15 +94,60 @@ public class InGameUIManager : MonoBehaviour
         return Parent;
     }
 
+
+    private void MoveUI()
+    {
+        switch (Application.platform)
+        {
+            case RuntimePlatform.Android:
+            case RuntimePlatform.IPhonePlayer:
+                {
+                    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        if (oBackground != null)
+                        {
+                            oBackground.SetActive(true);
+                        }
+
+                        // 터치된 위치를 가져옵니다.
+                        Vector2 touchPosition = Input.GetTouch(0).position;
+
+                        // 터치된 위치를 World 좌표로 변환합니다.
+                        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(touchPosition);
+                        worldPosition.z = 0f; // UI가 카메라 앞에 위치하므로 z 축을 조정합니다.
+
+                        // UI를 터치된 위치로 이동시킵니다.
+                        oBackground.GetComponent<RectTransform>().position = worldPosition;
+                    }
+                }
+                break;
+            default:
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (oBackground != null)
+                        {
+                            oBackground.SetActive(true);
+                        }
+
+                        ///////////////
+                        oBackground.GetComponent<RectTransform>().position = Input.mousePosition;
+                    }
+                }
+                break;
+        }
+
+
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        HideUI_Joystick();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        MoveUI();
     }
 }

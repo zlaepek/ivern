@@ -11,7 +11,7 @@ namespace Structs
      * - 경험지(전체, 현재) 레벨
      *
      */
-    
+
     public struct ExpData
     {
         public ulong ulRequire; // 해당 레벨 달성시 필요한 필요량
@@ -27,18 +27,18 @@ namespace Structs
 
         public ulong ulTotalKill;
 
-        public int iLevel;    
+        public int iLevel;
     }
 
     public struct WeaponStat
     {
         // Attack Speed (sec)
-        public float fAttackSpeed; 
+        public float fAttackSpeed;
         public int iAttackCount; // 공격 횟수
         public float fAttackRange;
         public float fAttackDelay; // 공격 속도 (초단위)
     }
-    
+
     public struct BulletStat
     {
         public float fBulletDamage;
@@ -47,7 +47,9 @@ namespace Structs
         // -1 이면 애니메이션 종료시 파괴
         // == -1 End Anim
         public float fLifeTime;
-        public uint  nPierce;
+        public uint nPierce;
+
+        public Vector3 vScale;
     }
 
     public struct UnitStat
@@ -69,6 +71,44 @@ namespace Structs
         public float fAttackSpeed_DeBuf;
     }
 
+    public struct OutGameStatData_Value
+    {
+        // 한글 이름	Name	step
+        //공격력 Damage  5
+        public float fDamage;
+        //체력 Health  5
+        public float fHealth;
+        //공격 횟수   Attack_Count 	2
+        public int iAttack_Count;
+        //공격 속도 - 빈도 Attack_Speed    5
+        public float fAttack_Speed;
+        //이동 속도   Move_Speed 	5
+        public float fMove_Speed;
+        //투사체 속도  Projectile_Speed 	5
+        public float fProjectile_Speed;
+        //투사체 크기  Projectile_Scale 	2
+        public float fProjectile_Scale;
+    }
+
+    public struct OutGameStatData
+    {
+        // 한글 이름	Name	step
+        //공격력 Damage  5
+        public byte nDamage;
+        //체력 Health  5
+        public byte nHealth;
+        //공격 횟수   Attack_Count 	2
+        public byte nAttack_Count;
+        //공격 속도 - 빈도 Attack_Speed    5
+        public byte nAttack_Speed;
+        //이동 속도   Move_Speed 	5
+        public byte nMove_Speed;
+        //투사체 속도  Projectile_Speed 	5
+        public byte nProjectile_Speed;
+        //투사체 크기  Projectile_Scale 	2
+        public byte nProjectile_Scale;
+
+    }
     //class Monster
     //{
 

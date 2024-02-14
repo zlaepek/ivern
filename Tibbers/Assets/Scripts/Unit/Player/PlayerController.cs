@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 m_vMovement;
     private Vector2 m_vLastDir;
 
+    public RectTransform background; // 조이스틱 배경 이미지
+    public RectTransform joystick;   // 조이스틱 이미지
+
     private Animator m_Animator;
     private SpriteRenderer m_SpriteRenderer;
     private Rigidbody2D m_RigidBody;
@@ -314,18 +317,46 @@ public class PlayerController : MonoBehaviour
     {
         m_fHorizontal = m_fVertical = 0;
 
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
+        //switch (Application.platform)
+        //{
+        //    case RuntimePlatform.Android:
+        //    case RuntimePlatform.IPhonePlayer:
+        //        {
 
-        m_vTempNormal.x = m_fHorizontal;
-        m_vTempNormal.y = m_fVertical;
+        //        }
+        //        break;
+        //    default:
+        //        {
+        //            m_fHorizontal = Input.GetAxis("Horizontal");
+        //            m_fVertical = Input.GetAxis("Vertical");
 
-        m_vControlDir = m_vTempNormal.normalized;
+        //            Debug.Log("This code is intended for Mobile platforms.");
+        //        }
+        //        break;
+        //}
+
+        //m_vControlDir
+        // temp Move 
+        m_vControlDir = JoyStickController.Instance.InputDirection;
+
+        // Origin Move
+        //m_fHorizontal = Input.GetAxis("Horizontal");
+        //m_fVertical = Input.GetAxis("Vertical");
+
+
+        //m_vTempNormal.x = m_fHorizontal;
+        //m_vTempNormal.y = m_fVertical;
+
+        //m_vControlDir = m_vTempNormal.normalized;
+
+
+
         if(m_vLastDir != m_vControlDir && m_vControlDir != Vector2.zero)
         {
             m_vLastDir = m_vControlDir;
         }
     }
+
 
     private void CharacterMove()
     {

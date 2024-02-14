@@ -17,7 +17,12 @@ public class Bullet : MonoBehaviour
     private Animator m_Animator;
 
     private float fTickDamage;
+
+    private Vector3 Basic_Scale;
     
+    private float Out_Projectile_Speed;
+    private float Out_Projectile_Scale;
+
     private BulletManager.eBulletType m_eType;
 
     public float m_fKnockbackForce { get { return m_stStat.fKnockbackForce;  } set { m_stStat.fKnockbackForce = value; } }
@@ -25,6 +30,8 @@ public class Bullet : MonoBehaviour
     public float m_fBulletDamage { get { return m_stStat.fBulletDamage; } set { m_stStat.fBulletDamage = value; } }
     public float m_fLifeTime { get { return m_stStat.fLifeTime; } set { m_stStat.fLifeTime = value; } }
     public uint m_nPierce { get { return m_stStat.nPierce; } set { m_stStat.nPierce = value; } }
+    public Vector3 m_vScale { get { return m_stStat.vScale; } set { m_stStat.vScale = value; } }
+
     private void RotateBullet()
     {
         float fAngle = Mathf.Atan2(m_vDir.y, m_vDir.x) * Mathf.Rad2Deg;
@@ -116,6 +123,8 @@ public class Bullet : MonoBehaviour
         //m_stStat.fLifeTime = 3.0f;
 
         fTickDamage = 0.0f;
+
+        Basic_Scale = transform.localScale;
 
         if(m_stStat.fLifeTime > 0.0f)
         {
