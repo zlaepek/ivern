@@ -8,7 +8,7 @@ public class MandooEffectAreaController : MonoBehaviour
     private List<GameObject> fireAreaObjectList = new List<GameObject>();
 
     public float iceAreaSpawnFrequency = 20f;
-    private float iceDuration = 5.0f;
+    private float _iceDuration = 5.0f;
     #endregion
 
     #region MANDOO (ICE, FIRE)
@@ -17,7 +17,7 @@ public class MandooEffectAreaController : MonoBehaviour
         for (int i = 0; i < dashDuration * dashSpeed * iceAreaSpawnFrequency; i++) {
             GameObject spawnedIceArea = Instantiate(EffectAreaManager.instance.iceArea, thisTransform.position, thisTransform.rotation);
             spawnedIceArea.transform.parent = thisTransform.parent;
-            Destroy(spawnedIceArea, iceDuration);
+            Destroy(spawnedIceArea, _iceDuration);
             yield return new WaitForSeconds(1 / (dashSpeed * iceAreaSpawnFrequency));
         }
 

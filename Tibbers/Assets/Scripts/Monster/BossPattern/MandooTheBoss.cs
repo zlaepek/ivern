@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +16,12 @@ public class MandooTheBoss : MonoBehaviour
     [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
 
     // Coroutine
-    private Coroutine currentMoveCoroutine = null;
-    private Coroutine currentAttactCoroutine = null;
+    private Coroutine _currentMoveCoroutine = null;
+    private Coroutine _currentAttactCoroutine = null;
 
     // Unit
-    private Unit unit;
+    private Unit _unit;
+    private CircleCollider2D _mandooCollider;
 
     // Frozen Value
     public float maxFrozenValue = 30f;
@@ -79,16 +81,16 @@ public class MandooTheBoss : MonoBehaviour
     #region 라이프 사이클
     private void InitializeUnitValues()
     {
-        unit = GetComponent<Unit>();
+        _unit = GetComponent<Unit>();
 
-        unit.m_stStat.fDamage_Base = 2.0f;
+        _unit.m_stStat.fDamage_Base = 2.0f;
 
-        unit.m_stStat.fHp_Base = 100.0f;
-        bossUI.SetMaxHP(unit.m_stStat.fHp_Base);
+        _unit.m_stStat.fHp_Base = 100.0f;
+        bossUI.SetMaxHP(_unit.m_stStat.fHp_Base);
 
-        unit.m_stStat.fMoveSpeed_Base = 1.0f;
+        _unit.m_stStat.fMoveSpeed_Base = 1.0f;
 
-        unit.ResetHp();
+        _unit.ResetHp();
     }
 
     private void Start()
@@ -111,7 +113,7 @@ public class MandooTheBoss : MonoBehaviour
     private void FixedUpdate()
     {
         currentTime += Time.fixedDeltaTime;
-        bossUI.UpdateHPSlider(unit.m_stStat.fHp_Cur);
+        bossUI.UpdateHPSlider(_unit.m_stStat.fHp_Cur);
         switch (currentMandooState)
         {
             case MANDOO_STATE.FROZEN:
@@ -133,13 +135,13 @@ public class MandooTheBoss : MonoBehaviour
     #region Coroutine
     private void ResetCoroutine()
     {
-        if (currentMoveCoroutine != null)
+        if (_currentMoveCoroutine != null)
         {
-            StopCoroutine(currentMoveCoroutine);
+            StopCoroutine(_currentMoveCoroutine);
         }
-        if (currentAttactCoroutine != null)
+        if (_currentAttactCoroutine != null)
         {
-            StopCoroutine(currentAttactCoroutine);
+            StopCoroutine(_currentAttactCoroutine);
         }
         if (madMandooHeadCoroutine != null)
         {
@@ -168,17 +170,17 @@ public class MandooTheBoss : MonoBehaviour
         {
             Vector3 targetDirection = monsterMove.SetDashPosition(transform, targetTransform);
 
-            if (currentMoveCoroutine != null)
+            if (_currentMoveCoroutine != null)
             {
-                StopCoroutine(currentMoveCoroutine);
+                StopCoroutine(_currentMoveCoroutine);
             }
-            currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
+            _currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
 
-            if (currentAttactCoroutine != null)
+            if (_currentAttactCoroutine != null)
             {
-                StopCoroutine(currentAttactCoroutine);
+                StopCoroutine(_currentAttactCoroutine);
             }
-            currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
+            _currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
 
             currentTime = 0;
         }
@@ -224,8 +226,13 @@ public class MandooTheBoss : MonoBehaviour
         // 머리 없음 만두 던짐
         // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
+        madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
     }
 
+    private IEnumerator HeadInitialMove() {
+
+        yield break;
+    }
     private void MergeHead()
     {
 
@@ -233,11 +240,11 @@ public class MandooTheBoss : MonoBehaviour
 
     private void RandomBodyDash()
     {
-        if (currentMoveCoroutine != null)
+        if (_currentMoveCoroutine != null)
         {
-            StopCoroutine(currentMoveCoroutine);
+            StopCoroutine(_currentMoveCoroutine);
         }
-        currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(targetTransform, transform));
+        _currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(_mandooCollider, targetTransform, transform, dashSpeed, dashDuration));
         currentTime = 0;
         mandooBodyDashCount = 0;
     }
@@ -264,7 +271,7 @@ public class MandooTheBoss : MonoBehaviour
             }
             if (madMandooHead != null)
             {
-                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, unit.fCurMoveSpeed, randomMoveDuration));
+                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
                 currentTime = 0;
                 mandooBodyDashCount++;
             }
@@ -275,12 +282,12 @@ public class MandooTheBoss : MonoBehaviour
         }
 
         //TODO: 종료 상태 결정
-        if (unit.m_stStat.fHp_Cur == 30f) // hp가 일정 깎였을 때 
+        if (_unit.m_stStat.fHp_Cur == 30f) // hp가 일정 깎였을 때 
         {
             MadEnd();
             NormalInit();
         }
-        if (unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
+        if (_unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
         {
             MadEnd();
             Dead();
@@ -304,15 +311,22 @@ public class MandooTheBoss : MonoBehaviour
 
     private void NormalPattern()
     {
-        monsterMove.FollowTarget(unit.fCurMoveSpeed, transform, targetTransform);
+        monsterMove.FollowTarget(_unit.fCurMoveSpeed, transform, targetTransform);
 
+        currentTime += Time.deltaTime;
         //TODO: 탄환 던지기
-        if (unit.m_stStat.fHp_Cur == 50) // hp가 일정 깎였을 때 => 광란패턴
+        if (currentTime >= 3.0f) {
+            Vector3 direction = targetTransform.position - transform.position;
+            BossManager.Instance.Attack(BossBulletType.mandooBullet, direction);
+            currentTime = 0f;
+        }
+
+        if (_unit.m_stStat.fHp_Cur == 50) // hp가 일정 깎였을 때 => 광란패턴
         {
             NormalEnd();
             MadInit();
         }
-        if (unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
+        if (_unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
         {
             NormalEnd();
             Dead();
@@ -330,9 +344,14 @@ public class MandooTheBoss : MonoBehaviour
     {
         currentMandooState = MANDOO_STATE.DEAD;
         BossManager.Instance.BossClear();
-        //TODO: 보스 관련 오브젝트 죄다 삭제
-        //TODO: 보스 죽는 모션
-        //TODO: 보상으로 이동
+    }
+    #endregion
+
+    #region
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag == "tag_Player") {
+            collision.GetComponent<Unit>().GetDamage(_unit.m_stStat.fDamage_Base);
+        }
     }
     #endregion
 }

@@ -15,6 +15,20 @@ public class BossDictionary
     public GameObject bossPrefab;
 }
 
+
+public enum BossBulletType : int
+{
+    mandooBullet = 0,
+}
+
+[Serializable]
+public class BossBulletDictionary
+{
+    public BossBulletType bulletType;
+    public GameObject bulletPrefab;
+}
+
+
 public class BossManager : MonoBehaviour
 {
     #region Instance
@@ -75,6 +89,7 @@ public class BossManager : MonoBehaviour
     [HideInInspector]
     public GameObject currentBoss = null;
     private GameObject _currentBossPrefab = null;
+
     // 보스 프리팹 관리
     public List<BossDictionary> bossPrefabs = new List<BossDictionary>();
 
@@ -86,6 +101,8 @@ public class BossManager : MonoBehaviour
     private Transform _playerTransform = null;
 
 
+    // [투사체]
+    public List<BossBulletDictionary> bossBulletPrefabs = new List<BossBulletDictionary>();
 
     ///////// 테스트용 Spawn()
     private void Update()
@@ -123,5 +140,10 @@ public class BossManager : MonoBehaviour
         currentBoss = null;
     }
 
+    public GameObject Attack(BossBulletType bulletType, Vector3 direction) {
+        float fAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(fAngle, Vector3.forward);
+        return Instantiate(bossBulletPrefabs[(int)bulletType].bulletPrefab, currentBoss.transform.position, rotation);
+    }
 }
 

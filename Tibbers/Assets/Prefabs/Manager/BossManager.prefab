@@ -212,6 +212,9 @@ MonoBehaviour:
     bossPrefab: {fileID: 2388705426422994663, guid: 08cbc1d32ee5cf1419c99baa6d2e9eff, type: 3}
   spawnPositionMarker: {fileID: 2134543824213926821}
   boundary: {fileID: 1663503366657714201}
+  bossBulletPrefabs:
+  - bulletType: 0
+    bulletPrefab: {fileID: 36019614210410292, guid: 0219c3f3211bb714e8bd476a71036deb, type: 3}
 --- !u!114 &1663503366657714201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -650,7 +653,7 @@ Transform:
   m_GameObject: {fileID: 3849343380632875332}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5392010772864868759}

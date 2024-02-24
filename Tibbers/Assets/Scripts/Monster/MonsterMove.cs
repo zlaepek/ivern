@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class MonsterMove
 {
@@ -39,6 +37,7 @@ public class MonsterMove
     private float timeScale = 500f;
     public GameObject targetPositionMarker = null;
 
+    private float pi = Mathf.PI;
     public void Initialize(GameObject targetPositionMarker)
     {
         this.targetPositionMarker = targetPositionMarker;
@@ -106,58 +105,18 @@ public class MonsterMove
     /* END Dash */
 
     /* Jump */
-    private Vector3 SetJumpPosition(Transform targetTransform) {
-        // 좌표 표식 이동 (플레이어를 따라간다)
+    public IEnumerator JumpToTarget(CircleCollider2D collider ,Transform targetTransform, Transform thisTransform, float jumpSpeed, float jumpDuration) {
 
-        // 지정되면 멈춘다
-        return targetTransform.position;
-    }
+        // 콜라이더 끄고
+        collider.enabled = false;
 
-    public IEnumerator JumpToTarget(Transform targetTransform, Transform thisTransform) {
-        float timeCounter = 0f;
+        Vector3 jumpDirection = targetTransform.position - thisTransform.position;
+        Vector3 velocity = jumpDirection * jumpSpeed * Time.deltaTime * timeScale;
+        thisTransform.GetComponent<Rigidbody2D>().velocity = new Vector3 (velocity.x, velocity.y + Mathf.Cos(pi * jumpDuration), velocity.z);
+        yield return new WaitForSeconds(jumpDuration);
 
-
-        float jumpHeight = 25.0f;
-        // 그림자를 그린다 
-
-        // 그림자를 땅바닥에 두고 만두를 하늘로 보낸다
-        thisTransform.GetComponent<Rigidbody2D>().isKinematic = true;
-        while (timeCounter < 1f)
-        {
-            thisTransform.position = new Vector3(thisTransform.position.x, thisTransform.position.y + (jumpHeight * Time.deltaTime), thisTransform.position.z);
-            timeCounter += Time.deltaTime;
-            yield return null;
-        }
-        timeCounter = 0f;
-
-        Vector3 jumpTargetPosition = SetJumpPosition(targetTransform);
-        ActiveTargetMarker(true, jumpTargetPosition);
-
-        Vector3 lerpStartPosition = thisTransform.position;
-        Vector3 lerpEndPosition1 = new Vector3(jumpTargetPosition.x, thisTransform.position.y, jumpTargetPosition.z);
-        Vector3 lerpEndPosition2 = new Vector3(jumpTargetPosition.x, jumpTargetPosition.y, jumpTargetPosition.z);
-
-        while (timeCounter < 1f)
-        {
-            thisTransform.position = Vector3.Lerp(lerpStartPosition, lerpEndPosition1, timeCounter);
-            timeCounter += Time.deltaTime;
-            yield return null;
-        }
-        timeCounter = 0f;
-
-        // 만두를 떨군다
-        thisTransform.GetComponent<Rigidbody2D>().isKinematic = false;
-
-        while (timeCounter < 1f)
-        {
-            thisTransform.position = Vector3.Lerp(lerpEndPosition1, lerpEndPosition2, timeCounter);
-            timeCounter += Time.deltaTime;
-            yield return null;
-        }
-        ActiveTargetMarker(false);
-        timeCounter = 0f;
-        // 그림자를 서서히 이동했다가 타겟 좌표에 도착하면
-
+        // 콜라이더 키고
+        collider.enabled = true;
         yield break;
     }
     /* END Jump */
