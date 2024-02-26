@@ -285,7 +285,7 @@ public class PlayerController : MonoBehaviour
             {
                 case (int)BulletManager.eBulletType.BulletType_EnergyBall:
                     {
-                        if (!SpawnManager.Instance.CheckActiveMonster())
+                        if (!SpawnManager.Instance.CheckActiveMonster() && !BossManager.Instance.currentBoss)
                             return;
                         vAttackDir = FindCloseEnemy_Dir();
                     }

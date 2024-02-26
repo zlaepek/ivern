@@ -130,6 +130,35 @@ public class SpawnManager : MonoBehaviour
         float fCompare = 0f;
         float fDistance = 10000000.0f;
         Vector3 vPoint = _Object.transform.position;
+
+        // todo : 보스 몬스터 풀? 같은거 만들기
+        //BossManager.Instance.currentBoss
+        GameObject TempBoss = BossManager.Instance.currentBoss;
+        if (TempBoss)
+        {
+            GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
+
+            foreach (GameObject it in Monsters)
+            {
+                if (it.activeSelf == true)
+                {
+                    fCompare = Vector3.Magnitude(it.transform.position - vPoint);
+                    if (fCompare <= fDistance)
+                    {
+                        Res = it;
+                        fDistance = fCompare;
+                    }
+                }
+            }
+            //fCompare = Vector3.Magnitude(TempBoss.transform.position - vPoint);
+
+            //if (fCompare <= fDistance)
+            //{
+            //    Res = TempBoss;
+            //    fDistance = fCompare;
+            //}
+        }
+
         foreach (GameObject it in MonsterPool)
         {
             if(it.activeSelf == true)
