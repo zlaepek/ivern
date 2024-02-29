@@ -70,12 +70,6 @@ public class MandooAnimation : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
     public void StartMad(GameObject madMandooHead)
     {
         // 몸통 애니메이션 시작

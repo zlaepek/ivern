@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EffectAreaType
@@ -19,7 +16,7 @@ public class EffectArea : MonoBehaviour
 
     #region  Trigger
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("tag_Enemy")) {
+        if (collision.CompareTag("tag_Enemy_Invincible")) {
             switch (thisEffectAreaType) {
                 case EffectAreaType.Fire:
                     FireAreaEnterMeltMandoo(collision);
@@ -30,7 +27,7 @@ public class EffectArea : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision) {
 
-        if (collision.CompareTag("tag_Enemy")) {
+        if (collision.CompareTag("tag_Enemy_Invincible")) {
             switch (thisEffectAreaType) {
                 case EffectAreaType.Fire:
                     FireAreaStayMeltMandoo(collision);

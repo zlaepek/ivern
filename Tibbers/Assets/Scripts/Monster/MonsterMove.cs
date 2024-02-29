@@ -113,6 +113,7 @@ public class MonsterMove
         Vector3 jumpDirection = targetTransform.position - thisTransform.position;
         Vector3 velocity = jumpDirection * jumpSpeed * Time.deltaTime * timeScale;
         thisTransform.GetComponent<Rigidbody2D>().velocity = new Vector3 (velocity.x, velocity.y + Mathf.Cos(pi * jumpDuration), velocity.z);
+        thisTransform.GetComponent<Rigidbody2D>().AddForce(Vector3.up * 5f);
         yield return new WaitForSeconds(jumpDuration);
 
         // 콜라이더 키고

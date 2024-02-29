@@ -153,6 +153,8 @@ public class MandooTheBoss : MonoBehaviour
     #region Frozen
     private void FrozenInit()
     {
+        // 무적
+        gameObject.tag = "tag_Enemy_Invincible";
         // Value
         currentFrozenValue = maxFrozenValue;
         bossUI.InitFrozenSlider(0f, maxFrozenValue);
@@ -194,6 +196,9 @@ public class MandooTheBoss : MonoBehaviour
 
     private void FrozenEnd()
     {
+        // 무적 종료
+        gameObject.tag = "tag_Enemy";
+
         ResetCoroutine();
 
         // 애니메이션 종료
@@ -222,7 +227,9 @@ public class MandooTheBoss : MonoBehaviour
 
     private void ThrowHead()
     {
+
         // 던지기 애니메이션
+        mandooAnimation.StartBodyThrow();
         // 머리 없음 만두 던짐
         // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
@@ -317,11 +324,12 @@ public class MandooTheBoss : MonoBehaviour
         //TODO: 탄환 던지기
         if (currentTime >= 3.0f) {
             Vector3 direction = targetTransform.position - transform.position;
-            BossManager.Instance.Attack(BossBulletType.mandooBullet, direction);
+            BossManager.Instance.ShotBullet(BossBulletType.mandooBullet, direction);
+            Debug.Log("shot");
             currentTime = 0f;
         }
 
-        if (_unit.m_stStat.fHp_Cur == 50) // hp가 일정 깎였을 때 => 광란패턴
+        if (_unit.m_stStat.fHp_Cur <= 80 && _unit.m_stStat.fHp_Cur <= 70) // hp가 일정 깎였을 때 => 광란패턴
         {
             NormalEnd();
             MadInit();

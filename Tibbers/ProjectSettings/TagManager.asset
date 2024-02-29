@@ -8,6 +8,7 @@ TagManager:
   - tag_Enemy
   - tag_EffectArea
   - Canvas
+  - tag_Enemy_Invincible
   layers:
   - Default
   - TransparentFX
