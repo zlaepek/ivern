@@ -80,7 +80,7 @@ public class SpawnManager : MonoBehaviour
             AddPool(iter);
         }
 
-        //StartCoroutine(SpawnMonster_Routine());
+        StartCoroutine(SpawnMonster_Routine());
     }
 
     // Update is called once per frame
@@ -265,7 +265,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnMonster_Routine()
     {
-        float fTime = 1.0f;
+        float fTime = 5.0f;
         ulong ulCheck_Score = 5;
 
         while (true)

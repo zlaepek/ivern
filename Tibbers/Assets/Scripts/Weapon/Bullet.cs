@@ -19,9 +19,10 @@ public class Bullet : MonoBehaviour
     private float fTickDamage;
 
     private Vector3 Basic_Scale;
-    
+    private Vector3 Current_Scale;
+
     private float Out_Projectile_Speed;
-    private float Out_Projectile_Scale;
+    private float Out_Projectile_Scale = 1.0f;
 
     private BulletManager.eBulletType m_eType;
 
@@ -126,7 +127,9 @@ public class Bullet : MonoBehaviour
 
         Basic_Scale = transform.localScale;
 
-        if(m_stStat.fLifeTime > 0.0f)
+        Current_Scale = Basic_Scale * Out_Projectile_Scale;
+
+        if (m_stStat.fLifeTime > 0.0f)
         {
             Destroy(gameObject, m_stStat.fLifeTime);
         }
@@ -139,7 +142,7 @@ public class Bullet : MonoBehaviour
         {
             case BulletManager.eBulletType.BulletType_EnergyBall:
                 {
-                    
+                    transform.localScale = Current_Scale;
                 }
                 break;
             case BulletManager.eBulletType.BulletType_Melee:

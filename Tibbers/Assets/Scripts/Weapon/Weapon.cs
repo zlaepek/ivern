@@ -52,6 +52,7 @@ public class Weapon
             if (Time.time > m_fNextDelay)
             {
                 m_fNextDelay = Time.time + m_stStat.fAttackDelay * fAttackInterval;
+                tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
 
                 switch (m_eType)
                 {
@@ -60,11 +61,8 @@ public class Weapon
                             RotateBullet(_vAttackDir);
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
-
-                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
 
@@ -73,10 +71,8 @@ public class Weapon
                             RotateBullet(_vAttackDir);
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
-                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
 
@@ -84,9 +80,7 @@ public class Weapon
                         {
                             CreateAttackPos_CameraRand();
 
-                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                             //Debug.Log(m_iBulletCount_Cur);
                         }
                         break;
@@ -96,18 +90,16 @@ public class Weapon
                             //RotateBullet(_vAttackDir);
                             CreateAttackPos(_vShotterPos, _vAttackDir);
 
-
-                            tempBullet = GameObject.Instantiate(m_BulletPrefab, m_vBulletPos, m_BulletRotation);
                             tempBullet.GetComponent<Bullet>().SetDir(_vAttackDir);
                             tempBullet.GetComponent<Bullet>().m_stStat = m_BulletPrefab.GetComponent<Bullet>().m_stStat;
-                            tempBullet.GetComponent<Bullet>().SetType(m_eType);
-                            tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
                         }
                         break;
                     default:
                         break;
                 }
 
+                tempBullet.GetComponent<Bullet>().SetType(m_eType);
+                tempBullet.GetComponent<Bullet>().SetMaster(m_Master);
 
                 ++m_iBulletCount_Cur;
             }
