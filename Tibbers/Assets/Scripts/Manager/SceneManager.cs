@@ -64,5 +64,14 @@ public class SceneManager : MonoBehaviour
         _SceneAdd("UI_Scene_Setting");
         NetworkManager.Instance?.RequestPostChapterStart(1);
     }
+
+    public void GameExit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
     #endregion
 }
