@@ -250,11 +250,6 @@ public class MandooTheBoss : MonoBehaviour
         mandooBodyDashCount = 0;
     }
 
-    private void MandooHeadJump()
-    {
-
-    }
-
     private void MadPattern()
     {
         // (3번의 돌진 후) 점프
@@ -272,7 +267,7 @@ public class MandooTheBoss : MonoBehaviour
             }
             if (madMandooHead != null)
             {
-                madMandooHeadCoroutine = StartCoroutine(monsterMove.RandomMove(madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
+                madMandooHeadCoroutine = StartCoroutine(monsterMove.JumpToTarget(madMandooHead.GetComponent<CircleCollider2D>(), targetTransform, madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
                 currentTime = 0;
                 mandooBodyDashCount++;
             }
@@ -282,13 +277,8 @@ public class MandooTheBoss : MonoBehaviour
             }
         }
 
-        //TODO: 종료 상태 결정
-        if (_unit.m_stStat.fHp_Cur == 30f) // hp가 일정 깎였을 때 
-        {
-            MadEnd();
-            NormalInit();
-        }
-        if (_unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
+        // 사망
+        if (_unit.m_stStat.fHp_Cur == 0)
         {
             MadEnd();
             Dead();
@@ -315,24 +305,31 @@ public class MandooTheBoss : MonoBehaviour
         monsterMove.FollowTarget(_unit.fCurMoveSpeed, transform, targetTransform);
 
         currentTime += Time.deltaTime;
-        //TODO: 탄환 던지기
+
+
+        // 탄환
         if (currentTime >= 3.0f) {
-            Vector3 direction = targetTransform.position - transform.position;
-            BossManager.Instance.ShotBullet(BossBulletType.mandooBullet, direction);
-            Debug.Log("shot");
+            _currentAttactCoroutine = StartCoroutine(MandooShotBullet(1f));
             currentTime = 0f;
         }
 
-        if (_unit.m_stStat.fHp_Cur <= 80 && _unit.m_stStat.fHp_Cur <= 70) // hp가 일정 깎였을 때 => 광란패턴
+        // 광란 패턴
+        if (_unit.m_stStat.fHp_Cur <= 30)
         {
             NormalEnd();
             MadInit();
         }
-        if (_unit.m_stStat.fHp_Cur == 0) // hp가 0이면 사망
-        {
-            NormalEnd();
-            Dead();
-        }
+    }
+
+    private IEnumerator MandooShotBullet(float delay) {
+        mandooAnimation.StartThrow();
+
+        Vector3 direction = targetTransform.position - transform.position;
+        BossManager.Instance.ShotBullet(BossBulletType.mandooBullet, direction, transform);
+
+        yield return new WaitForSeconds(delay);
+
+        mandooAnimation.EndThrow();
     }
 
     private void NormalEnd()

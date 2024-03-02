@@ -140,10 +140,9 @@ public class BossManager : MonoBehaviour
         currentBoss = null;
     }
 
-    public GameObject ShotBullet(BossBulletType bulletType, Vector3 direction) {
+    public GameObject ShotBullet(BossBulletType bulletType, Vector3 direction, Transform startPosition) {
         float fAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(fAngle, Vector3.forward);
-        return Instantiate(bossBulletPrefabs[(int)bulletType].bulletPrefab, currentBoss.transform.position, rotation);
+        return Instantiate(bossBulletPrefabs[(int)bulletType].bulletPrefab, startPosition.position, rotation);
     }
 }
-

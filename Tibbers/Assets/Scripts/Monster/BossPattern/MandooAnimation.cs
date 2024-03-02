@@ -44,7 +44,7 @@ public class MandooAnimation : MonoBehaviour
     }
     #endregion
 
-    #region 
+    #region Mandoo Animation
     public void FrozenAnimation(bool isFrozen)
     {
         mandooAnimator.SetBool("isFrozen", isFrozen);
