@@ -5,7 +5,7 @@ public class BossBullet : MonoBehaviour
     private Rigidbody2D _bulletRigidbody;
     private Vector2 _direction;
     private float _speed;
-    private float _lifeTime;
+    private float _lifeTime = 5f;
     private float _currentTime = 0f;
     private float _damage;
 

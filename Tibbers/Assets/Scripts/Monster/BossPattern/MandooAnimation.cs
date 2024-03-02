@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System;
 
 public class MandooAnimation : MonoBehaviour
 {
@@ -70,18 +72,16 @@ public class MandooAnimation : MonoBehaviour
     #endregion
 
 
-    public void StartMad(GameObject madMandooHead)
+    public IEnumerator StartMad(float delay, GameObject madMandooHead)
     {
+        yield return new WaitForSeconds(delay);
+
         // 몸통 애니메이션 시작
         mandooAnimator.SetBool("isNoHead", true);
 
-        // 만두 머리 애니메이션
-        if (mandooHeadAnimator == null)
-        {
+        //// 만두 머리 애니메이션
+        if (mandooHeadAnimator == null) {
             mandooHeadAnimator = madMandooHead.GetComponent<Animator>();
         }
     }
-
-
-
 }

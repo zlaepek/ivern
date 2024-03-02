@@ -222,27 +222,21 @@ public class MandooTheBoss : MonoBehaviour
 
         ThrowHead();
 
-        mandooAnimation.StartMad(madMandooHead);
+        StartCoroutine(mandooAnimation.StartMad(0.75f, madMandooHead));
     }
 
     private void ThrowHead()
     {
-
-        // 던지기 애니메이션
         mandooAnimation.StartBodyThrow();
-        // 머리 없음 만두 던짐
-        // 머리 몸통 분리
         madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
         madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
     }
 
     private IEnumerator HeadInitialMove() {
-
+        Vector3 direction = (targetTransform.position - madMandooHead.transform.position).normalized;
+        var speed = 0.5f;
+        madMandooHead.GetComponent<Rigidbody2D>().velocity = direction * speed;
         yield break;
-    }
-    private void MergeHead()
-    {
-
     }
 
     private void RandomBodyDash()
