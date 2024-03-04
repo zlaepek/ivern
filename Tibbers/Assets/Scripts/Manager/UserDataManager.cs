@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class UserDataManager : MonoBehaviour
 {
     [SerializeField]
     public byte nScale = 0;
+
+    private int iUser_ID = 4566;
 
     private static GameObject _container;
     public static GameObject Container
@@ -52,7 +55,6 @@ public class UserDataManager : MonoBehaviour
     }
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +63,8 @@ public class UserDataManager : MonoBehaviour
         TempTableData();
 
         InitOutGameData();
+
+        GetStat();
     }
 
     // Update is called once per frame
@@ -139,12 +143,100 @@ public class UserDataManager : MonoBehaviour
     private void InitOutGameData()
     {
         // 실제 적용할 값 = 테이블 기준 값 * 아웃게임 데이터
-        _stOutGameData_Value.fDamage = _stOutGameData_Table.fDamage * _stOutGameData.nDamage;
-        _stOutGameData_Value.fHealth = _stOutGameData_Table.fHealth * _stOutGameData.nHealth;
-        _stOutGameData_Value.fMove_Speed = _stOutGameData_Table.fMove_Speed * _stOutGameData.nMove_Speed;
-        _stOutGameData_Value.fAttack_Speed = _stOutGameData_Table.fAttack_Speed * _stOutGameData.nAttack_Speed;
-        _stOutGameData_Value.fProjectile_Speed = _stOutGameData_Table.fProjectile_Speed * _stOutGameData.nProjectile_Speed;
-        _stOutGameData_Value.fProjectile_Scale = _stOutGameData_Table.fProjectile_Scale * _stOutGameData.nProjectile_Scale;
-        _stOutGameData_Value.iAttack_Count = _stOutGameData_Table.iAttack_Count * _stOutGameData.nAttack_Count;
+        _stOutGameData_Value.fDamage = _stOutGameData_Table.fDamage * _stOutGameData.iDamage;
+        _stOutGameData_Value.fHealth = _stOutGameData_Table.fHealth * _stOutGameData.iHealth;
+        _stOutGameData_Value.fMove_Speed = _stOutGameData_Table.fMove_Speed * _stOutGameData.iMove_Speed;
+        _stOutGameData_Value.fAttack_Speed = _stOutGameData_Table.fAttack_Speed * _stOutGameData.iAttack_Speed;
+        _stOutGameData_Value.fProjectile_Speed = _stOutGameData_Table.fProjectile_Speed * _stOutGameData.iProjectile_Speed;
+        _stOutGameData_Value.fProjectile_Scale = _stOutGameData_Table.fProjectile_Scale * _stOutGameData.iProjectile_Scale;
+        _stOutGameData_Value.iAttack_Count = _stOutGameData_Table.iAttack_Count * _stOutGameData.iAttack_Count;
     }
+
+    #region BtnEvent
+
+    // btn 6
+    //Debug.Log(info.health);
+    public void Btn_Stat_Health()
+    {
+
+    }
+    //Debug.Log(info.attack_count);
+    public void Btn_Stat_Attack_count()
+    {
+
+    }
+    //Debug.Log(info.attack_speed);
+    public void Btn_Stat_Attack_speed()
+    {
+
+    }
+    //Debug.Log(info.move_speed);
+    public void Btn_Stat_Move_speed()
+    {
+
+    }
+    //Debug.Log(info.projectile_speed);
+    public void Btn_Stat_Projectile_speed()
+    {
+
+    }
+    //Debug.Log(info.projectile_scale);
+    public void Btn_Stat_Projectile_scale()
+    {
+
+    }
+
+    #endregion
+    // Network
+    #region NetWorkCall
+
+    // sheet_name
+    // user_stat
+    // user_stat_cost
+
+    public void GetStat()
+    {
+        NetworkManager.Instance?.RequestGetStat(CallBackGetStat, iUser_ID);
+
+        NetworkManager.Instance?.RequestUpdateStat(iUser_ID, "");
+        NetworkManager.Instance?.RequestResetStat(iUser_ID);
+    }
+
+    public void CallBackGetStat(string json)
+    {
+        StatJson info = StatJson.FromJson(json);
+        Debug.Log(info.health);
+        Debug.Log(info.attack_count);
+        Debug.Log(info.attack_speed);
+        Debug.Log(info.move_speed);
+        Debug.Log(info.projectile_speed);
+        Debug.Log(info.projectile_scale);
+
+        _stOutGameData.iHealth = info.health;
+        _stOutGameData.iAttack_Count = info.attack_count;
+        _stOutGameData.iAttack_Speed = info.attack_speed;
+        _stOutGameData.iMove_Speed = info.move_speed;
+        _stOutGameData.iProjectile_Speed = info.projectile_speed;
+        _stOutGameData.iProjectile_Scale = info.projectile_scale;
+    }
+
+
+    [System.Serializable]
+    public class StatJson
+    {
+        //[Required]
+        //user_id *
+        public int health;
+        public int attack_count;
+        public int attack_speed;
+        public int move_speed;
+        public int projectile_speed;
+        public int projectile_scale;
+
+        public static StatJson FromJson(string jsonString)
+        {
+            return JsonUtility.FromJson<StatJson>(jsonString);
+        }
+    }
+    #endregion
 }

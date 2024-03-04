@@ -94,19 +94,19 @@ namespace Structs
     {
         // 한글 이름	Name	step
         //공격력 Damage  5
-        public byte nDamage;
+        public int iDamage;
         //체력 Health  5
-        public byte nHealth;
+        public int iHealth;
         //공격 횟수   Attack_Count 	2
-        public byte nAttack_Count;
+        public int iAttack_Count;
         //공격 속도 - 빈도 Attack_Speed    5
-        public byte nAttack_Speed;
+        public int iAttack_Speed;
         //이동 속도   Move_Speed 	5
-        public byte nMove_Speed;
+        public int iMove_Speed;
         //투사체 속도  Projectile_Speed 	5
-        public byte nProjectile_Speed;
+        public int iProjectile_Speed;
         //투사체 크기  Projectile_Scale 	2
-        public byte nProjectile_Scale;
+        public int iProjectile_Scale;
 
     }
     //class Monster
