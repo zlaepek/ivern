@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using TMPro;
 
 public class UserDataManager : MonoBehaviour
 {
     [SerializeField]
-    public byte nScale = 0;
+    //public byte nScale = 0;
 
     private int iUser_ID = 4566;
 
@@ -42,6 +43,7 @@ public class UserDataManager : MonoBehaviour
 
     }
     private Structs.OutGameStatData _stOutGameData;
+    private Structs.OutGameStatData _stOutGameData_Max;
 
     private Structs.OutGameStatData_Value _stOutGameData_Table;
     private Structs.OutGameStatData_Value _stOutGameData_Value;
@@ -59,12 +61,18 @@ public class UserDataManager : MonoBehaviour
     void Start()
     {
         _stOutGameData = default;
+        _stOutGameData.iDamage = 4;
+        _stOutGameData.iHealth = 5;
+        
+
+        InitDataMax();
 
         TempTableData();
 
+        GetStat();
+
         InitOutGameData();
 
-        GetStat();
     }
 
     // Update is called once per frame
@@ -140,6 +148,29 @@ public class UserDataManager : MonoBehaviour
         _stOutGameData_Table = _Data;
     }
 
+
+    // _stOutGameData_Max
+    public void InitDataMax()
+    {
+        // Temp Stat Max Table
+        //Damage	5
+        //Health	5
+        //Attack_Count	2
+        //Attack_Speed	5
+        //Move_Speed	5
+        //Projectile_Speed	5
+        //Projectile_Scale	2
+
+        // sheet 불러와서 값 저장하기
+        _stOutGameData_Max.iDamage = 5;
+        _stOutGameData_Max.iHealth = 5;
+        _stOutGameData_Max.iAttack_Count = 2;
+        _stOutGameData_Max.iAttack_Speed = 5;
+        _stOutGameData_Max.iMove_Speed = 5;
+        _stOutGameData_Max.iProjectile_Speed = 5;
+        _stOutGameData_Max.iProjectile_Scale = 2;
+    }
+
     private void InitOutGameData()
     {
         // 실제 적용할 값 = 테이블 기준 값 * 아웃게임 데이터
@@ -153,40 +184,79 @@ public class UserDataManager : MonoBehaviour
     }
 
     #region BtnEvent
+    public void Btn_Stat_Reset()
+    {
+        NetworkManager.Instance?.RequestResetStat(CallBackGetStat, iUser_ID);
+    }
 
+    //Debug.Log(info.damage);
+    public void Btn_Stat_Damage()
+    {
+        //Stat_Apply("Damage", _stOutGameData.iDamage, _stOutGameData_Max.iDamage);
+        //Stat_Apply("Health", _stOutGameData.iHealth, _stOutGameData_Max.iHealth);
+        //Stat_Apply("Attack_Count", _stOutGameData.iAttack_Count, _stOutGameData_Max.iAttack_Count);
+        //Stat_Apply("Attack_Speed", _stOutGameData.iAttack_Speed, _stOutGameData_Max.iAttack_Speed);
+        //Stat_Apply("Move_Speed", _stOutGameData.iMove_Speed, _stOutGameData_Max.iMove_Speed);
+        //Stat_Apply("Projectile_Speed", _stOutGameData.iProjectile_Speed, _stOutGameData_Max.iProjectile_Speed);
+        //Stat_Apply("Projectile_Scale", _stOutGameData.iProjectile_Scale, _stOutGameData_Max.iProjectile_Scale);
+
+        //Debug.Log("Damage" +  _stOutGameData.iDamage + _stOutGameData_Max.iDamage);
+        //Debug.Log("Health" +  _stOutGameData.iHealth +  _stOutGameData_Max.iHealth);
+        //Debug.Log("Attack_Count" + _stOutGameData.iAttack_Count + _stOutGameData_Max.iAttack_Count);
+        //Debug.Log("Attack_Speed"+ _stOutGameData.iAttack_Speed+ _stOutGameData_Max.iAttack_Speed);
+        //Debug.Log("Move_Speed"+ _stOutGameData.iMove_Speed+ _stOutGameData_Max.iMove_Speed);
+        //Debug.Log("Projectile_Speed"+ _stOutGameData.iProjectile_Speed+ _stOutGameData_Max.iProjectile_Speed);
+        //Debug.Log("Projectile_Scale"+ _stOutGameData.iProjectile_Scale+ _stOutGameData_Max.iProjectile_Scale);
+
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "damage");
+    }
     // btn 6
     //Debug.Log(info.health);
     public void Btn_Stat_Health()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "health");
     }
     //Debug.Log(info.attack_count);
     public void Btn_Stat_Attack_count()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "attack_count");
     }
     //Debug.Log(info.attack_speed);
     public void Btn_Stat_Attack_speed()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "attack_speed");
     }
     //Debug.Log(info.move_speed);
     public void Btn_Stat_Move_speed()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "move_speed");
     }
     //Debug.Log(info.projectile_speed);
     public void Btn_Stat_Projectile_speed()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "projectile_speed");
     }
     //Debug.Log(info.projectile_scale);
     public void Btn_Stat_Projectile_scale()
     {
-
+        NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "projectile_scale");
     }
 
     #endregion
+
+    #region Data Proc
+
+    private void Stat_Apply(string _Name, int _Cur, int _Max)
+    {
+        string TempName = "Text_Step_";
+        GameObject TextObject = GameObject.Find(TempName + _Name);
+
+        if(TextObject)
+            TextObject.GetComponent<TextMeshProUGUI>().text = _Cur + " / " + _Max;
+    }
+
+    #endregion
+
     // Network
     #region NetWorkCall
 
@@ -194,17 +264,18 @@ public class UserDataManager : MonoBehaviour
     // user_stat
     // user_stat_cost
 
+
     public void GetStat()
     {
         NetworkManager.Instance?.RequestGetStat(CallBackGetStat, iUser_ID);
-
-        NetworkManager.Instance?.RequestUpdateStat(iUser_ID, "");
-        NetworkManager.Instance?.RequestResetStat(iUser_ID);
     }
 
     public void CallBackGetStat(string json)
     {
+        Debug.Log("###CallBackGetStat### ==== Start");
+
         StatJson info = StatJson.FromJson(json);
+        Debug.Log(info.damage);
         Debug.Log(info.health);
         Debug.Log(info.attack_count);
         Debug.Log(info.attack_speed);
@@ -212,12 +283,23 @@ public class UserDataManager : MonoBehaviour
         Debug.Log(info.projectile_speed);
         Debug.Log(info.projectile_scale);
 
+        _stOutGameData.iDamage = info.damage;
         _stOutGameData.iHealth = info.health;
         _stOutGameData.iAttack_Count = info.attack_count;
         _stOutGameData.iAttack_Speed = info.attack_speed;
         _stOutGameData.iMove_Speed = info.move_speed;
         _stOutGameData.iProjectile_Speed = info.projectile_speed;
         _stOutGameData.iProjectile_Scale = info.projectile_scale;
+
+        Stat_Apply("Damage", _stOutGameData.iDamage, _stOutGameData_Max.iDamage);
+        Stat_Apply("Health", _stOutGameData.iHealth, _stOutGameData_Max.iHealth);
+        Stat_Apply("Attack_Count", _stOutGameData.iAttack_Count, _stOutGameData_Max.iAttack_Count);
+        Stat_Apply("Attack_Speed", _stOutGameData.iAttack_Speed, _stOutGameData_Max.iAttack_Speed);
+        Stat_Apply("Move_Speed", _stOutGameData.iMove_Speed, _stOutGameData_Max.iMove_Speed);
+        Stat_Apply("Projectile_Speed", _stOutGameData.iProjectile_Speed, _stOutGameData_Max.iProjectile_Speed);
+        Stat_Apply("Projectile_Scale", _stOutGameData.iProjectile_Scale, _stOutGameData_Max.iProjectile_Scale);
+
+        Debug.Log("###CallBackGetStat### ==== End");
     }
 
 
@@ -226,6 +308,7 @@ public class UserDataManager : MonoBehaviour
     {
         //[Required]
         //user_id *
+        public int damage;
         public int health;
         public int attack_count;
         public int attack_speed;
