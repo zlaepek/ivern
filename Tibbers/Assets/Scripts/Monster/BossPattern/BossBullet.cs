@@ -9,6 +9,12 @@ public class BossBullet : MonoBehaviour
     private float _currentTime = 0f;
     private float _damage;
 
+    public void InitialMoveInfo(Vector2 direction, float speed)
+    {
+        _direction = direction;
+        _speed = speed;
+    }
+
     private void Throw() {
         _bulletRigidbody.velocity = _direction * _speed;
     }

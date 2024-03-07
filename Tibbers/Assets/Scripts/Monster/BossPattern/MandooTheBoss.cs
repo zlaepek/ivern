@@ -13,7 +13,7 @@ public class MandooTheBoss : MonoBehaviour
         DEAD
     }
 
-    [SerializeField] private MANDOO_STATE currentMandooState = MANDOO_STATE.FROZEN;
+    [SerializeField] private MANDOO_STATE _currentMandooState = MANDOO_STATE.FROZEN;
 
     // Coroutine
     private Coroutine _currentMoveCoroutine = null;
@@ -27,33 +27,21 @@ public class MandooTheBoss : MonoBehaviour
     public float maxFrozenValue = 30f;
     public float currentFrozenValue;
 
-    public Slider FrozenSlider
-    {
-        get
-        {
-            return bossUI.bossFrozenSlider;
-        }
-        set
-        {
-            bossUI.bossFrozenSlider = value;
-        }
-    }
-
     // UI
-    public BossUI bossUI;
+    private BossUI _bossUI;
     #endregion 변수 선언부
 
     #region 만두 머리
-    [SerializeField] private GameObject madMandooHeadPrefab = null;
-    private GameObject madMandooHead = null;
+    [SerializeField] private GameObject _madMandooHeadPrefab = null;
+    private GameObject _madMandooHead = null;
 
-    private Coroutine madMandooHeadCoroutine = null;
-    private int mandooBodyDashCount = 0;
+    private Coroutine _madMandooHeadCoroutine = null;
+    private int _mandooBodyDashCount = 0;
     #endregion
 
     #region MonsterMove 관련 변수 선언부
     // Monster Move 선언
-    private MonsterMove monsterMove;
+    private MonsterMove _monsterMove;
 
     // 기본 이속
     public float randomMoveDuration = 1.0f;
@@ -67,26 +55,24 @@ public class MandooTheBoss : MonoBehaviour
     public Transform targetTransform;
 
     // 타이머
-    private float currentTime = 0;
+    private float _currentTime = 0;
 
     public GameObject targetPositionMarker = null;
     #endregion MonsterMove 관련 변수 선언부
 
     public MandooAnimation mandooAnimation = null;
 
-    #region 장판 변수 선언부
-    [SerializeField] private MandooEffectAreaController effectAreaController;
-    #endregion
+    [SerializeField] private MandooEffectAreaController _effectAreaController;
 
     #region 라이프 사이클
     private void InitializeUnitValues()
     {
         _unit = GetComponent<Unit>();
 
-        _unit.m_stStat.fDamage_Base = 2.0f;
+        _unit.m_stStat.fDamage_Base = 10.0f;
 
         _unit.m_stStat.fHp_Base = 100.0f;
-        bossUI.SetMaxHP(_unit.m_stStat.fHp_Base);
+        _bossUI.SetMaxHP(_unit.m_stStat.fHp_Base);
 
         _unit.m_stStat.fMoveSpeed_Base = 1.0f;
 
@@ -97,24 +83,24 @@ public class MandooTheBoss : MonoBehaviour
     {
         // Get from BossManager
         targetTransform = BossManager.Instance.PlayerTransform;
-        bossUI = BossManager.Instance.BossUI;
+        _bossUI = BossManager.Instance.BossUI;
 
         InitializeUnitValues();
 
         // Move Init
-        monsterMove = new MonsterMove();
-        monsterMove.Initialize(targetPositionMarker);
+        _monsterMove = new MonsterMove();
+        _monsterMove.Initialize(targetPositionMarker);
 
-        effectAreaController = transform.parent.GetComponentInChildren<MandooEffectAreaController>();
+        _effectAreaController = transform.parent.GetComponentInChildren<MandooEffectAreaController>();
 
         FrozenInit();
     }
 
     private void FixedUpdate()
     {
-        currentTime += Time.fixedDeltaTime;
-        bossUI.UpdateHPSlider(_unit.m_stStat.fHp_Cur);
-        switch (currentMandooState)
+        _currentTime += Time.fixedDeltaTime;
+        _bossUI.UpdateHPSlider(_unit.m_stStat.fHp_Cur);
+        switch (_currentMandooState)
         {
             case MANDOO_STATE.FROZEN:
                 FrozenPattern();
@@ -143,9 +129,9 @@ public class MandooTheBoss : MonoBehaviour
         {
             StopCoroutine(_currentAttactCoroutine);
         }
-        if (madMandooHeadCoroutine != null)
+        if (_madMandooHeadCoroutine != null)
         {
-            StopCoroutine(madMandooHeadCoroutine);
+            StopCoroutine(_madMandooHeadCoroutine);
         }
     }
     #endregion
@@ -157,34 +143,34 @@ public class MandooTheBoss : MonoBehaviour
         gameObject.tag = "tag_Enemy_Invincible";
         // Value
         currentFrozenValue = maxFrozenValue;
-        bossUI.InitFrozenSlider(0f, maxFrozenValue);
+        _bossUI.InitFrozenSlider(0f, maxFrozenValue);
 
-        currentMandooState = MANDOO_STATE.FROZEN;
+        _currentMandooState = MANDOO_STATE.FROZEN;
         
-        effectAreaController.SpawnFireArea(targetTransform, transform.parent);
+        _effectAreaController.SpawnFireArea(targetTransform, transform.parent);
 
         mandooAnimation.FrozenAnimation(true);
     }
 
     private void FrozenPattern()
     {
-        if (currentTime > dashInterval)
+        if (_currentTime > dashInterval)
         {
-            Vector3 targetDirection = monsterMove.SetDashPosition(transform, targetTransform);
+            Vector3 targetDirection = _monsterMove.SetDashPosition(transform, targetTransform);
 
             if (_currentMoveCoroutine != null)
             {
                 StopCoroutine(_currentMoveCoroutine);
             }
-            _currentMoveCoroutine = StartCoroutine(monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
+            _currentMoveCoroutine = StartCoroutine(_monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
 
             if (_currentAttactCoroutine != null)
             {
                 StopCoroutine(_currentAttactCoroutine);
             }
-            _currentAttactCoroutine = StartCoroutine(effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
+            _currentAttactCoroutine = StartCoroutine(_effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
 
-            currentTime = 0;
+            _currentTime = 0;
         }
 
         if (currentFrozenValue <= 0f)
@@ -205,38 +191,48 @@ public class MandooTheBoss : MonoBehaviour
         mandooAnimation.FrozenAnimation(false);
 
         // 장판을 지운다
-        effectAreaController.DestroyFireArea();
+        _effectAreaController.DestroyFireArea();
     }
 
     public void GetMelt(float value)
     {
         currentFrozenValue -= value;
-        FrozenSlider.value = currentFrozenValue;
+        _bossUI.bossFrozenSlider.value = currentFrozenValue;
     }
     #endregion
 
     #region Mad
     private void MadInit()
     {
-        currentMandooState = MANDOO_STATE.MAD;
+        _currentMandooState = MANDOO_STATE.MAD;
 
         ThrowHead();
 
-        StartCoroutine(mandooAnimation.StartMad(0.75f, madMandooHead));
+        StartCoroutine(mandooAnimation.StartMad(0.75f, _madMandooHead));
+
+        // 만두 머리 운동 시작
+        _madMandooHeadCoroutine = StartCoroutine(HeadMove(2.0f));
     }
 
     private void ThrowHead()
     {
         mandooAnimation.StartBodyThrow();
-        madMandooHead = Instantiate(madMandooHeadPrefab, transform.parent);
-        madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
+        _madMandooHead = Instantiate(_madMandooHeadPrefab, transform.parent);
+        _madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
     }
 
     private IEnumerator HeadInitialMove() {
-        Vector3 direction = (targetTransform.position - madMandooHead.transform.position).normalized;
+        Vector3 direction = (targetTransform.position - _madMandooHead.transform.position).normalized;
         var speed = 0.5f;
-        madMandooHead.GetComponent<Rigidbody2D>().velocity = direction * speed;
+        _madMandooHead.GetComponent<Rigidbody2D>().velocity = direction * speed;
         yield break;
+    }
+
+    private IEnumerator HeadMove(float delay)
+    {
+        // _madMandooHead.GetComponent<MonsterMove>().JumpToTarget();
+
+        yield return null;
     }
 
     private void RandomBodyDash()
@@ -245,31 +241,31 @@ public class MandooTheBoss : MonoBehaviour
         {
             StopCoroutine(_currentMoveCoroutine);
         }
-        _currentMoveCoroutine = StartCoroutine(monsterMove.JumpToTarget(_mandooCollider, targetTransform, transform, dashSpeed, dashDuration));
-        currentTime = 0;
-        mandooBodyDashCount = 0;
+        _currentMoveCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_mandooCollider, targetTransform, transform, dashSpeed, dashDuration));
+        _currentTime = 0;
+        _mandooBodyDashCount = 0;
     }
 
     private void MadPattern()
     {
         // (3번의 돌진 후) 점프
-        if (mandooBodyDashCount > 3 && currentTime > dashInterval)
+        if (_mandooBodyDashCount > 3 && _currentTime > dashInterval)
         {
             RandomBodyDash();
         }
 
         // 머리 랜덤 방향 점프
-        else if (currentTime > dashInterval)
+        else if (_currentTime > dashInterval)
         {
-            if (madMandooHeadCoroutine != null)
+            if (_madMandooHeadCoroutine != null)
             {
-                StopCoroutine(madMandooHeadCoroutine);
+                StopCoroutine(_madMandooHeadCoroutine);
             }
-            if (madMandooHead != null)
+            if (_madMandooHead != null)
             {
-                madMandooHeadCoroutine = StartCoroutine(monsterMove.JumpToTarget(madMandooHead.GetComponent<CircleCollider2D>(), targetTransform, madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
-                currentTime = 0;
-                mandooBodyDashCount++;
+                _madMandooHeadCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_madMandooHead.GetComponent<CircleCollider2D>(), targetTransform, _madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
+                _currentTime = 0;
+                _mandooBodyDashCount++;
             }
             else
             {
@@ -290,27 +286,27 @@ public class MandooTheBoss : MonoBehaviour
     {
         ResetCoroutine();
 
-        Destroy(madMandooHead);
+        Destroy(_madMandooHead);
     }
     #endregion
 
     #region Normal
     private void NormalInit()
     {
-        currentMandooState = MANDOO_STATE.NORMAL;
+        _currentMandooState = MANDOO_STATE.NORMAL;
     }
 
     private void NormalPattern()
     {
-        monsterMove.FollowTarget(_unit.fCurMoveSpeed, transform, targetTransform);
+        _monsterMove.FollowTarget(_unit.fCurMoveSpeed, transform, targetTransform);
 
-        currentTime += Time.deltaTime;
+        _currentTime += Time.deltaTime;
 
 
         // 탄환
-        if (currentTime >= 3.0f) {
+        if (_currentTime >= 3.0f) {
             _currentAttactCoroutine = StartCoroutine(MandooShotBullet(1f));
-            currentTime = 0f;
+            _currentTime = 0f;
         }
 
         // 광란 패턴
@@ -325,7 +321,8 @@ public class MandooTheBoss : MonoBehaviour
         mandooAnimation.StartThrow();
 
         Vector3 direction = targetTransform.position - transform.position;
-        BossManager.Instance.ShotBullet(BossBulletType.mandooBullet, direction, transform);
+        BossBullet bullet = BossManager.Instance.ShotBullet(BossBulletType.mandooBullet, direction, transform).GetComponent<BossBullet>();
+        bullet.InitialMoveInfo(direction, 2.0f);
 
         yield return new WaitForSeconds(delay);
 
@@ -341,14 +338,14 @@ public class MandooTheBoss : MonoBehaviour
     #region Dead
     private void Dead()
     {
-        currentMandooState = MANDOO_STATE.DEAD;
+        _currentMandooState = MANDOO_STATE.DEAD;
         BossManager.Instance.BossClear();
     }
     #endregion
 
     #region
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.tag == "tag_Player") {
+        if (collision.CompareTag("tag_Player")) {
             collision.GetComponent<Unit>().GetDamage(_unit.m_stStat.fDamage_Base);
         }
     }
