@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 public class JoyStickController : MonoBehaviour 
     /*, IDragHandler, IPointerUpHandler, IPointerDownHandler */
 {
+    private Camera uiCamera; //UI 카메라를 담을 변수
+    private Canvas canvas; //캔버스를 담을 변수
+
     public RectTransform background; // 조이스틱 배경 이미지
     private RectTransform joystick;   // 조이스틱 이미지
     public float joystickRadius = 50f; // 조이스틱 이동 반경
@@ -29,6 +32,10 @@ public class JoyStickController : MonoBehaviour
             Destroy(gameObject);
         }
         joystick = this.GetComponent<RectTransform>();
+
+        canvas = GetComponentInParent<Canvas>(); 
+        uiCamera = canvas.worldCamera;
+
     }
     #region OnClickEvents
     //public void OnDrag(PointerEventData eventData)
@@ -93,17 +100,18 @@ public class JoyStickController : MonoBehaviour
             //Vector2 값을 localVector변수에 반환합니다. 만약 드래그되어 값이 발생한다면 true이므로
             //아래 기능을 실행합니다.
 
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(background, Input.mousePosition, Camera.current, out pos))
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(background, Input.mousePosition, uiCamera, out pos))
             {
                 // 조이스틱 위치 조정
                 joystick.localPosition = Vector2.ClampMagnitude(pos, joystickRadius);
+                Debug.Log("pos : " + pos);
 
                 // 입력 방향 설정
                 inputDirection = (joystick.localPosition / joystickRadius).normalized;
             }
         }
 
-        if (Input.GetMouseButtonUp(0)) // 마우스 왼쪽 버튼을 눌렀을 때
+        if (Input.GetMouseButtonUp(0)) // 마우스 왼쪽 버튼을 떼었을 때
         {
             // 조이스틱을 초기 위치로 되돌립니다.
             joystick.localPosition = Vector2.zero;
@@ -112,6 +120,9 @@ public class JoyStickController : MonoBehaviour
             inputDirection = Vector2.zero;
 
             InGameUIManager.Instance.HideUI_Joystick();
+
+            Debug.Log("GetMouseButtonUp");
+
         }
     }
 }

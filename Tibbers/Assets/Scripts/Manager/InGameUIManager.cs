@@ -104,6 +104,7 @@ public class InGameUIManager : MonoBehaviour
                 {
                     if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
+                        Debug.Log("RuntimePlatform Phone");
                         if (oBackground != null)
                         {
                             oBackground.SetActive(true);
@@ -118,13 +119,18 @@ public class InGameUIManager : MonoBehaviour
 
                         // UI를 터치된 위치로 이동시킵니다.
                         oBackground.GetComponent<RectTransform>().position = worldPosition;
+                        Debug.Log("Move UI mousePosition : " + Input.mousePosition);
+
                     }
                 }
                 break;
             default:
                 {
+
                     if (Input.GetMouseButtonDown(0))
                     {
+                        Debug.Log("RuntimePlatform PC");
+
                         if (oBackground != null)
                         {
                             oBackground.SetActive(true);
@@ -132,6 +138,8 @@ public class InGameUIManager : MonoBehaviour
 
                         ///////////////
                         oBackground.GetComponent<RectTransform>().position = Input.mousePosition;
+                        Debug.Log("Move UI mousePosition : " + Input.mousePosition);
+                        //Debug.Log("x : " + Input.mousePosition.x + ", y : " + Input.mousePosition.y + ", z : " + Input.mousePosition.z);
                     }
                 }
                 break;

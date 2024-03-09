@@ -77,7 +77,12 @@ public class DataManager : MonoBehaviour
     }
     
 #endif
+    public void ResetPlayerData()
+    {
+        stPlayerData = default;
 
+        stPlayerData.iLevel = 1;
+    }
     private void Awake()
     {
         listExpDataTable = new List<Structs.ExpData>();
@@ -94,9 +99,7 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        stPlayerData = default;
-
-        stPlayerData.iLevel = 1;
+        ResetPlayerData();
     }
 
     // Start is called before the first frame update

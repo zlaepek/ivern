@@ -29,6 +29,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject playerCharacter;
     private List<GameObject> MonsterPool;
 
+    private bool isSpawning;
+
     public enum eCameraEdgePos
     {
         Top,
@@ -80,6 +82,7 @@ public class SpawnManager : MonoBehaviour
             AddPool(iter);
         }
 
+        isSpawning = true;
         StartCoroutine(SpawnMonster_Routine());
     }
 
@@ -97,7 +100,15 @@ public class SpawnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             //RandomSpawn((int)eMonsterMobType.Test);
-            //StartCoroutine(SpawnMonster_Routine());
+            if(!isSpawning)
+            {
+                StartCoroutine(SpawnMonster_Routine());
+            }
+            else
+            {
+                StopCoroutine(SpawnMonster_Routine());
+                DataManager.Instance.ResetPlayerData();
+            }
 
         }
     }
