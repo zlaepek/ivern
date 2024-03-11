@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class InGameUIManager : MonoBehaviour
 {
-    public GameObject oBackground; // 조이스틱 배경 오브젝트
+    private Camera uiCamera; //UI 카메라를 담을 변수
+    private Canvas canvas; //캔버스를 담을 변수
+
+    private GameObject oBackground; // 조이스틱 배경 오브젝트
 
     public GameObject UI_HpBar;
     public static InGameUIManager Instance { get; private set; }
@@ -24,6 +27,13 @@ public class InGameUIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        GameObject root = GameObject.Find("Canvas");
+        canvas = root.GetComponent<Canvas>();
+        uiCamera = canvas.worldCamera;
+
+        //Joystick_BackGround
+        oBackground = GameObject.Find("Joystick_BackGround");
     }
 
     public void HideUI_Joystick()
@@ -102,25 +112,27 @@ public class InGameUIManager : MonoBehaviour
             case RuntimePlatform.Android:
             case RuntimePlatform.IPhonePlayer:
                 {
-                    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    if(Input.touchCount > 0)
                     {
-                        Debug.Log("RuntimePlatform Phone");
-                        if (oBackground != null)
+                        Debug.Log("RuntimePlatform Phone touch");
+                        Touch touch = Input.GetTouch(0);
+                        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                        if (touch.phase == TouchPhase.Began)
                         {
-                            oBackground.SetActive(true);
+                            Debug.Log("RuntimePlatform Phone if in");
+                            //if (oBackground != null)
+                            {
+                                oBackground.SetActive(true);
+                            }
+
+                            // 터치된 위치를 가져옵니다.
+                            Vector2 touchPosition = Input.mousePosition;
+
+                            oBackground.GetComponent<RectTransform>().position = touchPosition;
+
+                            Debug.Log("Move UI mousePosition : " + touchPosition);
+
                         }
-
-                        // 터치된 위치를 가져옵니다.
-                        Vector2 touchPosition = Input.GetTouch(0).position;
-
-                        // 터치된 위치를 World 좌표로 변환합니다.
-                        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(touchPosition);
-                        worldPosition.z = 0f; // UI가 카메라 앞에 위치하므로 z 축을 조정합니다.
-
-                        // UI를 터치된 위치로 이동시킵니다.
-                        oBackground.GetComponent<RectTransform>().position = worldPosition;
-                        Debug.Log("Move UI mousePosition : " + Input.mousePosition);
-
                     }
                 }
                 break;
@@ -131,7 +143,7 @@ public class InGameUIManager : MonoBehaviour
                     {
                         Debug.Log("RuntimePlatform PC");
 
-                        if (oBackground != null)
+                        //if (oBackground != null)
                         {
                             oBackground.SetActive(true);
                         }

@@ -86,6 +86,7 @@ public class UserDataManager : MonoBehaviour
         string UserID;
         switch (Application.platform)
         {
+#if UNITY_ANDROID
             case RuntimePlatform.Android:
                 {
                     // Android ID 가져오기
@@ -95,7 +96,8 @@ public class UserDataManager : MonoBehaviour
                     Debug.Log("Android ID: " + UserID);
                 }
                 break;
-
+#endif
+#if UNITY_IOS
             case RuntimePlatform.IPhonePlayer:
                 {
                     UserID = GetIOSVendorID();
@@ -103,6 +105,7 @@ public class UserDataManager : MonoBehaviour
                     Debug.Log("Android ID: " + UserID);
                 }
                 break;
+#endif
             default:
                 {
                     Debug.Log("This code is intended for Mobile platforms.");
@@ -110,6 +113,7 @@ public class UserDataManager : MonoBehaviour
                 break;
         }
     }
+#if UNITY_ANDROID
     private string GetAndroidID()
     {
         AndroidJavaClass androidUnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -120,14 +124,15 @@ public class UserDataManager : MonoBehaviour
 
         return androidID;
     }
-
+#endif
+#if UNITY_IOS
     private string GetIOSVendorID()
     {
         string vendorID = UnityEngine.iOS.Device.vendorIdentifier;
 
         return vendorID;
     }
-
+#endif
     public void TempTableData()
     {
         Structs.OutGameStatData_Value Temp = new Structs.OutGameStatData_Value();
@@ -183,7 +188,7 @@ public class UserDataManager : MonoBehaviour
         _stOutGameData_Value.iAttack_Count = _stOutGameData_Table.iAttack_Count * _stOutGameData.iAttack_Count;
     }
 
-    #region BtnEvent
+#region BtnEvent
     public void Btn_Stat_Reset()
     {
         NetworkManager.Instance?.RequestResetStat(CallBackGetStat, iUser_ID);
@@ -242,9 +247,9 @@ public class UserDataManager : MonoBehaviour
         NetworkManager.Instance?.RequestUpdateStat(CallBackGetStat, iUser_ID, "projectile_scale");
     }
 
-    #endregion
+#endregion
 
-    #region Data Proc
+#region Data Proc
 
     private void Stat_Apply(string _Name, int _Cur, int _Max)
     {
@@ -255,10 +260,10 @@ public class UserDataManager : MonoBehaviour
             TextObject.GetComponent<TextMeshProUGUI>().text = _Cur + " / " + _Max;
     }
 
-    #endregion
+#endregion
 
     // Network
-    #region NetWorkCall
+#region NetWorkCall
 
     // sheet_name
     // user_stat
@@ -321,5 +326,5 @@ public class UserDataManager : MonoBehaviour
             return JsonUtility.FromJson<StatJson>(jsonString);
         }
     }
-    #endregion
+#endregion
 }
