@@ -265,12 +265,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 814266b5a5691844bbfec9e3f926dc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMandooState: 3
+  _currentMandooState: 0
   maxFrozenValue: 30
   currentFrozenValue: 0
-  frozenSlider: {fileID: 0}
-  bossUI: {fileID: 0}
-  madMandooHeadPrefab: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
+  _madMandooHeadPrefab: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
   randomMoveDuration: 1
   dashSpeed: 1
   dashInterval: 5
@@ -278,7 +276,7 @@ MonoBehaviour:
   targetTransform: {fileID: 0}
   targetPositionMarker: {fileID: 7129882270540015921}
   mandooAnimation: {fileID: 298454504854292106}
-  effectAreaController: {fileID: 2237673938247917110}
+  _effectAreaController: {fileID: 0}
 --- !u!50 &629052594337528201
 Rigidbody2D:
   serializedVersion: 4
