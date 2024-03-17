@@ -11,7 +11,7 @@ public class BossBullet : MonoBehaviour
 
     public void InitialMoveInfo(Vector2 direction, float speed)
     {
-        _direction = direction;
+        _direction = direction.normalized;
         _speed = speed;
     }
 
