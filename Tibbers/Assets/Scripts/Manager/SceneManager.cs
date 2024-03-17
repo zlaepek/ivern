@@ -69,8 +69,14 @@ public class SceneManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+        GameObject.Find("Btn_GameExit").SetActive(false);
 #else
+        //GameObject.Find("Btn_GameExit").SetActive(false);
+
         Application.Quit();
+
+        Application.CancelQuit();
+        System.Diagnostics.Process.GetCurrentProcess().Kill();
 #endif
     }
     #endregion

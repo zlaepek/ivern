@@ -81,7 +81,7 @@ public class UserDataManager : MonoBehaviour
 
     }
 
-    private void SendID()
+    public void SendID()
     {
         string UserID;
         switch (Application.platform)
@@ -109,9 +109,14 @@ public class UserDataManager : MonoBehaviour
             default:
                 {
                     Debug.Log("This code is intended for Mobile platforms.");
+                    UserID = "No Platform";
                 }
                 break;
         }
+
+        GameObject TextID = GameObject.Find("Text_ID");
+
+        TextID.GetComponent<TextMeshProUGUI>().text = UserID;
     }
 #if UNITY_ANDROID
     private string GetAndroidID()
@@ -313,13 +318,13 @@ public class UserDataManager : MonoBehaviour
     {
         //[Required]
         //user_id *
-        public int damage;
         public int health;
         public int attack_count;
         public int attack_speed;
         public int move_speed;
         public int projectile_speed;
         public int projectile_scale;
+        public int damage;
 
         public static StatJson FromJson(string jsonString)
         {
