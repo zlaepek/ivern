@@ -98,12 +98,12 @@ public class JoyStickController : MonoBehaviour
                 {
                     if(Input.touchCount > 0)
                     {
-                        Debug.Log("RuntimePlatform Phone JoystickDrag touch");
+                        //Debug.Log("RuntimePlatform Phone JoystickDrag touch");
 
                         Touch touch = Input.GetTouch(0);
                         if ((touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)) // 마우스 왼쪽 버튼을 눌렀을 때
                         {
-                            Debug.Log("RuntimePlatform Phone JoystickDrag if in");
+                            //Debug.Log("RuntimePlatform Phone JoystickDrag if in");
 
                             Vector2 pos;
                             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(background, Input.mousePosition, uiCamera, out pos))
@@ -119,7 +119,7 @@ public class JoyStickController : MonoBehaviour
                             joystick.localPosition = Vector2.zero;
                             inputDirection = Vector2.zero;
                             InGameUIManager.Instance.HideUI_Joystick();
-                            Debug.Log("GetMouseButtonUp");
+                            //Debug.Log("GetMouseButtonUp");
 
                         }
                     }
@@ -141,7 +141,7 @@ public class JoyStickController : MonoBehaviour
                         {
                             // 조이스틱 위치 조정
                             joystick.localPosition = Vector2.ClampMagnitude(pos, joystickRadius);
-                            Debug.Log("pos : " + pos);
+                            //Debug.Log("pos : " + pos);
                             // 입력 방향 설정
                             inputDirection = (joystick.localPosition / joystickRadius).normalized;
                         }
@@ -154,7 +154,7 @@ public class JoyStickController : MonoBehaviour
                         // 조이스틱 입력을 초기화합니다.
                         inputDirection = Vector2.zero;
                         InGameUIManager.Instance.HideUI_Joystick();
-                        Debug.Log("GetMouseButtonUp");
+                        //Debug.Log("GetMouseButtonUp");
 
                     }
                 }

@@ -31,6 +31,7 @@ public class SpawnManager : MonoBehaviour
 
     private bool isSpawning;
 
+    Coroutine CoRt_Spawn;
     public enum eCameraEdgePos
     {
         Top,
@@ -83,7 +84,7 @@ public class SpawnManager : MonoBehaviour
         }
 
         isSpawning = true;
-        StartCoroutine(SpawnMonster_Routine());
+        CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
     }
 
     // Update is called once per frame
@@ -102,12 +103,16 @@ public class SpawnManager : MonoBehaviour
             //RandomSpawn((int)eMonsterMobType.Test);
             if(!isSpawning)
             {
-                StartCoroutine(SpawnMonster_Routine());
+                Debug.Log("Start Spawn");
+                CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+                isSpawning = true;
             }
             else
             {
-                StopCoroutine(SpawnMonster_Routine());
+                Debug.Log("Stop Spawn");
+                StopCoroutine(CoRt_Spawn);
                 DataManager.Instance.ResetPlayerData();
+                isSpawning = false;
             }
 
         }

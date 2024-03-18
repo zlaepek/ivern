@@ -114,12 +114,12 @@ public class InGameUIManager : MonoBehaviour
                 {
                     if(Input.touchCount > 0)
                     {
-                        Debug.Log("RuntimePlatform Phone touch");
+                        //Debug.Log("RuntimePlatform Phone touch");
                         Touch touch = Input.GetTouch(0);
                         //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                         if (touch.phase == TouchPhase.Began)
                         {
-                            Debug.Log("RuntimePlatform Phone if in");
+                            //Debug.Log("RuntimePlatform Phone if in");
                             //if (oBackground != null)
                             {
                                 oBackground.SetActive(true);
@@ -130,7 +130,7 @@ public class InGameUIManager : MonoBehaviour
 
                             oBackground.GetComponent<RectTransform>().position = touchPosition;
 
-                            Debug.Log("Move UI mousePosition : " + touchPosition);
+                            //Debug.Log("Move UI mousePosition : " + touchPosition);
 
                         }
                     }
@@ -141,7 +141,7 @@ public class InGameUIManager : MonoBehaviour
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Debug.Log("RuntimePlatform PC");
+                        //Debug.Log("RuntimePlatform PC");
 
                         //if (oBackground != null)
                         {
@@ -150,7 +150,7 @@ public class InGameUIManager : MonoBehaviour
 
                         ///////////////
                         oBackground.GetComponent<RectTransform>().position = Input.mousePosition;
-                        Debug.Log("Move UI mousePosition : " + Input.mousePosition);
+                        //Debug.Log("Move UI mousePosition : " + Input.mousePosition);
                         //Debug.Log("x : " + Input.mousePosition.x + ", y : " + Input.mousePosition.y + ", z : " + Input.mousePosition.z);
                     }
                 }
