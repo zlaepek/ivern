@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 7907308302500593959}
   - component: {fileID: 83187860228977551}
   - component: {fileID: 8177263586864778852}
-  - component: {fileID: 6818148620016443087}
+  - component: {fileID: 5759864085861748117}
+  - component: {fileID: 4177164397922665124}
   m_Layer: 0
   m_Name: Boss_Mandoo_Head_Prefab
   m_TagString: tag_Enemy_Invincible
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2311547313920293996}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -171,7 +172,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
---- !u!114 &6818148620016443087
+--- !u!114 &5759864085861748117
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,8 +181,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2311547313920293996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ee89eec58620604cb9364ad627d0935, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b7be106d3bed2e408f59d5297fee8e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mandooAnimator: {fileID: 0}
   mandooHeadAnimator: {fileID: 0}
+--- !u!114 &4177164397922665124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2311547313920293996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d039cc03330dd80478404f0f92a9ee42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

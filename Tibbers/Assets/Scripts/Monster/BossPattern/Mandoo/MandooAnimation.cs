@@ -7,20 +7,9 @@ public class MandooAnimation : MonoBehaviour
     #region 선언
     // Animation
     public Animator mandooAnimator = null;
-    public Animator mandooHeadAnimator = null;
     #endregion
 
-    #region Head
-    public void StartHeadJump()
-    {
-        mandooHeadAnimator.SetBool("isJumping", true);
-    }
 
-    public void EndHeadJump()
-    {
-        mandooHeadAnimator.SetBool("isJumping", false);
-    }
-    #endregion
 
     #region Body
     public void StartBodyJump()
@@ -72,16 +61,11 @@ public class MandooAnimation : MonoBehaviour
     #endregion
 
 
-    public IEnumerator StartMad(float delay, GameObject madMandooHead)
+    public IEnumerator StartMad(float delay)
     {
         yield return new WaitForSeconds(delay);
 
         // 몸통 애니메이션 시작
         mandooAnimator.SetBool("isNoHead", true);
-
-        //// 만두 머리 애니메이션
-        if (mandooHeadAnimator == null) {
-            mandooHeadAnimator = madMandooHead.GetComponent<Animator>();
-        }
     }
 }

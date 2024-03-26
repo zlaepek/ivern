@@ -66,7 +66,7 @@ public class MonsterMove
     /* END Follow */
 
     /* Random Move */
-    private Vector3 SetRandomDirection()
+    public Vector3 SetRandomDirection()
     {
         Vector3 targetDirection = Random.insideUnitCircle.normalized;
         targetDirection.Normalize();

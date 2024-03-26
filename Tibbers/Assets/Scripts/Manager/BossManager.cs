@@ -105,6 +105,11 @@ public class BossManager : MonoBehaviour
     public List<BossBulletDictionary> bossBulletPrefabs = new List<BossBulletDictionary>();
 
     ///////// 테스트용 Spawn()
+    
+    private void Start()
+    {
+        BossUI.HideBossUI();
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))

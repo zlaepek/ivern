@@ -21,6 +21,11 @@ public class MandooTheBoss : MonoBehaviour
 
     // Unit
     private Unit _unit;
+    public Unit Unit 
+    { 
+        get { return _unit; }
+        set { _unit = value; }
+    }
     private CircleCollider2D _mandooCollider;
 
     // Frozen Value
@@ -32,8 +37,7 @@ public class MandooTheBoss : MonoBehaviour
     #endregion 변수 선언부
 
     #region 만두 머리
-    [SerializeField] private GameObject _madMandooHeadPrefab = null;
-    private GameObject _madMandooHead = null;
+    [SerializeField] private GameObject _madMandooHead = null;
 
     private Coroutine _madMandooHeadCoroutine = null;
     private int _mandooBodyDashCount = 0;
@@ -65,7 +69,8 @@ public class MandooTheBoss : MonoBehaviour
     [SerializeField] private MandooEffectAreaController _effectAreaController;
 
     #region 라이프 사이클
-    private void InitializeUnitValues() {
+    private void InitializeUnitValues()
+    {
         _unit = GetComponent<Unit>();
 
         _unit.m_stStat.fDamage_Base = 10.0f;
@@ -78,7 +83,8 @@ public class MandooTheBoss : MonoBehaviour
         _unit.ResetHp();
     }
 
-    private void Start() {
+    private void Start()
+    {
         // Get from BossManager
         targetTransform = BossManager.Instance.PlayerTransform;
         _bossUI = BossManager.Instance.BossUI;
@@ -94,10 +100,12 @@ public class MandooTheBoss : MonoBehaviour
         FrozenInit();
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         _currentTime += Time.fixedDeltaTime;
         _bossUI.UpdateHPSlider(_unit.m_stStat.fHp_Cur);
-        switch (_currentMandooState) {
+        switch (_currentMandooState)
+        {
             case MANDOO_STATE.FROZEN:
                 FrozenPattern();
                 break;
@@ -115,21 +123,26 @@ public class MandooTheBoss : MonoBehaviour
     #endregion 라이프 사이클
 
     #region Coroutine
-    private void ResetCoroutine() {
-        if (_currentMoveCoroutine != null) {
+    private void ResetCoroutine()
+    {
+        if (_currentMoveCoroutine != null)
+        {
             StopCoroutine(_currentMoveCoroutine);
         }
-        if (_currentAttactCoroutine != null) {
+        if (_currentAttactCoroutine != null)
+        {
             StopCoroutine(_currentAttactCoroutine);
         }
-        if (_madMandooHeadCoroutine != null) {
+        if (_madMandooHeadCoroutine != null)
+        {
             StopCoroutine(_madMandooHeadCoroutine);
         }
     }
     #endregion
 
     #region Frozen
-    private void FrozenInit() {
+    private void FrozenInit()
+    {
         // 무적
         gameObject.tag = "tag_Enemy_Invincible";
         // Value
@@ -143,16 +156,20 @@ public class MandooTheBoss : MonoBehaviour
         mandooAnimation.FrozenAnimation(true);
     }
 
-    private void FrozenPattern() {
-        if (_currentTime > dashInterval) {
+    private void FrozenPattern()
+    {
+        if (_currentTime > dashInterval)
+        {
             Vector3 targetDirection = _monsterMove.SetDashPosition(transform, targetTransform);
 
-            if (_currentMoveCoroutine != null) {
+            if (_currentMoveCoroutine != null)
+            {
                 StopCoroutine(_currentMoveCoroutine);
             }
             _currentMoveCoroutine = StartCoroutine(_monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
 
-            if (_currentAttactCoroutine != null) {
+            if (_currentAttactCoroutine != null)
+            {
                 StopCoroutine(_currentAttactCoroutine);
             }
             _currentAttactCoroutine = StartCoroutine(_effectAreaController.SpawnIceArea(transform, dashSpeed, dashDuration));
@@ -160,13 +177,15 @@ public class MandooTheBoss : MonoBehaviour
             _currentTime = 0;
         }
 
-        if (currentFrozenValue <= 0f) {
+        if (currentFrozenValue <= 0f)
+        {
             FrozenEnd();
             NormalInit();
         }
     }
 
-    private void FrozenEnd() {
+    private void FrozenEnd()
+    {
         // 무적 종료
         gameObject.tag = "tag_Enemy";
 
@@ -179,78 +198,98 @@ public class MandooTheBoss : MonoBehaviour
         _effectAreaController.DestroyFireArea();
     }
 
-    public void GetMelt(float value) {
+    public void GetMelt(float value)
+    {
         currentFrozenValue -= value;
         _bossUI.bossFrozenSlider.value = currentFrozenValue;
     }
     #endregion
 
     #region Mad
-    private void MadInit() {
+    // init
+    private void MadInit()
+    {
         _currentMandooState = MANDOO_STATE.MAD;
 
         ThrowHead();
 
-        StartCoroutine(mandooAnimation.StartMad(0.75f, _madMandooHead));
+        StartCoroutine(mandooAnimation.StartMad(0.75f));
     }
 
-    private void ThrowHead() {
+    private void ThrowHead()
+    {
         mandooAnimation.StartBodyThrow();
-        _madMandooHead = Instantiate(_madMandooHeadPrefab, transform);
         _madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
     }
 
-    private IEnumerator HeadInitialMove() {
+    private IEnumerator HeadInitialMove()
+    {
         Vector3 direction = (targetTransform.position - _madMandooHead.transform.position).normalized;
         var speed = 0.5f;
         _madMandooHead.GetComponent<Rigidbody2D>().velocity = direction * speed;
         yield break;
     }
 
-    private void RandomBodyDash() {
-        if (_currentMoveCoroutine != null) {
+    // random body
+    private void RandomBodyDash()
+    {
+        Vector3 targetDirection = _monsterMove.SetRandomDirection();
+
+        if (_currentMoveCoroutine != null)
+        {
             StopCoroutine(_currentMoveCoroutine);
         }
-        _currentMoveCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_mandooCollider, targetTransform, transform, dashSpeed, dashDuration));
+        _currentMoveCoroutine = StartCoroutine(_monsterMove.DashToTarget(transform, targetDirection, dashSpeed, dashDuration));
+
         _currentTime = 0;
         _mandooBodyDashCount = 0;
     }
 
-    private void MadPattern() {
-        //// (3번의 돌진 후) 점프
-        //if (_mandooBodyDashCount > 3 && _currentTime > dashInterval)
-        //{
-        //    RandomBodyDash();
-        //}
+    private void ShortBodyJumpToHead()
+    {
+        if (_currentMoveCoroutine != null)
+        {
+            StopCoroutine(_currentMoveCoroutine);
+        }
 
-        //// 머리 랜덤 방향 점프
-        //else if (_currentTime > dashInterval)
-        //{
-        //    if (_madMandooHeadCoroutine != null)
-        //    {
-        //        StopCoroutine(_madMandooHeadCoroutine);
-        //    }
-        //    if (_madMandooHead != null)
-        //    {
-        //        _madMandooHeadCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_madMandooHead.GetComponent<CircleCollider2D>(), targetTransform, _madMandooHead.transform, _unit.fCurMoveSpeed, randomMoveDuration));
-        //        _currentTime = 0;
-        //        _mandooBodyDashCount++;
-        //    }
-        //    else
-        //    {
-        //        MadInit();
-        //    }
-        //}
+        _currentMoveCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_mandooCollider, targetTransform, transform, dashSpeed, dashDuration));
+    }
+
+    // head idle
+    private void HeadMove()
+    {
+        _monsterMove.FollowTarget(_unit.fCurMoveSpeed, _madMandooHead.transform, targetTransform);
+    }
+
+    private void MadPattern()
+    {
+        // body
+        if (_currentTime > dashInterval)
+        {
+            if (_mandooBodyDashCount > 3)
+            {
+                RandomBodyDash();
+            }
+            else
+            {
+                ShortBodyJumpToHead();
+            }
+        }
+
+        // 만두 머리는 살살 쩜프하면서 따라다님
+        HeadMove();
 
         // 사망
-        if (_unit.m_stStat.fHp_Cur == 0) {
+        if (_unit.m_stStat.fHp_Cur == 0)
+        {
             MadEnd();
             Dead();
         }
 
     }
 
-    private void MadEnd() {
+    private void MadEnd()
+    {
         ResetCoroutine();
 
         Destroy(_madMandooHead);
@@ -258,36 +297,43 @@ public class MandooTheBoss : MonoBehaviour
     #endregion
 
     #region Normal
-    private void NormalInit() {
+    private void NormalInit()
+    {
         _currentMandooState = MANDOO_STATE.NORMAL;
     }
 
-    private void NormalPattern() {
+    private void NormalPattern()
+    {
         _monsterMove.FollowTarget(_unit.fCurMoveSpeed, transform, targetTransform);
 
         _currentTime += Time.deltaTime;
 
 
         // 탄환
-        if (_currentTime >= 3.0f) {
+        if (_currentTime >= 3.0f)
+        {
             _currentAttactCoroutine = StartCoroutine(MandooShotBullet(1f, 3));
             _currentTime = 0f;
         }
 
         // 광란 패턴
         // if (_unit.m_stStat.fHp_Cur <= 30)
-        if (_unit.m_stStat.fHp_Cur <= 80) {
+        if (_unit.m_stStat.fHp_Cur <= 80)
+        {
             NormalEnd();
             MadInit();
         }
     }
-    private IEnumerator MandooShotBullet(float delay, int number = 1) {
+
+    private IEnumerator MandooShotBullet(float delay, int number = 1)
+    {
         mandooAnimation.StartThrow();
 
         Vector3 originDirection = targetTransform.position - transform.position;
         float startAngle = Mathf.Atan2(originDirection.y, originDirection.x) * Mathf.Rad2Deg - (number - 1) * 10.0f; // 시작 각도 조정
 
-        for (int i = 0; i < number; i++) {
+        for (int i = 0; i < number; i++)
+        {
             // 각 총알에 대한 방향 계산
             float angle = startAngle + (20.0f * i); // 20.0f는 각 총알 간의 각도 차이입니다. 이 값을 조정하여 총알 간의 간격을 변경할 수 있습니다.
             Vector3 direction = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
@@ -313,21 +359,25 @@ public class MandooTheBoss : MonoBehaviour
     //    mandooAnimation.EndThrow();
     //}
 
-    private void NormalEnd() {
+    private void NormalEnd()
+    {
         ResetCoroutine();
     }
     #endregion
 
     #region Dead
-    private void Dead() {
+    private void Dead()
+    {
         _currentMandooState = MANDOO_STATE.DEAD;
         BossManager.Instance.BossClear();
     }
     #endregion
 
     #region
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.CompareTag("tag_Player")) {
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("tag_Player"))
+        {
             collision.GetComponent<Unit>().GetDamage(_unit.m_stStat.fDamage_Base);
         }
     }
