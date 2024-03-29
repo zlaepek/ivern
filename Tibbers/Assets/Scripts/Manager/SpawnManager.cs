@@ -231,7 +231,7 @@ public class SpawnManager : MonoBehaviour
         //InGameUIManager.Instance.fPos_Y
         Mon_Mob Temp_Mob = Monster.GetComponent<Mon_Mob>();
         Temp_Mob.Init(_objectNumber);
-        Debug.Log("Type : " + _objectNumber + ", Mass :" + Temp_Mob.Stat.Mass + ", Speed : " + Temp_Mob.Stat.fCurMoveSpeed);
+        //Debug.Log("Type : " + _objectNumber + ", Mass :" + Temp_Mob.Stat.Mass + ", Speed : " + Temp_Mob.Stat.fCurMoveSpeed);
 
         //Debug.Log("\n MonsterSpawn : " + _vPoint.x + ", " + _vPoint.y);
     }

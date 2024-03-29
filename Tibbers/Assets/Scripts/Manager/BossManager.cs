@@ -108,7 +108,8 @@ public class BossManager : MonoBehaviour
     
     private void Start()
     {
-        BossUI.HideBossUI();
+        if(BossUI)
+            BossUI.HideBossUI();
     }
     private void Update()
     {

@@ -41,6 +41,11 @@ public class SceneManager : MonoBehaviour
     {
         UnitySceneManager.LoadScene(_strSceneName, LoadSceneMode.Additive);
     }
+    private void _SceneAdd_Completed(string _strSceneName, System.Action<AsyncOperation> _OnSceneLoaded)
+    {
+        UnitySceneManager.LoadSceneAsync(_strSceneName, LoadSceneMode.Additive).completed += _OnSceneLoaded;
+    }
+    
     private AsyncOperation _LoadSceneAsync(string _strSceneName)
     {
         return UnitySceneManager.LoadSceneAsync(_strSceneName);
@@ -57,12 +62,50 @@ public class SceneManager : MonoBehaviour
         _SceneChange("Scene_Title");
     }
 
-    public void SceneChange_Stage()
+    public void SceneChange_Stage_Normal()
     {
+        StageManager.Instance.SetCurrentStage(0, 0);
         _SceneChange("Scene_Stage");
-        _SceneAdd("UI_Scene_Stage");
+        // Boss
+        _SceneAdd_Completed("UI_Scene_Stage", OnSceneLoaded_UI_Stage);
+        // Setting
         _SceneAdd("UI_Scene_Setting");
         NetworkManager.Instance?.RequestPostChapterStart(1);
+
+        //OnSceneLoaded_UI_Stage();
+    }
+
+    public void SceneChange_Stage_Boss()
+    {
+        StageManager.Instance.SetCurrentStage(0, 1);
+        _SceneChange("Scene_Stage");
+        // Boss
+        _SceneAdd_Completed("UI_Scene_Stage", OnSceneLoaded_UI_Stage);
+        // Setting
+        _SceneAdd("UI_Scene_Setting");
+        NetworkManager.Instance?.RequestPostChapterStart(2);
+
+    }
+    public bool IsActiveScene(string _SceneName)
+    {
+        Scene loadedScene = UnitySceneManager.GetSceneByName(_SceneName);
+
+        return loadedScene.IsValid() ? true : false;
+    }
+    private void OnSceneLoaded_UI_Stage(AsyncOperation asyncOperation)
+    {
+        if (StageManager.Instance.IsBossStage())
+        {
+            // 보스 스테이지 일때의 씬로드 완료 후 처리
+            TimeManager.Instance.HideTime();
+        }
+        else
+        {
+            // 일반 스테이지 일때의 씬로드 완료 후 처리
+            TimeManager.Instance.OpenTime();
+        }
+
+        StageManager.Instance.Setting_UI_Stage_Scene();
     }
 
     public void GameExit()

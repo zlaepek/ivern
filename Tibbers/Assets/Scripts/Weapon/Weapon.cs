@@ -104,7 +104,7 @@ public class Weapon
                     default:
                         break;
                 }
-                Debug.Log(_vShotterPos + " / " + _vAttackDir);
+                //Debug.Log(_vShotterPos + " / " + _vAttackDir);
                 //Debug.Break();
                 tempBullet.GetComponent<Bullet>().SetType(m_eType);
                 tempBullet.GetComponent<Bullet>().SetMaster(m_Master);

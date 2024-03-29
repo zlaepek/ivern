@@ -128,8 +128,6 @@ public class DataManager : MonoBehaviour
 
     public void Get_Exp(int _iType)
     {
-        
-
         ulong TempA = listExpBallTable[_iType];
 
         stPlayerData.ulExp_Current += TempA;
