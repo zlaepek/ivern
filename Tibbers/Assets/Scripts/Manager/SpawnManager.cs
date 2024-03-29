@@ -103,18 +103,19 @@ public class SpawnManager : MonoBehaviour
             //RandomSpawn((int)eMonsterMobType.Test);
             if(!isSpawning)
             {
-                Debug.Log("Start Spawn");
-                CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
-                isSpawning = true;
+                StartSpawn();
             }
             else
             {
-                Debug.Log("Stop Spawn");
-                StopCoroutine(CoRt_Spawn);
-                DataManager.Instance.ResetPlayerData();
-                isSpawning = false;
+                StopSpawn();
             }
 
+        }
+
+        GameObject TempBoss = BossManager.Instance.currentBoss;
+        if (TempBoss)
+        {
+            StopSpawn();
         }
     }
 
@@ -166,13 +167,6 @@ public class SpawnManager : MonoBehaviour
                     }
                 }
             }
-            //fCompare = Vector3.Magnitude(TempBoss.transform.position - vPoint);
-
-            //if (fCompare <= fDistance)
-            //{
-            //    Res = TempBoss;
-            //    fDistance = fCompare;
-            //}
         }
 
         foreach (GameObject it in MonsterPool)
@@ -277,6 +271,21 @@ public class SpawnManager : MonoBehaviour
         }
 
         SpawnObject(_objectNumber, vSpawnPoint);
+    }
+
+    private void StartSpawn()
+    {
+        Debug.Log("Start Spawn");
+        CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+        isSpawning = true;
+    }
+
+    private void StopSpawn()
+    {
+        Debug.Log("Stop Spawn");
+        StopCoroutine(CoRt_Spawn);
+        DataManager.Instance.ResetPlayerData();
+        isSpawning = false;
     }
 
     IEnumerator SpawnMonster_Routine()
