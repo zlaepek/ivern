@@ -295,19 +295,22 @@ public class SpawnManager : MonoBehaviour
 
         while (true)
         {
-            // 플레이어 킬수가 정해진 만큼 킬하면 정지
-            if (ulCheck_Score <= DataManager.Instance.PlayerData.ulStageKill)
+            if(StageManager.Instance.IsBossStage())
             {
-                GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
-
-                foreach(GameObject iter in Monsters)
+                // 플레이어 킬수가 정해진 만큼 킬하면 정지
+                if (ulCheck_Score <= DataManager.Instance.PlayerData.ulStageKill)
                 {
-                    iter.GetComponent<Unit>().Death();
+                    GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
+
+                    foreach (GameObject iter in Monsters)
+                    {
+                        iter.GetComponent<Unit>().Death();
+                    }
+
+
+                    BossManager.Instance.Spawn(BossName.Mandoo);
+                    yield break;
                 }
-
-
-                BossManager.Instance.Spawn(BossName.Mandoo);
-                yield break;
             }
 
             yield return new WaitForSeconds(fTime); // 1초 마다 스폰

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class DataManager : MonoBehaviour
 {
@@ -82,6 +84,8 @@ public class DataManager : MonoBehaviour
         stPlayerData = default;
 
         stPlayerData.iLevel = 1;
+
+        ExpUI_LevelUp();
     }
     private void Awake()
     {
@@ -99,7 +103,6 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        ResetPlayerData();
     }
 
     // Start is called before the first frame update
@@ -124,6 +127,9 @@ public class DataManager : MonoBehaviour
         {
             listExpBallTable.Add(2 * (i + 1));
         }
+
+        ResetPlayerData();
+
     }
 
     public void Get_Exp(int _iType)
@@ -140,7 +146,9 @@ public class DataManager : MonoBehaviour
             stPlayerData.ulExp_Current = 0;
             // 임시로 Exp 무한 누적
             //stPlayerData.ulExp_Total = ExpDataTable[ExpDataTable.Count - 1].ulTotal;
+
         }
+        ExpUI_GetExp();
 
         Debug.Log("ExpValue : " + TempA + ", " + " :: Level : " + PlayerData.iLevel + " :: Exp_Cur : " + PlayerData.ulExp_Current + ":: Exp_Total : " + PlayerData.ulExp_Total);
     }
@@ -156,9 +164,30 @@ public class DataManager : MonoBehaviour
         {
             stPlayerData.ulExp_Current -= ExpDataTable[PlayerData.iLevel].ulRequire;
             ++stPlayerData.iLevel;
-            
+
             // 레벨업 이벤트 ( 무기 고르기 등등 )
+            ExpUI_LevelUp();
         }
+    }
+
+    private void ExpUI_LevelUp()
+    {
+        Slider Slider_Exp = GameObject.Find("Slider_Exp").GetComponent<Slider>();
+
+        Slider_Exp.maxValue = ExpDataTable[PlayerData.iLevel].ulRequire;
+        Slider_Exp.minValue = 0;
+        Slider_Exp.value = PlayerData.ulExp_Current;
+
+        //Text_Exp
+        TextMeshProUGUI Text_lvl = GameObject.Find("Text_Exp").GetComponent<TextMeshProUGUI>();
+        Text_lvl.text = "Lv. " + PlayerData.iLevel;
+    }
+
+    private void ExpUI_GetExp()
+    {
+        Slider Slider_Exp = GameObject.Find("Slider_Exp").GetComponent<Slider>();
+
+        Slider_Exp.value = PlayerData.ulExp_Current;
     }
 
     // Update is called once per frame
