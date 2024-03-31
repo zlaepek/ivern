@@ -267,9 +267,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentMandooState: 0
+  _mandooCollider: {fileID: 2982413596927158673}
   maxFrozenValue: 30
   currentFrozenValue: 0
-  _madMandooHead: {fileID: 5572676974040533811}
+  _madMandooHead: {fileID: 6105228276282930683}
   randomMoveDuration: 1
   dashSpeed: 1
   dashInterval: 5
@@ -403,6 +404,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4177164397922665124, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
+      propertyPath: _mandooOrigin
+      value: 
+      objectReference: {fileID: 6905166779917186981}
     - target: {fileID: 5759864085861748117, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
       propertyPath: mandooHeadAnimator
       value: 
@@ -473,11 +478,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8929757318168402742, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
   m_PrefabInstance: {fileID: 7872965214345721695}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5572676974040533811 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
+--- !u!114 &6105228276282930683 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4177164397922665124, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
   m_PrefabInstance: {fileID: 7872965214345721695}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d039cc03330dd80478404f0f92a9ee42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &7810911694464992464 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 83187860228977551, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}

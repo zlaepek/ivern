@@ -1,4 +1,5 @@
 using UnityEngine;
+using Boss;
 
 public enum EffectAreaType
 {
