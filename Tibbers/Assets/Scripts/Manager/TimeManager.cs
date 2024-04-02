@@ -64,6 +64,8 @@ public class TimeManager : MonoBehaviour
         Root.SetActive(true);
 
         GameObject TimeObject = GameObject.Find("Time_Normal");
+        if (!TimeObject)
+            return;
         TimeObject.SetActive(true);
     }
 
@@ -84,26 +86,31 @@ public class TimeManager : MonoBehaviour
     private void ProcTime()
     {
         fCurrentTime -= Time.deltaTime;
-
-        if(fCurrentTime < 0 )
+        if (!StageManager.Instance)
+            return;
+        if(!StageManager.Instance.IsBossStage())
         {
-            fCurrentTime = 0f;
+            if (fCurrentTime < 0)
+            {
+                fCurrentTime = 0f;
 
-            PauseTime();
+                PauseTime();
 
-            GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
-            if (!Root)
-                return;
-            Root.SetActive(true);
+                GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
+                if (!Root)
+                    return;
+                Root.SetActive(true);
 
+            }
+            else
+            {
+                GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
+                if (!Root)
+                    return;
+                Root.SetActive(false);
+            }
         }
-        else
-        {
-            GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
-            if (!Root)
-                return;
-            Root.SetActive(false);
-        }
+        
     }
 
     private void  InitTime()

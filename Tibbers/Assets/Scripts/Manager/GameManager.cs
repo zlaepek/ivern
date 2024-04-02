@@ -34,23 +34,49 @@ public class GameManager : MonoBehaviour
     public GameObject FindAllObject(string _Name)
     {
         GameObject[] inactiveObjects = GameObject.FindObjectsOfType<GameObject>();
-        GameObject Res = null;
         foreach (GameObject obj in inactiveObjects)
         {
-            if (obj.name == "Canvas")
-            {
-                obj.SetActive(true);
-            }
             List<GameObject> childObjects = GetChildObjects(obj);
 
-            foreach(GameObject child in childObjects)
+            if (obj.name == _Name)
+            {
+                return obj;
+            }
+
+            foreach (GameObject child in childObjects)
             {
                 if (child.name == _Name)
                 {
-                    Res = obj;
+                    return child;
                 }
             }
             
+        }
+
+        return null;
+    }
+
+    public List<GameObject> FindAllObjectsWithTag(string _Tag)
+    {
+        GameObject[] inactiveObjects = GameObject.FindObjectsOfType<GameObject>();
+        List<GameObject> Res = new List<GameObject>();
+        foreach (GameObject obj in inactiveObjects)
+        {
+            List<GameObject> childObjects = GetChildObjects(obj);
+
+            if (obj.tag == _Tag)
+            {
+                Res.Add(obj);
+
+            }
+            foreach (GameObject child in childObjects)
+            {
+                if (child.tag == _Tag)
+                {
+                    Res.Add(child);
+                }
+            }
+
         }
 
         return Res;

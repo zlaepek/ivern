@@ -94,7 +94,7 @@ public class SpawnManager : MonoBehaviour
             if (!Root)
                 Root = GameManager.Instance.FindAllObject("BossUI");
             Root.SetActive(true);
-            //BossManager.Instance.Spawn(BossName.Mandoo);
+            BossManager.Instance.Spawn(BossName.Mandoo);
             //GameObject TempBoss = BossManager.Instance.currentBoss;
             //if (TempBoss)
             //{
@@ -175,6 +175,7 @@ public class SpawnManager : MonoBehaviour
         if (TempBoss)
         {
             GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
+            //List<GameObject> Monsters = GameManager.Instance.FindAllObjectsWithTag("tag_Enemy");
 
             foreach (GameObject it in Monsters)
             {

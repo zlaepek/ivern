@@ -29,6 +29,26 @@ public class StageManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        StageInfo = new eStageType[iChapterSize, iStageMaxSize];
+
+        for (int i = 0; i < iChapterSize; ++i)
+        {
+            for (int j = 0; j < iStageMaxSize; ++j)
+            {
+                StageInfo[i, j] = eStageType.Empty;
+            }
+        }
+
+        //StageInfo[0, 0] = eStageType.Normal;
+        //StageInfo[0, 1] = eStageType.Normal;
+        //StageInfo[0, 2] = eStageType.Normal;
+        //StageInfo[0, 3] = eStageType.Boss;
+
+        StageInfo[0, 0] = eStageType.Normal;
+        StageInfo[0, 1] = eStageType.Boss;
+
+        NoPlayStage();
     }
     #endregion
 
@@ -59,6 +79,8 @@ public class StageManager : MonoBehaviour
 
     public bool IsBossStage()
     {
+        if (iCurChapter < 0 || iCurStage < 0)
+            return false;
 
         return GetStageType() == eStageType.Boss ? true : false;
     }
@@ -98,25 +120,7 @@ public class StageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StageInfo = new eStageType[iChapterSize, iStageMaxSize];
-
-        for(int i = 0; i < iChapterSize; ++i)
-        {
-            for(int j = 0; j < iStageMaxSize; ++j)
-            {
-                StageInfo[i, j] = eStageType.Empty;
-            }
-        }
-
-        //StageInfo[0, 0] = eStageType.Normal;
-        //StageInfo[0, 1] = eStageType.Normal;
-        //StageInfo[0, 2] = eStageType.Normal;
-        //StageInfo[0, 3] = eStageType.Boss;
-
-        StageInfo[0, 0] = eStageType.Normal;
-        StageInfo[0, 1] = eStageType.Boss;
-
-        NoPlayStage();
+       
     }
 
     // Update is called once per frame
