@@ -58,9 +58,9 @@ public class TimeManager : MonoBehaviour
 
     public void OpenTime()
     {
-        GameObject Root = GameObject.Find("Current_Stage");
+        GameObject Root = GameManager.Instance.FindAllObject("Current_Stage");
         if (!Root)
-            Root = GameManager.Instance.FindAllObject("Current_Stage");
+            return;
         Root.SetActive(true);
 
         GameObject TimeObject = GameObject.Find("Time_Normal");

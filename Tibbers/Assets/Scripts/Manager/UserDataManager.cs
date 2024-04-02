@@ -10,6 +10,7 @@ public class UserDataManager : MonoBehaviour
     //public byte nScale = 0;
 
     private int iUser_ID = 4566;
+    public int User_ID { get { return iUser_ID; } private set { } }
 
     private static GameObject _container;
     public static GameObject Container
@@ -19,7 +20,7 @@ public class UserDataManager : MonoBehaviour
             return _container;
         }
     }
-    public static UserDataManager _intance;
+    private static UserDataManager _instance;
     public static UserDataManager Instance
     {
         //private set
@@ -39,7 +40,13 @@ public class UserDataManager : MonoBehaviour
         //    return _intance;
         //}
 
-        private set; get;
+        get
+        {
+            return _instance;
+
+
+        }
+        private set { }
 
     }
     private Structs.OutGameStatData _stOutGameData;
@@ -56,6 +63,19 @@ public class UserDataManager : MonoBehaviour
         }
     }
 
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()

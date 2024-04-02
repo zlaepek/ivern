@@ -170,7 +170,7 @@ public partial class NetworkManager : MonoBehaviour
             }
             catch (Exception e)
             {
-                Debug.LogError("{0} 에러");
+                Debug.LogError(e + "에러");
             }
         }
         else

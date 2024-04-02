@@ -34,22 +34,26 @@ public class GameManager : MonoBehaviour
     public GameObject FindAllObject(string _Name)
     {
         GameObject[] inactiveObjects = GameObject.FindObjectsOfType<GameObject>();
-
+        GameObject Res = null;
         foreach (GameObject obj in inactiveObjects)
         {
+            if (obj.name == "Canvas")
+            {
+                obj.SetActive(true);
+            }
             List<GameObject> childObjects = GetChildObjects(obj);
 
             foreach(GameObject child in childObjects)
             {
                 if (child.name == _Name)
                 {
-                    return obj;
+                    Res = obj;
                 }
             }
             
         }
 
-        return null;
+        return Res;
     }
     // 자식 순회하면서 찾는중
 
