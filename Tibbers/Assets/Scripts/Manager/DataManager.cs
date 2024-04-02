@@ -172,7 +172,16 @@ public class DataManager : MonoBehaviour
 
     private void ExpUI_LevelUp()
     {
-        Slider Slider_Exp = GameObject.Find("Slider_Exp").GetComponent<Slider>();
+        GameObject Root = GameManager.Instance.FindAllObject("ExpUI");
+        if (!Root)
+            return;
+        Root.SetActive(true);
+
+
+        GameObject Obj_Slider_Exp = GameObject.Find("Slider_Exp");
+        if (!Obj_Slider_Exp)
+            return;
+        Slider Slider_Exp = Obj_Slider_Exp.GetComponent<Slider>();
 
         Slider_Exp.maxValue = ExpDataTable[PlayerData.iLevel].ulRequire;
         Slider_Exp.minValue = 0;
@@ -185,6 +194,11 @@ public class DataManager : MonoBehaviour
 
     private void ExpUI_GetExp()
     {
+        GameObject Root = GameObject.Find("ExpUI");
+        if (!Root)
+            Root = GameManager.Instance.FindAllObject("ExpUI");
+        Root.SetActive(true);
+
         Slider Slider_Exp = GameObject.Find("Slider_Exp").GetComponent<Slider>();
 
         Slider_Exp.value = PlayerData.ulExp_Current;

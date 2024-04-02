@@ -81,10 +81,17 @@ public class StageManager : MonoBehaviour
     }
     public void Setting_UI_Stage_Scene()
     {
+        GameObject Root = GameManager.Instance.FindAllObject("Current_Stage");
+        if (!Root)
+            return;
+        Root.SetActive(true);
+
         GameObject TextObject_Chapter = GameObject.Find("Text_Chapter");
+        if (TextObject_Chapter)
         TextObject_Chapter.GetComponent<TextMeshProUGUI>().text = "" + CurChapter;
 
         GameObject TextObject_Stage = GameObject.Find("Text_Stage");
+        if (TextObject_Stage)
         TextObject_Stage.GetComponent<TextMeshProUGUI>().text = "" + CurStage;
     }
 

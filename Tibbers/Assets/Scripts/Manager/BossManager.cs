@@ -121,6 +121,8 @@ public class BossManager : MonoBehaviour
 
     public void Spawn(BossName bossName)
     {
+        // BossUI 이거 어떤 상황에선 nullptr 로 떠서 항상 null 값 채워주게 바꿔야함
+        FindBossUI();
         BossUI.SpawnNewBoss(bossName);
         boundary.SpawnNewBoss(PlayerTransform.position);
 
@@ -138,6 +140,11 @@ public class BossManager : MonoBehaviour
         currentBoss = Instantiate(_currentBossPrefab);
         currentBoss.transform.position = spawnPositionMarker.transform.position;
         yield return null;
+    }
+
+    public void FindBossUI()
+    {
+        BossUI = GameManager.Instance.FindAllObject("BossUI").GetComponent<BossUI>();
     }
 
     public void BossClear()

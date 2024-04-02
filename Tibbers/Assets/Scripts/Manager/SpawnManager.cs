@@ -65,6 +65,11 @@ public class SpawnManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (StageManager.Instance.IsBossStage())
+        {
+            
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -83,8 +88,24 @@ public class SpawnManager : MonoBehaviour
             AddPool(iter);
         }
 
-        isSpawning = true;
-        CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+        if(StageManager.Instance.IsBossStage())
+        {
+            GameObject Root = GameObject.Find("BossUI");
+            if (!Root)
+                Root = GameManager.Instance.FindAllObject("BossUI");
+            Root.SetActive(true);
+            //BossManager.Instance.Spawn(BossName.Mandoo);
+            //GameObject TempBoss = BossManager.Instance.currentBoss;
+            //if (TempBoss)
+            //{
+            //    StopSpawn();
+            //}
+        }
+        else
+        {
+            isSpawning = true;
+            CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+        }
     }
 
     // Update is called once per frame
@@ -112,11 +133,11 @@ public class SpawnManager : MonoBehaviour
 
         }
 
-        GameObject TempBoss = BossManager.Instance.currentBoss;
-        if (TempBoss)
-        {
-            StopSpawn();
-        }
+        //GameObject TempBoss = BossManager.Instance.currentBoss;
+        //if (TempBoss)
+        //{
+        //    StopSpawn();
+        //}
     }
 
     public float GetCameraEdgePos(eCameraEdgePos _ePos)
@@ -295,23 +316,23 @@ public class SpawnManager : MonoBehaviour
 
         while (true)
         {
-            if(StageManager.Instance.IsBossStage())
-            {
-                // 플레이어 킬수가 정해진 만큼 킬하면 정지
-                if (ulCheck_Score <= DataManager.Instance.PlayerData.ulStageKill)
-                {
-                    GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
+            //if(StageManager.Instance.IsBossStage())
+            //{
+            //    // 플레이어 킬수가 정해진 만큼 킬하면 정지
+            //    if (ulCheck_Score <= DataManager.Instance.PlayerData.ulStageKill)
+            //    {
+            //        GameObject[] Monsters = GameObject.FindGameObjectsWithTag("tag_Enemy");
 
-                    foreach (GameObject iter in Monsters)
-                    {
-                        iter.GetComponent<Unit>().Death();
-                    }
+            //        foreach (GameObject iter in Monsters)
+            //        {
+            //            iter.GetComponent<Unit>().Death();
+            //        }
 
 
-                    BossManager.Instance.Spawn(BossName.Mandoo);
-                    yield break;
-                }
-            }
+            //        BossManager.Instance.Spawn(BossName.Mandoo);
+            //        yield break;
+            //    }
+            //}
 
             yield return new WaitForSeconds(fTime); // 1초 마다 스폰
 

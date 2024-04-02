@@ -32,9 +32,21 @@ public class TimeManager : MonoBehaviour
     }
     #endregion
 
-    private const float fTotalTime = 300f; // 5 min
+    private const float fTotalTime = 30f; // 5 min
     private float fCurrentTime = 0f;
     private GameObject TextObject_Time;
+    private float Origin_TimeScale = 0f;
+
+    public void PauseTime()
+    {
+        Origin_TimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeTime()
+    {
+        Time.timeScale = Origin_TimeScale;
+    }
 
     public void HideTime()
     {
@@ -46,9 +58,12 @@ public class TimeManager : MonoBehaviour
 
     public void OpenTime()
     {
+        GameObject Root = GameObject.Find("Current_Stage");
+        if (!Root)
+            Root = GameManager.Instance.FindAllObject("Current_Stage");
+        Root.SetActive(true);
+
         GameObject TimeObject = GameObject.Find("Time_Normal");
-        if (!TimeObject)
-            return;
         TimeObject.SetActive(true);
     }
 
@@ -73,6 +88,21 @@ public class TimeManager : MonoBehaviour
         if(fCurrentTime < 0 )
         {
             fCurrentTime = 0f;
+
+            PauseTime();
+
+            GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
+            if (!Root)
+                return;
+            Root.SetActive(true);
+
+        }
+        else
+        {
+            GameObject Root = GameManager.Instance.FindAllObject("Clear_PopUp");
+            if (!Root)
+                return;
+            Root.SetActive(false);
         }
     }
 
@@ -84,6 +114,11 @@ public class TimeManager : MonoBehaviour
 
     private void Update_TimerDisPlay()
     {
+        GameObject Root = GameObject.Find("Current_Stage");
+        if (!Root)
+            return;
+        Root.SetActive(true);
+
         TextObject_Time = GameObject.Find("Current_Time");
         
         if(!TextObject_Time)
