@@ -31,7 +31,8 @@ public class SpawnManager : MonoBehaviour
 
     private bool isSpawning;
 
-    Coroutine CoRt_Spawn;
+    Coroutine CoRt_MonsterSpawn;
+    Coroutine CoRt_CoinSpawn;
     public enum eCameraEdgePos
     {
         Top,
@@ -66,10 +67,6 @@ public class SpawnManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (StageManager.Instance.IsBossStage())
-        {
-            
-        }
     }
     // Start is called before the first frame update
     void Start()
@@ -104,7 +101,8 @@ public class SpawnManager : MonoBehaviour
         else
         {
             isSpawning = true;
-            CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+            CoRt_MonsterSpawn = StartCoroutine(SpawnMonster_Routine());
+            CoRt_CoinSpawn = StartCoroutine(SpawnCoin_Routine());
         }
     }
 
@@ -263,7 +261,7 @@ public class SpawnManager : MonoBehaviour
         _Monster.GetComponent<Mon_Mob>().SerialNumber = iSerial;
         ++iSerial;
     }
-    private void RandomSpawn(int _objectNumber)
+    private void RandomSpawnMonster(int _objectNumber)
     {
         // 실수 min , max 모두포함
         // 정수 max 제외
@@ -295,17 +293,52 @@ public class SpawnManager : MonoBehaviour
         SpawnObject(_objectNumber, vSpawnPoint);
     }
 
+    private Vector2 RandomSpawnPoint_CameraEdge()
+    {
+        // 실수 min , max 모두포함
+        // 정수 max 제외
+        //Random.Range
+        Vector2 vSpawnPoint = default;
+
+        int iRand = Random.Range(0, (int)eCameraEdgePos.Max);
+        switch (iRand)
+        {
+            case (int)eCameraEdgePos.Top:
+            case (int)eCameraEdgePos.Bottom:
+                {
+                    vSpawnPoint.x = Random.Range(fPositions[(int)eCameraEdgePos.Left], fPositions[(int)eCameraEdgePos.Right]);
+                    vSpawnPoint.y = fPositions[iRand];
+                }
+                break;
+            case (int)eCameraEdgePos.Left:
+            case (int)eCameraEdgePos.Right:
+                {
+                    vSpawnPoint.x = fPositions[iRand];
+                    vSpawnPoint.y = Random.Range(fPositions[(int)eCameraEdgePos.Bottom], fPositions[(int)eCameraEdgePos.Top]);
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return vSpawnPoint;
+
+    }
+
     private void StartSpawn()
     {
         Debug.Log("Start Spawn");
-        CoRt_Spawn = StartCoroutine(SpawnMonster_Routine());
+        CoRt_MonsterSpawn = StartCoroutine(SpawnMonster_Routine());
+        CoRt_CoinSpawn = StartCoroutine(SpawnCoin_Routine());
         isSpawning = true;
     }
 
     private void StopSpawn()
     {
         Debug.Log("Stop Spawn");
-        StopCoroutine(CoRt_Spawn);
+        StopCoroutine(CoRt_MonsterSpawn);
+        StopCoroutine(CoRt_CoinSpawn);
         DataManager.Instance.ResetPlayerData();
         isSpawning = false;
     }
@@ -339,9 +372,21 @@ public class SpawnManager : MonoBehaviour
 
             int iRand = Random.Range((int)eMonsterMobType.Mob_Egg_Man, (int)eMonsterMobType.Max);
 
-            RandomSpawn(iRand);
+            RandomSpawnMonster(iRand);
 
-            
+
+        }
+    }
+
+    IEnumerator SpawnCoin_Routine()
+    {
+        float fTime = 3.0f;
+
+        while (true)
+        {
+            yield return new WaitForSeconds(fTime); // 초 마다 스폰
+
+            ItemManager.Instance.DropItem(ItemManager.Instance.Coin, RandomSpawnPoint_CameraEdge(), (int)ItemManager.eItemType.Coin);
         }
     }
 }

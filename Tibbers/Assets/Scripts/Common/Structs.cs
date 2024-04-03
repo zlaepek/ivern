@@ -23,6 +23,9 @@ namespace Structs
         public ulong ulExp_Current;
         public ulong ulExp_Total;
 
+        public ulong ulCoin_Current;
+        public ulong ulCoin_Total;
+
         public ulong ulStageKill;
 
         public ulong ulTotalKill;

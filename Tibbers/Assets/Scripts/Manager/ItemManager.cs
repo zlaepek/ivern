@@ -10,11 +10,14 @@ public class ItemManager : MonoBehaviour
     public enum eItemType
     {
         EXP_ball,
+        
+        Coin,
 
         Max,
     }
 
     public GameObject EXP_Ball;
+    public GameObject Coin;
 
 
     private List<GameObject>[] ItemPool = new List<GameObject>[(int)eItemType.Max];
@@ -25,6 +28,7 @@ public class ItemManager : MonoBehaviour
     private void Awake()
     {
         ItemPool[(int)eItemType.EXP_ball] = new List<GameObject>();
+        ItemPool[(int)eItemType.Coin] = new List<GameObject>();
 
         if (Instance == null)
         {
@@ -51,9 +55,10 @@ public class ItemManager : MonoBehaviour
     }
     private void Check()
     {
-        foreach(List<GameObject> Iter_List in ItemPool)
-        {
-            foreach (GameObject it in Iter_List)
+        //foreach(List<GameObject> Iter_List in ItemPool)
+        for(int i = 0; i < (int)eItemType.Max; ++i)
+            {
+            foreach (GameObject it in ItemPool[i])
             {
                 if (it.activeSelf == false)
                 {
@@ -64,7 +69,7 @@ public class ItemManager : MonoBehaviour
 
                 if (CheckSphereCollision(TempItem.transform.position, playerCharacter.transform.position, TempItem.Radius, fPlayer_Radius))
                 {
-                    TempItem.ItemEffect((int)ItemManager.eItemType.EXP_ball);
+                    TempItem.ItemEffect(i);
 
                     return;
                 }
@@ -109,7 +114,7 @@ public class ItemManager : MonoBehaviour
         Item Temp_Item = Item.GetComponent<Item>();
         Temp_Item.Init(_iType);
 
-        //Debug.Log("\n ItemDropPos : " + _vPoint.x + ", " + _vPoint.y + " :: Type : " + Temp_Item.Type);
+        Debug.Log("\n ItemDropPos : " + _vPoint.x + ", " + _vPoint.y + " :: Type : " + Temp_Item.Type);
     }
 
     private void AddPool(GameObject _Item, int _Type)

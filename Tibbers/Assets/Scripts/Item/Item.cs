@@ -44,6 +44,13 @@ public class Item : MonoBehaviour
                     gameObject.SetActive(false);
                 }
                 break;
+            case (int)ItemManager.eItemType.Coin:
+                {
+                    DataManager.Instance.Get_Coin((int)DataManager.eCoin_Type.B);
+
+                    gameObject.SetActive(false);
+                }
+                break;
 
             default:
                 {

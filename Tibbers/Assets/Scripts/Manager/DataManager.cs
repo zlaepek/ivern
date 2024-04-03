@@ -16,6 +16,15 @@ public class DataManager : MonoBehaviour
         eExpBall_Max,
     }
 
+    public enum eCoin_Type
+    {
+        A,
+        B,
+        C,
+
+        Max,
+    }
+
     public static DataManager Instance { get; private set; }
 
     private Structs.PlayerGameData stPlayerData;
@@ -27,6 +36,9 @@ public class DataManager : MonoBehaviour
 
     private List<ulong> listExpBallTable;
     public List<ulong> ExpBallTable { get { return listExpBallTable; } private set { listExpBallTable = value; } }
+
+    private List<ulong> listCoinTable;
+    public List<ulong> ExpCoinTable { get { return listCoinTable; } private set { listCoinTable = value; } }
 
     public ulong[] Exp_Require { get; private set; }
 
@@ -93,6 +105,8 @@ public class DataManager : MonoBehaviour
 
         listExpBallTable = new List<ulong>();
 
+        listCoinTable = new List<ulong>();
+
         if (Instance == null)
         {
             Instance = this;
@@ -128,6 +142,13 @@ public class DataManager : MonoBehaviour
             listExpBallTable.Add(2 * (i + 1));
         }
 
+        // 1, 5 , 10
+
+        listCoinTable.Add(1);
+        listCoinTable.Add(5);
+        listCoinTable.Add(10);
+
+
         ResetPlayerData();
 
     }
@@ -151,6 +172,19 @@ public class DataManager : MonoBehaviour
         ExpUI_GetExp();
 
         Debug.Log("ExpValue : " + TempA + ", " + " :: Level : " + PlayerData.iLevel + " :: Exp_Cur : " + PlayerData.ulExp_Current + ":: Exp_Total : " + PlayerData.ulExp_Total);
+    }
+
+    public void Get_Coin(int _iType)
+    {
+        ulong TempA = listCoinTable[_iType];
+
+        stPlayerData.ulCoin_Current += TempA;
+        stPlayerData.ulCoin_Total += TempA;
+        //stPlayerData.ulExp_Current = _iType;
+        
+        // UI Get Coin
+
+        Debug.Log("ExpValue : " + TempA + ", "  + " :: Coin_Cur : " + PlayerData.ulCoin_Current + ":: Coin_Total : " + PlayerData.ulCoin_Total);
     }
 
     private void Check_Level_Up()
