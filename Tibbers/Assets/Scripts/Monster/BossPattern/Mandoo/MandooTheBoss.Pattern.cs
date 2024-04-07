@@ -16,7 +16,7 @@ namespace Boss
             {
                 StopCoroutine(_currentAttactCoroutine);
             }
-            _madMandooHead.ResetCoroutine();
+            _madMandooHead?.ResetCoroutine();
         }
 
 

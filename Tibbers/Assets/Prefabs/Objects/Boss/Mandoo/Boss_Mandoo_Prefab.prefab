@@ -402,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2311547313920293996, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4177164397922665124, guid: 8e44982d5eb0cbd4aaad23cfdd1dc628, type: 3}
       propertyPath: _mandooOrigin

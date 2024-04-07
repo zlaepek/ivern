@@ -17,6 +17,9 @@ namespace Boss
 
         private CircleCollider2D _headCollider;
 
+
+        private float _currentTime = 0f;
+
         private void Start()
         {
             // Move Init
@@ -24,6 +27,11 @@ namespace Boss
 
             _headCollider = GetComponent<CircleCollider2D>();
         }
+
+        public void Show(bool isShow) {
+            gameObject.SetActive(isShow);
+        }
+
         public void ResetCoroutine()
         {
             if (_madMandooHeadCoroutine != null)
@@ -34,13 +42,21 @@ namespace Boss
 
         public void MadInit()
         {
+            Show(true);
             _madMandooHeadCoroutine = StartCoroutine(HeadInitialMove());
         }
 
         // head idle
         public void HeadMove()
         {
-            _madMandooHeadCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_headCollider, _mandooOrigin.targetTransform, transform, _moveSpeed, _jumpDuration));
+            _currentTime += Time.fixedDeltaTime;
+
+            if (_currentTime > _jumpDuration) {
+                _currentTime = 0;
+                ResetCoroutine();
+                _madMandooHeadCoroutine = StartCoroutine(_monsterMove.JumpToTarget(_headCollider, _mandooOrigin.targetTransform, transform, _moveSpeed, _jumpDuration));
+            }
+           
         }
 
         // 머리는 느린속도로 움직이기 때문에 360도로 총알을 (느린속도로) 발사하는게 재밋을것 같음
