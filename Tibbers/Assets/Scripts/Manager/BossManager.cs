@@ -151,6 +151,8 @@ public class BossManager : MonoBehaviour
     {
         BossUI.HideBossUI();
         currentBoss = null;
+
+        NetworkManager.Instance?.RequestPostChapterClear(UserDataManager.Instance.User_ID, 1);
     }
 
     public GameObject ShotBullet(BossBulletType bulletType, Vector3 direction, Transform startPosition) {

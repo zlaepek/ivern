@@ -56,6 +56,7 @@ namespace Boss
         private IEnumerator MandooShotBullet(float delay, int number = 1)
         {
             mandooAnimation.StartThrow();
+            yield return new WaitForSeconds(delay / 2);
 
             Vector3 originDirection = targetTransform.position - transform.position;
             float startAngle = Mathf.Atan2(originDirection.y, originDirection.x) * Mathf.Rad2Deg - (number - 1) * 10.0f; // 시작 각도 조정
@@ -71,8 +72,11 @@ namespace Boss
                 bullet.InitialMoveInfo(direction, 8.0f);
 
             }
-            yield return new WaitForSeconds(delay);
+
+            yield return new WaitForSeconds(delay / 2);
             mandooAnimation.EndThrow();
+
+
         }
     }
 }

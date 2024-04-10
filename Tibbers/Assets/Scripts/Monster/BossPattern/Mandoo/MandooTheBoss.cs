@@ -198,10 +198,17 @@ namespace Boss
 
             // ±§∂ı ∆–≈œ
             // if (_unit.m_stStat.fHp_Cur <= 30)
-            if (_unit.m_stStat.fHp_Cur <= 80)
+            //if (_unit.m_stStat.fHp_Cur <= 80)
+            //{
+            //    NormalEnd();
+            //    MadInit();
+            //}
+
+            // ªÁ∏¡
+            if (_unit.m_stStat.fHp_Cur == 0)
             {
-                NormalEnd();
-                MadInit();
+                MadEnd();
+                Dead();
             }
         }
 
