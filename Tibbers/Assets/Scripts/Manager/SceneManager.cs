@@ -75,7 +75,7 @@ public class SceneManager : MonoBehaviour
         //OnSceneLoaded_UI_Stage();
     }
 
-    public void SceneChange_Stage_Boss()
+    public void SceneChange_Stage_Normal_2()
     {
         StageManager.Instance.SetCurrentStage(0, 1);
         _SceneChange("Scene_Stage");
@@ -84,6 +84,19 @@ public class SceneManager : MonoBehaviour
         // Setting
         _SceneAdd("UI_Scene_Setting");
         NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID, 1, 2);
+
+        //OnSceneLoaded_UI_Stage();
+    }
+
+    public void SceneChange_Stage_Boss()
+    {
+        StageManager.Instance.SetCurrentStage(0, 2);
+        _SceneChange("Scene_Stage");
+        // Boss
+        _SceneAdd_Completed("UI_Scene_Stage", OnSceneLoaded_UI_Stage);
+        // Setting
+        _SceneAdd("UI_Scene_Setting");
+        NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID, 1, 3);
 
     }
     public bool IsActiveScene(string _SceneName)

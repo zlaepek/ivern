@@ -46,7 +46,8 @@ public class StageManager : MonoBehaviour
         //StageInfo[0, 3] = eStageType.Boss;
 
         StageInfo[0, 0] = eStageType.Normal;
-        StageInfo[0, 1] = eStageType.Boss;
+        StageInfo[0, 1] = eStageType.Normal;
+        StageInfo[0, 2] = eStageType.Boss;
 
         NoPlayStage();
     }
@@ -70,12 +71,21 @@ public class StageManager : MonoBehaviour
     private int iChapterSize = 2;
     private int iStageMaxSize = 10;
 
+    private int iCur_ClearChapter = -1;
+    private int iCur_ClearStage = -1;
+
     private eStageType[,] StageInfo;
 
     public int CurChapter { get { return iCurChapter; } private set { } }
     public int CurStage { get { return iCurStage; } private set { } }
     private int iCurChapter;
     private int iCurStage;
+
+    public void SetClear(int _Chapter, int _Stage)
+    {
+        iCur_ClearChapter = _Chapter;
+        iCur_ClearStage = _Stage;
+    }
 
     public bool IsBossStage()
     {

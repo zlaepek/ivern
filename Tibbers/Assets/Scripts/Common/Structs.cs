@@ -112,6 +112,21 @@ namespace Structs
         public int iProjectile_Scale;
 
     }
+
+    public struct BuffData
+    {
+        // 버프 타입
+        public int iType;
+        
+        // 남은 시간
+        public float fRemain_Time;
+
+        // 활성화 여부
+        public bool isActive;
+
+        // 중첩 횟수?
+        //public int iOverlap;
+    }
     //class Monster
     //{
 
