@@ -6,11 +6,11 @@ public partial class NetworkManager : MonoBehaviour
 {
     #region Public Web Request Methods
 
-    public void RequestPostChapterStart(int user_id, int chapter_id, int stage_id)
+    public void RequestPostChapterStart(int user_id, int chapter_id)
     {
         WWWForm wwwForm = new WWWForm();
         //string url = serverUrl + "/" + chapter + "/start/v1" + "/" + chapterId;
-        string url = serverUrl + "/" + stage + "/start/v1" + "/" + user_id + "/" + chapter_id + "/" + stage_id;
+        string url = serverUrl + "/" + chapter + "/start/v1" + "/" + user_id + "/" + chapter_id;
         StartCoroutine(Instance?.RequestPost(url, wwwForm, CallBackPostChapterStart));
     }
 
@@ -45,24 +45,24 @@ public partial class NetworkManager : MonoBehaviour
         Debug.Log(info.updated_at);
     }
 
-    public void RequestPostChapterClear(int chapterId)
+    public void RequestPostChapterClear(int user_id, int chapter_id)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = serverUrl + "/" + chapter + "/clear/v1" + "/" + chapterId;
+        string url = serverUrl + "/" + chapter + "/clear/v1" + "/" + user_id + "/" + chapter_id;
         StartCoroutine(Instance?.RequestPost(url, wwwForm));
     }
 
-    public void RequestPostStageStart(int stageId)
+    public void RequestPostStageStart(int user_id, int chapter_id, int stage_id)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = serverUrl + "/" + stage + "/start/v1" + "/" + stageId;
+        string url = serverUrl + "/" + stage + "/start/v1" + "/" + user_id + "/" + chapter_id + "/" + stage_id;
         StartCoroutine(Instance?.RequestPost(url, wwwForm));
-    }
+    }   
 
-    public void RequestPostStageClear(int stageId, int coin)
+    public void RequestPostStageClear(int user_id, int chapter_id, int stage_id, int coin)
     {
         WWWForm wwwForm = new WWWForm();
-        string url = serverUrl + "/" + stage + "/clear/v1" + "/" + stageId + "/" + coin;
+        string url = serverUrl + "/" + stage + "/clear/v1" + "/" + user_id + "/" + chapter_id + "/" + stage_id + "/" + coin;
         StartCoroutine(Instance?.RequestPost(url, wwwForm));
     }
     #endregion
