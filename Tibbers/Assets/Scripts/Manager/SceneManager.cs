@@ -70,7 +70,8 @@ public class SceneManager : MonoBehaviour
         _SceneAdd_Completed("UI_Scene_Stage", OnSceneLoaded_UI_Stage);
         // Setting
         _SceneAdd("UI_Scene_Setting");
-        NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID,1,1);
+        NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID,1);
+        NetworkManager.Instance?.RequestPostStageStart(UserDataManager.Instance.User_ID,1,1);
 
         //OnSceneLoaded_UI_Stage();
     }
@@ -83,9 +84,11 @@ public class SceneManager : MonoBehaviour
         _SceneAdd_Completed("UI_Scene_Stage", OnSceneLoaded_UI_Stage);
         // Setting
         _SceneAdd("UI_Scene_Setting");
-        NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID, 1, 2);
+        NetworkManager.Instance?.RequestPostChapterStart(UserDataManager.Instance.User_ID, 1);
+        NetworkManager.Instance?.RequestPostStageStart(UserDataManager.Instance.User_ID, 1, 2);
 
     }
+
     public bool IsActiveScene(string _SceneName)
     {
         Scene loadedScene = UnitySceneManager.GetSceneByName(_SceneName);

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boss
@@ -75,8 +74,6 @@ namespace Boss
 
             yield return new WaitForSeconds(delay / 2);
             mandooAnimation.EndThrow();
-
-
         }
     }
 }
